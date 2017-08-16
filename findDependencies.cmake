@@ -83,7 +83,7 @@ if(QT_STATIC_INSTALL_DIRECTORY)
 #                -lQt5Network
                 -lQt5Core
                 -lm
-#                -lqtpcre2
+                -lqtpcre2
             ${ICU_LIBRARIES}
 
         -Wl,-Bdynamic
@@ -114,9 +114,9 @@ if(QT_STATIC_INSTALL_DIRECTORY)
 #                -lEGL
 
 #                -lgthread-2.0
-#                -lglib-2.0
+                -lglib-2.0
 #                -lGLESv2
-#                -ldl
+                -ldl
         )
 else(QT_STATIC_INSTALL_DIRECTORY)
     set(QT_LIBRARIES
