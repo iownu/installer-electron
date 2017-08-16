@@ -5,8 +5,10 @@
 #include <iostream>
 #include <cassert>
 
+#ifndef _WIN32
 extern char _binary_lunaInstaller_start[];
 extern char _binary_lunaInstaller_end[];
+#endif
 
 #define RUNTIME_ERROR(Name,description)                                     \
     struct Name : public std::runtime_error                                 \
@@ -47,11 +49,14 @@ void recursiveCopy(const QDir &copiedDir, const QDir &destination)
 void extractExecutable(const char *fileName)
 {
     QFile file(fileName);
+#ifdef _WIN32
+    static_assert(false, "Michale, wymyśl tutaj coś mądrego");
+#else
     if (!file.open(QFile::WriteOnly))
         throw ExtractingFileError();
 
     file.write(_binary_lunaInstaller_start, _binary_lunaInstaller_end - _binary_lunaInstaller_start);
-
+#endif
     if (!file.setPermissions(QFileDevice::ReadUser | QFileDevice::ExeUser))
         throw SettingPermissionError();
 }
@@ -60,6 +65,7 @@ QString extractLunaInstaller(QTemporaryDir &tmpDir,
                              const char *installerAppDirName,
                              const char *installerExecPath)
 {
+
     const QDir destinationDir(tmpDir.path());
     const QString execPath = tmpDir.filePath(installerExecPath);
     const QString installerAppDirPath = QString(":/") + installerAppDirName;
@@ -67,7 +73,6 @@ QString extractLunaInstaller(QTemporaryDir &tmpDir,
 
     std::cout << "Extracting files to " << destinationDir.path().toStdString() << std::endl;
     recursiveCopy(installerAppDir, destinationDir);
-
     extractExecutable(execPath.toStdString().c_str());
 
     return execPath;
