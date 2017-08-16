@@ -9,7 +9,7 @@
     struct Name : public std::runtime_error                                 \
     {                                                                       \
         static constexpr const auto Description = description;              \
-        Name() : std::runtime_error(description) {}                         \
+        Name() : std::runtime_error(Description) {}                         \
         bool operator==(const Name &rhs) const noexcept { return true; }    \
     }
 
@@ -65,8 +65,11 @@ int main(int argc, char *argv[])
 {
     QTemporaryDir tmpDir;
     tmpDir.setAutoRemove(true);
-    auto path = extractLunaInstaller(tmpDir, "lunaInstallerApp", "lunaInstallerApp/lunaInstaller");
+    auto execPath = extractLunaInstaller(tmpDir, "lunaInstallerApp", "lunaInstallerApp/lunaInstaller");
 
+    QProcess process;
+    process.start(execPath);
+    process.waitForFinished(-1); // -1 means no timeout
 
     return 0;
 }
