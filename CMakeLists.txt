@@ -14,10 +14,6 @@ set(CMAKE_CXX_STANDARD 14)
 # find dependencies
 include(findDependencies.cmake)
 
-# define build variables
-SET(ELEKTRON_APP_RESOURCE "${CMAKE_SOURCE_DIR}/src/lunaInstallerApp.qrc" CACHE STRING "Path to qrc with console installer executable")
-message("Will be linked with resource ${ELEKTRON_APP_RESOURCE}")
-
 # global included directories
 include_directories(
     ${CMAKE_SOURCE_DIR}/src
@@ -56,16 +52,41 @@ elseif()
 endif()
 set(CMAKE_EXE_LINKER_FLAGS ${CMAKE_EXE_LINKER_FLAGS} -Wl,--as-needed)
 
-# sources
 
-add_executable(elektronInstaller
-    src/main.cpp
-    ${ELEKTRON_APP_RESOURCE}
+# prepare lunaInstaller exec
+
+add_custom_command(OUTPUT lunaInstaller-linux-x64/lunaInstaller
+    COMMAND electron-packager src/lunaInstallerApp lunaInstaller --overwrite --out ${CMAKE_CURRENT_BINARY_DIR}
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    COMMENT "Packaging luna installer electron app")
+
+add_custom_command(OUTPUT lunaInstaller.o
+    COMMAND ld -r -b binary -o ${CMAKE_CURRENT_BINARY_DIR}/lunaInstaller.o lunaInstaller
+    MAIN_DEPENDENCY lunaInstaller-linux-x64/lunaInstaller
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lunaInstaller-linux-x64
+    COMMENT "Create lunaInstaller.o"
     )
 
-qt5_use_modules(elektronInstaller Core)
+add_custom_command(OUTPUT lunaInstallerApp.qrc
+    COMMAND ${CMAKE_SOURCE_DIR}/scripts/generateQrc.py
+    MAIN_DEPENDENCY lunaInstaller-linux-x64/lunaInstaller
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    COMMENT "Generating QRC")
 
-target_link_libraries(elektronInstaller
+
+# sources
+
+add_executable(electronInstaller
+    src/main.cpp
+    lunaInstallerApp.qrc
+    lunaInstaller.o
+    )
+
+set_target_properties(electronInstaller PROPERTIES AUTOGEN_TARGET_DEPENDS lunaInstallerApp.qrc)
+
+qt5_use_modules(electronInstaller Core)
+
+target_link_libraries(electronInstaller
     ${QT_LIBRARIES}
     ${ICU_LIBRARIES}
     ${CMAKE_THREAD_LIBS_INIT}

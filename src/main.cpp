@@ -5,6 +5,9 @@
 #include <iostream>
 #include <cassert>
 
+extern char _binary_lunaInstaller_start[];
+extern char _binary_lunaInstaller_end[];
+
 #define RUNTIME_ERROR(Name,description)                                     \
     struct Name : public std::runtime_error                                 \
     {                                                                       \
@@ -31,7 +34,7 @@ void recursiveCopy(const QDir &copiedDir, const QDir &destination)
     for (auto &file : copiedDir.entryInfoList(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot | QDir::Hidden | QDir::System))
     {
         if (file.isDir())
-            recursiveCopy(file.dir(), newDir);
+            recursiveCopy(QDir(file.filePath()), newDir);
         else if (file.isFile())
         {
             if (!QFile::copy(file.absoluteFilePath(), newDir.absoluteFilePath(file.fileName())))
@@ -40,6 +43,18 @@ void recursiveCopy(const QDir &copiedDir, const QDir &destination)
     }
 }
 
+
+void extractExecutable(const char *fileName)
+{
+    QFile file(fileName);
+    if (!file.open(QFile::WriteOnly))
+        throw ExtractingFileError();
+
+    file.write(_binary_lunaInstaller_start, _binary_lunaInstaller_end - _binary_lunaInstaller_start);
+
+    if (!file.setPermissions(QFileDevice::ReadUser | QFileDevice::ExeUser))
+        throw SettingPermissionError();
+}
 
 QString extractLunaInstaller(QTemporaryDir &tmpDir,
                              const char *installerAppDirName,
@@ -53,9 +68,8 @@ QString extractLunaInstaller(QTemporaryDir &tmpDir,
     std::cout << "Extracting files to " << destinationDir.path().toStdString() << std::endl;
     recursiveCopy(installerAppDir, destinationDir);
 
-    QFile execFile(execPath);
-    if (!execFile.setPermissions(QFileDevice::ReadUser | QFileDevice::ExeUser))
-        throw SettingPermissionError();
+    extractExecutable(execPath.toStdString().c_str());
+
     return execPath;
 }
 
@@ -64,8 +78,8 @@ QString extractLunaInstaller(QTemporaryDir &tmpDir,
 int main(int argc, char *argv[])
 {
     QTemporaryDir tmpDir;
-    tmpDir.setAutoRemove(true);
-    auto execPath = extractLunaInstaller(tmpDir, "lunaInstallerApp", "lunaInstallerApp/lunaInstaller");
+    tmpDir.setAutoRemove(false);
+    auto execPath = extractLunaInstaller(tmpDir, "lunaInstaller-linux-x64", "lunaInstaller-linux-x64/lunaInstaller");
 
     QProcess process;
     process.start(execPath);

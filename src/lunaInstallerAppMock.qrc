@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/lunaInstallerApp">
+        <file alias="lunaInstaller">electronAppMock/lunaInstaller.py</file>
+    </qresource>
+</RCC>
