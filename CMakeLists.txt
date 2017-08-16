@@ -55,21 +55,27 @@ set(CMAKE_EXE_LINKER_FLAGS ${CMAKE_EXE_LINKER_FLAGS} -Wl,--as-needed)
 
 # prepare lunaInstaller exec
 
-add_custom_command(OUTPUT lunaInstaller-linux-x64/lunaInstaller
-    COMMAND electron-packager src/lunaInstallerApp lunaInstaller --overwrite --out ${CMAKE_CURRENT_BINARY_DIR}
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+file(GLOB_RECURSE APP_SOURCES ${CMAKE_SOURCE_DIR}/src/lunaInstallerApp/*)
+
+
+add_custom_command(OUTPUT lunaInstallerApp/lunaInstaller
+    COMMAND electron-packager ${CMAKE_SOURCE_DIR}/src/lunaInstallerApp lunaInstaller --overwrite
+    COMMAND mv lunaInstaller-* lunaInstallerApp
+    DEPENDS ${APP_SOURCES}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     COMMENT "Packaging luna installer electron app")
 
 add_custom_command(OUTPUT lunaInstaller.o
     COMMAND ld -r -b binary -o ${CMAKE_CURRENT_BINARY_DIR}/lunaInstaller.o lunaInstaller
-    MAIN_DEPENDENCY lunaInstaller-linux-x64/lunaInstaller
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lunaInstaller-linux-x64
+    MAIN_DEPENDENCY lunaInstallerApp/lunaInstaller
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lunaInstallerApp
     COMMENT "Create lunaInstaller.o"
     )
 
 add_custom_command(OUTPUT lunaInstallerApp.qrc
     COMMAND ${CMAKE_SOURCE_DIR}/scripts/generateQrc.py
-    MAIN_DEPENDENCY lunaInstaller-linux-x64/lunaInstaller
+    MAIN_DEPENDENCY scripts/generateQrc.py
+    DEPENDS lunaInstallerApp/lunaInstaller
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     COMMENT "Generating QRC")
 

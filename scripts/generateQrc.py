@@ -7,7 +7,7 @@ from verbosity import print_info, print_very_important_info, set_verbosity
 
 path =                  os.path.join(os.getcwd(), '..', 'src')
 output_file =           'lunaInstallerApp.qrc'
-recursive_directories = ['lunaInstaller-linux-x64']
+recursive_directories = ['lunaInstallerApp']
 exclude_files =         ['lunaInstaller']
 files_counter =         0
 

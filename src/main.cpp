@@ -74,12 +74,11 @@ QString extractLunaInstaller(QTemporaryDir &tmpDir,
 }
 
 
-
 int main(int argc, char *argv[])
 {
     QTemporaryDir tmpDir;
     tmpDir.setAutoRemove(false);
-    auto execPath = extractLunaInstaller(tmpDir, "lunaInstaller-linux-x64", "lunaInstaller-linux-x64/lunaInstaller");
+    auto execPath = extractLunaInstaller(tmpDir, "lunaInstallerApp", "lunaInstallerApp/lunaInstaller");
 
     QProcess process;
     process.start(execPath);
