@@ -67,5 +67,6 @@ qt5_use_modules(elektronInstaller Core)
 
 target_link_libraries(elektronInstaller
     ${QT_LIBRARIES}
+    ${ICU_LIBRARIES}
     ${CMAKE_THREAD_LIBS_INIT}
     )
