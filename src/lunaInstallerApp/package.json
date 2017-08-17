@@ -1,21 +1,14 @@
 {
-  "name": "electron-quick-start",
+  "name": "LunaInstaller",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "LunaInstaller, the Luna installer",
+  "homepage": "http://www.luna-lang.org",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
   "repository": "https://github.com/electron/electron-quick-start",
-  "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
-  ],
-  "author": "GitHub",
-  "license": "CC0-1.0",
+  "author": "New Byte Order Sp z. o. o.",
   "devDependencies": {
     "electron": "~1.6.2"
   }

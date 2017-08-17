@@ -9,7 +9,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOMOC_MOC_OPTIONS "-b;stdafx.h")
 set(CMAKE_AUTORCC ON)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 
 # find dependencies
 include(findDependencies.cmake)
@@ -66,7 +66,7 @@ add_custom_target(lunaInstallerDeps # example of electron app dependency
 
 add_custom_command(OUTPUT lunaInstallerApp/lunaInstaller
     COMMAND electron-packager ${CMAKE_SOURCE_DIR}/src/lunaInstallerApp lunaInstaller --overwrite
-    COMMAND [ -d lunaInstallerApp ] && rm -r lunaInstallerApp
+    COMMAND [ -d lunaInstallerApp ] && rm -r lunaInstallerApp || :
     COMMAND mv lunaInstaller-* lunaInstallerApp
     DEPENDS ${APP_SOURCES} lunaInstallerDeps
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
@@ -78,7 +78,7 @@ add_custom_target(lunaInstallerApp
 
 add_custom_command(OUTPUT lunaInstaller.o
     COMMAND ld -r -b binary -o ${CMAKE_CURRENT_BINARY_DIR}/lunaInstaller.o lunaInstaller
-    MAIN_DEPENDENCY lunaInstallerApp
+    DEPENDS lunaInstallerApp
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lunaInstallerApp
     COMMENT "Create lunaInstaller.o"
     )

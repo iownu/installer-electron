@@ -57,8 +57,6 @@ void extractExecutable(const char *fileName)
 
     file.write(_binary_lunaInstaller_start, _binary_lunaInstaller_end - _binary_lunaInstaller_start);
 #endif
-    if (!file.setPermissions(QFileDevice::ReadUser | QFileDevice::ExeUser))
-        throw SettingPermissionError();
 }
 
 QString extractLunaInstaller(QTemporaryDir &tmpDir,
@@ -78,12 +76,25 @@ QString extractLunaInstaller(QTemporaryDir &tmpDir,
     return execPath;
 }
 
+template<class... Paths>
+void setExecPermissionsInFiles(QTemporaryDir &tmpDir, Paths... paths)
+{
+	auto setExecPermission = [&](auto path)
+	{
+		QFile file(tmpDir.filePath(path));
+		if (!file.setPermissions(QFileDevice::ReadUser | QFileDevice::ExeUser))
+			throw SettingPermissionError();
+	};
+	bool dummy[] = { (setExecPermission(paths), true)... };
+}
+
 
 int main(int argc, char *argv[])
 {
     QTemporaryDir tmpDir;
     tmpDir.setAutoRemove(false);
     auto execPath = extractLunaInstaller(tmpDir, "lunaInstallerApp", "lunaInstallerApp/lunaInstaller");
+	setExecPermissionsInFiles(tmpDir, "lunaInstallerApp/lunaInstaller", "lunaInstallerApp/resources/app/consoleInstaller");
 
     QProcess process;
     process.start(execPath);
