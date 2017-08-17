@@ -1,5 +1,5 @@
 
-#find_package(Qt5Widgets REQUIRED)
+find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Core REQUIRED)
 #find_package(Qt5Qml REQUIRED)
 #find_package(Qt5Quick REQUIRED)
@@ -71,7 +71,7 @@ if(QT_STATIC_INSTALL_DIRECTORY)
 #                -lwindowplugin
 #            -L${QT_STATIC_INSTALL_DIRECTORY}/qml/QtQuick/Controls
 #                -lqtquickcontrolsplugin
-#                -lQt5Widgets
+                -lQt5Widgets
 #            -L/home/aobuchowicz/dev/build-qt-static-party/qml/QtQuick/Layouts
 #                -lqquicklayoutsplugin
 #                -lQt5Quick

@@ -36,3 +36,4 @@ RUNTIME_ERROR_PARAM(ExtractingFileError, "Error while extracting luna installer 
 RUNTIME_ERROR_PARAM(ExtractingDirectoryError, "Error while extracting luna installer directory to temporary directory");
 RUNTIME_ERROR_PARAM(ExtractingFromExecError, "Error while extracting embedded file");
 RUNTIME_ERROR_PARAM(SettingPermissionError, "Error while setting execute permission on extracted luna installer");
+RUNTIME_ERROR_PARAM(InstallerProcessError, "Luna installer finishes unsuccessfully\n\nError log:\n");

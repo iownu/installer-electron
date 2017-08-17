@@ -1,8 +1,9 @@
 #include <QProcess>
 #include <QTemporaryDir>
 #include <QFile>
+#include <QMessageBox>
+#include <QApplication>
 
-#include <iostream>
 #include <cassert>
 
 #include "embeddedFiles.h"
@@ -19,7 +20,6 @@ QString extractLunaInstaller(QTemporaryDir &tmpDir)
 	const QString installerAppDirPath = QString(":/") + InstallerAppDirName;
     const QDir installerAppDir(installerAppDirPath);
 
-    std::cout << "Extracting files to " << destinationDir.path().toStdString() << std::endl;
 	recursiveCopy(installerAppDir, destinationDir);
 	extractFromExecutable(EmbeddedFiles::LunaInstallerExec,
 						  extractedInstallerExecPath);
@@ -32,16 +32,33 @@ QString extractLunaInstaller(QTemporaryDir &tmpDir)
 
 int main(int argc, char *argv[])
 {
-    QTemporaryDir tmpDir;
-	tmpDir.setAutoRemove(true);
-	auto execPath = extractLunaInstaller(tmpDir);
-	setExecPermissionsInFiles(tmpDir.filePath(InstallerExecPath),
-							  tmpDir.filePath(ConsoleInstallerExecPath),
-							  tmpDir.filePath(LibNodeDllPath));
+	QApplication app(argc, argv);
+	try
+	{
+		QTemporaryDir tmpDir;
+		tmpDir.setAutoRemove(true);
+		if (!tmpDir.isValid())
+			throw CreateTemporaryDirectoryError();
 
-    QProcess process;
-    process.start(execPath);
-    process.waitForFinished(-1); // -1 means no timeout
+		auto execPath = extractLunaInstaller(tmpDir);
+		setExecPermissionsInFiles(tmpDir.filePath(InstallerExecPath),
+								  tmpDir.filePath(ConsoleInstallerExecPath),
+								  tmpDir.filePath(LibNodeDllPath));
 
-    return 0;
+		QProcess process;
+		process.start(execPath);
+		process.waitForFinished(-1); // -1 means no timeout
+		int exitCode = process.exitCode();
+		if (exitCode)
+		{
+			throw InstallerProcessError(process.readAllStandardError().toStdString());
+		}
+		return 0;
+	}
+	catch(std::runtime_error &e)
+	{
+		QMessageBox::critical(nullptr, "Luna installer", QString("Error when loading installer: ") + e.what());
+	}
+
+	return -1;
 }

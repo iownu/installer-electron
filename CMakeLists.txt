@@ -114,7 +114,7 @@ add_executable(electronInstaller
 
 set_target_properties(electronInstaller PROPERTIES AUTOGEN_TARGET_DEPENDS lunaInstallerApp.qrc)
 
-qt5_use_modules(electronInstaller Core)
+qt5_use_modules(electronInstaller Core Widgets)
 
 target_link_libraries(electronInstaller
     ${QT_LIBRARIES}
