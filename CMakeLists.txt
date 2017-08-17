@@ -101,6 +101,11 @@ add_custom_command(OUTPUT lunaInstallerApp.qrc
 # sources
 
 add_executable(electronInstaller
+    src/embeddedFiles.h
+    src/embeddedFilesLinux.cpp
+    src/errors.h
+    src/files.h
+    src/files.cpp
     src/main.cpp
     lunaInstallerApp.qrc
     lunaInstaller.o
