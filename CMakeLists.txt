@@ -60,6 +60,7 @@ file(GLOB_RECURSE APP_SOURCES ${CMAKE_SOURCE_DIR}/src/lunaInstallerApp/*)
 
 add_custom_command(OUTPUT lunaInstallerApp/lunaInstaller
     COMMAND electron-packager ${CMAKE_SOURCE_DIR}/src/lunaInstallerApp lunaInstaller --overwrite
+    COMMAND [ -d lunaInstallerApp ] && rm -r lunaInstallerApp
     COMMAND mv lunaInstaller-* lunaInstallerApp
     DEPENDS ${APP_SOURCES}
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
