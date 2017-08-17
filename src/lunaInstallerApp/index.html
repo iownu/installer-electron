@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Luna Installer</title>
+
+    <script>
+      window.$ = window.jQuery = require('jquery')
+      const {ipcRenderer} = require('electron')
+    </script>
+  </head>
+  <body>
+    <h1>Luna Installer is loaded!</h1>
+    <p id="progress">Installation progress: 0%</p>
+    <button id="install">Install Luna NOW!</button>
+  </body>
+  <script>
+        $("#install").click(function() {
+            ipcRenderer.send("packet-to-console", "Install")
+        })
+
+        ipcRenderer.on('packet-from-console', function(event, arg) {
+            if (arg.progress) {
+                $("#progress").html("Installation progress: <b>" + arg.progress + "%</b>")
+            }
+        })
+  </script>
+</html>

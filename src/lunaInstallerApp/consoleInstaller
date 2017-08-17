@@ -1,4 +1,16 @@
 #!/usr/bin/python
 
-print("http://flowbox.io/")
+import os
+import fileinput
+import sys
+import time
 
+print("file://" + os.path.join(os.path.dirname(__file__), "index.html"))
+sys.stdout.flush()
+
+for line in fileinput.input():
+    if line == "\"Install\"\n":
+        for i in range(100):
+            print("{{ \"progress\": {0} }}".format(i+1))
+            sys.stdout.flush()
+            time.sleep(.100)
