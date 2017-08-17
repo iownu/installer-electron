@@ -83,6 +83,13 @@ add_custom_command(OUTPUT lunaInstaller.o
     COMMENT "Create lunaInstaller.o"
     )
 
+add_custom_command(OUTPUT libnode.o
+    COMMAND ld -r -b binary -o ${CMAKE_CURRENT_BINARY_DIR}/libnode.o libnode.so
+    DEPENDS lunaInstallerApp
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lunaInstallerApp
+    COMMENT "Create libnode.o"
+    )
+
 add_custom_command(OUTPUT lunaInstallerApp.qrc
     COMMAND ${CMAKE_SOURCE_DIR}/scripts/generateQrc.py
     MAIN_DEPENDENCY scripts/generateQrc.py
@@ -97,6 +104,7 @@ add_executable(electronInstaller
     src/main.cpp
     lunaInstallerApp.qrc
     lunaInstaller.o
+    libnode.o
     )
 
 set_target_properties(electronInstaller PROPERTIES AUTOGEN_TARGET_DEPENDS lunaInstallerApp.qrc)
