@@ -23,7 +23,7 @@ add_custom_command(OUTPUT lunaInstallerApp/version
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     COMMENT "Packaging luna installer electron app")
 
-add_custom_target(lunaInstallerApp
+add_custom_target(lunaInstallerApp ALL
     DEPENDS lunaInstallerApp/version lunaInstallerDeps
     SOURCES ${APP_SOURCES})
 
