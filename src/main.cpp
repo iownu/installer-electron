@@ -9,7 +9,6 @@
 #include "embeddedFiles.h"
 #include "files.h"
 
-
 QString extractLunaInstaller(QTemporaryDir &tmpDir)
 {
     const QDir destinationDir(tmpDir.path());
