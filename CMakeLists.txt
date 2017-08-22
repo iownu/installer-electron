@@ -77,7 +77,7 @@ if(NOT APPLE)
     elseif()
             message("Compiler ${CMAKE_CXX_COMPILER_ID} not supported!")
     endif()
-    set(CMAKE_EXE_LINKER_FLAGS ${CMAKE_EXE_LINKER_FLAGS} -Wl,--as-needed)
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--as-needed")
 
 	# QRC
 	
@@ -153,7 +153,7 @@ if(NOT APPLE)
         message(FATAL_ERROR "System is not supported; the only supported os are linux, windows and osx")
     endif()
 
-    add_executable(electronInstaller
+    add_executable(electronInstaller WIN32
         src/embeddedFiles.h
         src/errors.h
         src/files.h
