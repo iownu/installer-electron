@@ -1,4 +1,4 @@
-const { app, ipcMain, BrowserWindow } = require('electron')
+const { app, ipcMain, BrowserWindow, dialog } = require('electron') // We do not use dialog, but https://stackoverflow.com/questions/37808294/cannot-find-module-dialog-electron-fatal-error
 const { spawn } = require('child_process')
 const readline = require('readline')
 
@@ -23,7 +23,7 @@ function createWindow () {
   }))
 
   // Open the DevTools.
-//  mainWindow.webContents.openDevTools()
+  //mainWindow.webContents.openDevTools()
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
@@ -43,12 +43,14 @@ function spawnProcess() {
     })
 
     ioLines.on('line', function (input) {
-        if (!isLoaded) {
-            mainWindow.loadURL(input)
-            isLoaded = true
-        } else {
-            mainWindow.webContents.send("packet-from-console", JSON.parse(input))
-        }
+		if (mainWindow) {
+			if (!isLoaded) {
+				mainWindow.loadURL(input)
+				isLoaded = true
+			} else {
+				mainWindow.webContents.send("packet-from-console", JSON.parse(input))
+			}
+		}
     })
 
     ipcMain.on("packet-to-console", function(event, arg)
@@ -64,19 +66,6 @@ app.on('ready', function()
 })
 
 app.on('window-all-closed', function () {
-  // On OS X it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
     consoleInstallerProcess.kill()
     app.quit()
-  }
 })
-
-app.on('activate', function () {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (mainWindow === null) {
-    createWindow()
-  }
-})
-
