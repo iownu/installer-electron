@@ -1,3 +1,4 @@
 CMakeLists.txt.user
 *.pyc
 node_modules
+build

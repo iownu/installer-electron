@@ -13,8 +13,8 @@ QString extractLunaInstaller(QTemporaryDir &tmpDir)
 {
     const QDir destinationDir(tmpDir.path());
 
-	const QString extractedInstallerExecPath = tmpDir.filePath(InstallerExecPath);
-	const QString extractedLibNodeDllPath = tmpDir.filePath(LibNodeDllPath);
+	const QString extractedInstallerExecPath = tmpDir.path() + "/" + InstallerExecPath;
+	const QString extractedLibNodeDllPath = tmpDir.path() + "/" + LibNodeDllPath;
 
 	const QString installerAppDirPath = QString(":/") + InstallerAppDirName;
     const QDir installerAppDir(installerAppDirPath);
@@ -40,9 +40,9 @@ int main(int argc, char *argv[])
 			throw CreateTemporaryDirectoryError();
 
 		auto execPath = extractLunaInstaller(tmpDir);
-		setExecPermissionsInFiles(tmpDir.filePath(InstallerExecPath),
-								  tmpDir.filePath(ConsoleInstallerExecPath),
-								  tmpDir.filePath(LibNodeDllPath));
+		setExecPermissionsInFiles(tmpDir.path() + "/" + InstallerExecPath,
+								  tmpDir.path() + "/" + ConsoleInstallerExecPath,
+								  tmpDir.path() + "/" + LibNodeDllPath);
 
 		QProcess process;
 		process.start(execPath);

@@ -79,8 +79,22 @@ if(NOT APPLE)
     endif()
     set(CMAKE_EXE_LINKER_FLAGS ${CMAKE_EXE_LINKER_FLAGS} -Wl,--as-needed)
 
+	# QRC
+	
+	# check for python first
+	set (PYTHON_EXE "" CACHE STRING "Path to python executable")
+	if (NOT PYTHON_EXE)
+		if (UNIX)
+			set (PYTHON_EXE "python27")
+		elseif (MINGW)
+		# MSYS in theory have python in its repositories, but I did not succeeded in installing psutils 
+		# in that environment. The Window's python installation seems to work fine
+			set (PYTHON_EXE "/c/Python27/python")
+		endif()
+	endif(NOT PYTHON_EXE)
+	
     add_custom_command(OUTPUT lunaInstallerApp.qrc
-        COMMAND ${CMAKE_SOURCE_DIR}/scripts/generateQrc.py
+        COMMAND ${PYTHON_EXE} ${CMAKE_SOURCE_DIR}/scripts/generateQrc.py
         MAIN_DEPENDENCY scripts/generateQrc.py
         DEPENDS lunaInstallerApp ${APP_SOURCES}
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
@@ -90,7 +104,7 @@ if(NOT APPLE)
     # sources
 
     if(QT_STATIC_INSTALL_DIRECTORY)
-        set(LINKED_PLUGINS_CPP src/linkedPlugins)
+        set(LINKED_PLUGINS_CPP src/linkedPlugins.cpp)
     endif(QT_STATIC_INSTALL_DIRECTORY)
 
     if(UNIX)
@@ -113,8 +127,28 @@ if(NOT APPLE)
             lunaInstaller.o
             libnode.o
             )
+	elseif(MINGW)
+		add_custom_command(OUTPUT lunaInstaller.obj
+            COMMAND ld -r -b binary -o ${CMAKE_CURRENT_BINARY_DIR}/lunaInstaller.obj lunaInstaller.exe
+            DEPENDS lunaInstallerApp
+            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lunaInstallerApp
+            COMMENT "Create lunaInstaller.obj"
+            )
+
+        add_custom_command(OUTPUT libnode.obj
+            COMMAND ld -r -b binary -o ${CMAKE_CURRENT_BINARY_DIR}/libnode.obj node.dll
+            DEPENDS lunaInstallerApp
+            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lunaInstallerApp
+            COMMENT "Create libnode.obj"
+            )
+
+        set(EMBEDDED_FILES
+            src/embeddedFilesLinux.cpp
+            lunaInstaller.obj
+            libnode.obj
+            )
     elseif(WIN32)
-        message(WARNING "Windows is not supported yet")
+        message(WARNING "Windows is not supported yet; try build in MSYS2 environment. Won't compile")
     else()
         message(FATAL_ERROR "System is not supported; the only supported os are linux, windows and osx")
     endif()
