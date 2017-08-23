@@ -10,6 +10,12 @@ else()
     set(CONSOLE_INSTALLER_FILENAME "consoleInstaller")
 endif()
 
+if (APPLE)
+	set(ELECTRON_INSTALLER_APP_NAME "lunaInstaller")
+else()
+	set(ELECTRON_INSTALLER_APP_NAME "electronLunaInstaller")
+endif()
+
 # cache variables
 set (CONSOLE_INSTALLER_EXE "${CMAKE_SOURCE_DIR}/src/consoleInstallerMocks/${CONSOLE_INSTALLER_FILENAME}"
     CACHE STRING "Path to console installer executable")
@@ -30,7 +36,7 @@ add_custom_target(lunaInstallerDeps # example of electron app dependency
     )
 
 add_custom_command(OUTPUT lunaInstallerApp/version
-    COMMAND electron-packager ${CMAKE_SOURCE_DIR}/src/lunaInstallerApp electronLunaInstaller --overwrite
+    COMMAND electron-packager ${CMAKE_SOURCE_DIR}/src/lunaInstallerApp ${ELECTRON_INSTALLER_APP_NAME} --overwrite
     COMMAND [ -d lunaInstallerApp ] && rm -r lunaInstallerApp || :
     COMMAND mv electronLunaInstaller-* lunaInstallerApp
     COMMAND mv consoleInstaller.d/* lunaInstallerApp/resources/app/${CONSOLE_INSTALLER_FILENAME}
