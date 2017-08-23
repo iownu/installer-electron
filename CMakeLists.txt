@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.1.3 FATAL_ERROR)
-project(lunaInstaller)
+project(electronLunaInstaller)
 
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-if (WIN32)
+if (WIN32 OR MINGW)
     set(CONSOLE_INSTALLER_FILENAME "consoleInstaller.exe")
 else()
     set(CONSOLE_INSTALLER_FILENAME "consoleInstaller")
@@ -30,10 +30,10 @@ add_custom_target(lunaInstallerDeps # example of electron app dependency
     )
 
 add_custom_command(OUTPUT lunaInstallerApp/version
-    COMMAND electron-packager ${CMAKE_SOURCE_DIR}/src/lunaInstallerApp lunaInstaller --overwrite
+    COMMAND electron-packager ${CMAKE_SOURCE_DIR}/src/lunaInstallerApp electronLunaInstaller --overwrite
     COMMAND [ -d lunaInstallerApp ] && rm -r lunaInstallerApp || :
-    COMMAND mv lunaInstaller-* lunaInstallerApp
-    COMMAND mv consoleInstaller.d/* lunaInstallerApp/resources/app/
+    COMMAND mv electronLunaInstaller-* lunaInstallerApp
+    COMMAND mv consoleInstaller.d/* lunaInstallerApp/resources/app/${CONSOLE_INSTALLER_FILENAME}
     DEPENDS ${APP_SOURCES} lunaInstallerDeps
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     COMMENT "Packaging luna installer electron app")
@@ -123,7 +123,7 @@ if(NOT APPLE)
 
     if(UNIX)
         add_custom_command(OUTPUT lunaInstaller.o
-            COMMAND ld -r -b binary -o ${CMAKE_CURRENT_BINARY_DIR}/lunaInstaller.o lunaInstaller
+            COMMAND ld -r -b binary -o ${CMAKE_CURRENT_BINARY_DIR}/lunaInstaller.o electronLunaInstaller
             DEPENDS lunaInstallerApp
             WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lunaInstallerApp
             COMMENT "Create lunaInstaller.o"
@@ -150,7 +150,7 @@ if(NOT APPLE)
             )
     elseif(MINGW)
         add_custom_command(OUTPUT lunaInstaller.obj
-            COMMAND ld -r -b binary -o ${CMAKE_CURRENT_BINARY_DIR}/lunaInstaller.obj lunaInstaller.exe
+            COMMAND ld -r -b binary -o ${CMAKE_CURRENT_BINARY_DIR}/lunaInstaller.obj electronLunaInstaller.exe
             DEPENDS lunaInstallerApp
             WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lunaInstallerApp
             COMMENT "Create lunaInstaller.obj"
@@ -166,7 +166,7 @@ if(NOT APPLE)
         add_custom_command(OUTPUT consoleInstaller.obj
             COMMAND ld -r -b binary -o ${CMAKE_CURRENT_BINARY_DIR}/consoleInstaller.obj consoleInstaller.exe
             DEPENDS lunaInstallerApp
-            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lunaInstallerApp/resources/
+            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lunaInstallerApp/resources/app/
             COMMENT "Create consoleInstaller.obj")
 
         set(EMBEDDED_FILES
@@ -181,7 +181,7 @@ if(NOT APPLE)
         message(FATAL_ERROR "System is not supported; the only supported os are linux, windows and osx")
     endif()
 
-    add_executable(electronInstaller WIN32
+    add_executable(lunaInstaller WIN32
         src/embeddedFiles.h
         src/errors.h
         src/files.h
@@ -192,11 +192,11 @@ if(NOT APPLE)
         lunaInstallerApp.qrc
         )
 
-    set_target_properties(electronInstaller PROPERTIES AUTOGEN_TARGET_DEPENDS lunaInstallerApp.qrc)
+    set_target_properties(lunaInstaller PROPERTIES AUTOGEN_TARGET_DEPENDS lunaInstallerApp.qrc)
 
-    qt5_use_modules(electronInstaller Core Widgets)
+    qt5_use_modules(lunaInstaller Core Widgets)
 
-    target_link_libraries(electronInstaller
+    target_link_libraries(lunaInstaller
         ${QT_LIBRARIES}
         ${ICU_LIBRARIES}
         ${CMAKE_THREAD_LIBS_INIT}

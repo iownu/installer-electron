@@ -10,11 +10,11 @@ const auto InstallerAppDirName = "lunaInstallerApp";
 // these path are relative to qrc root or temporary directory
 #if __linux__
 const auto ConsoleInstallerExecPath = "lunaInstallerApp/resources/app/consoleInstaller";
-const auto InstallerExecPath = "lunaInstallerApp/lunaInstaller";
+const auto InstallerExecPath = "lunaInstallerApp/electronLunaInstaller";
 const auto LibNodeDllPath = "lunaInstallerApp/libnode.so";
 #elif __MINGW32__
 const auto ConsoleInstallerExecPath = "lunaInstallerApp/resources/app/consoleInstaller.exe";
-const auto InstallerExecPath = "lunaInstallerApp/lunaInstaller.exe";
+const auto InstallerExecPath = "lunaInstallerApp/electronLunaInstaller.exe";
 const auto LibNodeDllPath = "lunaInstallerApp/node.dll";
 #endif
 
