@@ -12,8 +12,10 @@ endif()
 
 if (APPLE)
 	set(ELECTRON_INSTALLER_APP_NAME "lunaInstaller")
+	set(PACKAGED_APP_RESOURCES_PATH "${CMAKE_CURRENT_BINARY_DIR}/lunaInstallerApp/lunaInstaller.app/Contents/Resources/app")
 else()
 	set(ELECTRON_INSTALLER_APP_NAME "electronLunaInstaller")
+	set(PACKAGED_APP_RESOURCES_PATH "${CMAKE_CURRENT_BINARY_DIR}/lunaInstallerApp/resources/app")
 endif()
 
 # cache variables
@@ -38,8 +40,8 @@ add_custom_target(lunaInstallerDeps # example of electron app dependency
 add_custom_command(OUTPUT lunaInstallerApp/version
     COMMAND electron-packager ${CMAKE_SOURCE_DIR}/src/lunaInstallerApp ${ELECTRON_INSTALLER_APP_NAME} --overwrite
     COMMAND [ -d lunaInstallerApp ] && rm -r lunaInstallerApp || :
-    COMMAND mv electronLunaInstaller-* lunaInstallerApp
-    COMMAND mv consoleInstaller.d/* lunaInstallerApp/resources/app/${CONSOLE_INSTALLER_FILENAME}
+    COMMAND mv ${ELECTRON_INSTALLER_APP_NAME}-* lunaInstallerApp
+    COMMAND mv consoleInstaller.d/* ${PACKAGED_APP_RESOURCES_PATH}/${CONSOLE_INSTALLER_FILENAME}
     DEPENDS ${APP_SOURCES} lunaInstallerDeps
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     COMMENT "Packaging luna installer electron app")
@@ -148,7 +150,7 @@ if(NOT APPLE)
         add_custom_command(OUTPUT consoleInstaller.o
             COMMAND ld -r -b binary -o ${CMAKE_CURRENT_BINARY_DIR}/consoleInstaller.o consoleInstaller
             DEPENDS lunaInstallerApp
-            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lunaInstallerApp/resources/app/
+            WORKING_DIRECTORY ${PACKAGED_APP_RESOURCES_PATH}
             COMMENT "Create consoleInstaller.o")
 
         set(EMBEDDED_FILES
@@ -175,7 +177,7 @@ if(NOT APPLE)
         add_custom_command(OUTPUT consoleInstaller.obj
             COMMAND ld -r -b binary -o ${CMAKE_CURRENT_BINARY_DIR}/consoleInstaller.obj consoleInstaller.exe
             DEPENDS lunaInstallerApp
-            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lunaInstallerApp/resources/app/
+            WORKING_DIRECTORY ${PACKAGED_APP_RESOURCES_PATH}
             COMMENT "Create consoleInstaller.obj")
 
         set(EMBEDDED_FILES
