@@ -4,9 +4,23 @@ project(lunaInstaller)
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+if (WIN32)
+    set(CONSOLE_INSTALLER_FILENAME "consoleInstaller.exe")
+else()
+    set(CONSOLE_INSTALLER_FILENAME "consoleInstaller")
+endif()
+
+# cache variables
+set (CONSOLE_INSTALLER_EXE "${CMAKE_SOURCE_DIR}/src/consoleInstallerMocks/${CONSOLE_INSTALLER_FILENAME}"
+    CACHE STRING "Path to console installer executable")
+set (PYTHON_EXE "" CACHE STRING "Path to python executable") # used to qrc generation
+
 ################ PART 1: create luna electron app
 
-file(GLOB_RECURSE APP_SOURCES ${CMAKE_SOURCE_DIR}/src/lunaInstallerApp/*)
+# temporary dir - we cannot copy and rename with one command
+file(COPY ${CONSOLE_INSTALLER_EXE} DESTINATION consoleInstaller.d)
+file(GLOB_RECURSE APP_SOURCES ${CMAKE_SOURCE_DIR}/src/lunaInstallerApp/*
+                              ${CMAKE_CURRENT_BINARY_DIR}/consoleInstalled.d/*)
 
 add_custom_target(lunaInstallerDeps # example of electron app dependency
     COMMAND npm install
@@ -19,6 +33,7 @@ add_custom_command(OUTPUT lunaInstallerApp/version
     COMMAND electron-packager ${CMAKE_SOURCE_DIR}/src/lunaInstallerApp lunaInstaller --overwrite
     COMMAND [ -d lunaInstallerApp ] && rm -r lunaInstallerApp || :
     COMMAND mv lunaInstaller-* lunaInstallerApp
+    COMMAND mv consoleInstaller.d/* lunaInstallerApp/resources/app/
     DEPENDS ${APP_SOURCES} lunaInstallerDeps
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     COMMENT "Packaging luna installer electron app")
@@ -79,19 +94,18 @@ if(NOT APPLE)
     endif()
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--as-needed")
 
-	# QRC
-	
-	# check for python first
-	set (PYTHON_EXE "" CACHE STRING "Path to python executable")
-	if (NOT PYTHON_EXE)
-		if (UNIX)
-			set (PYTHON_EXE "python27")
-		elseif (MINGW)
-		# MSYS in theory have python in its repositories, but I did not succeeded in installing psutils 
-		# in that environment. The Window's python installation seems to work fine
-			set (PYTHON_EXE "/c/Python27/python")
-		endif()
-	endif(NOT PYTHON_EXE)
+    # QRC
+
+    # check for python first
+    if (NOT PYTHON_EXE)
+        if (UNIX)
+            set (PYTHON_EXE "python2.7")
+        elseif (MINGW)
+        # MSYS in theory have python in its repositories, but I did not succeeded in installing psutils
+        # in that environment. The Window's python installation seems to work fine
+            set (PYTHON_EXE "/c/Python27/python")
+        endif()
+    endif(NOT PYTHON_EXE)
 	
     add_custom_command(OUTPUT lunaInstallerApp.qrc
         COMMAND ${PYTHON_EXE} ${CMAKE_SOURCE_DIR}/scripts/generateQrc.py
@@ -122,13 +136,20 @@ if(NOT APPLE)
             COMMENT "Create libnode.o"
             )
 
+        add_custom_command(OUTPUT consoleInstaller.o
+            COMMAND ld -r -b binary -o ${CMAKE_CURRENT_BINARY_DIR}/consoleInstaller.o consoleInstaller
+            DEPENDS lunaInstallerApp
+            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lunaInstallerApp/resources/app/
+            COMMENT "Create consoleInstaller.o")
+
         set(EMBEDDED_FILES
             src/embeddedFilesLinux.cpp
             lunaInstaller.o
             libnode.o
+            consoleInstaller.o
             )
-	elseif(MINGW)
-		add_custom_command(OUTPUT lunaInstaller.obj
+    elseif(MINGW)
+        add_custom_command(OUTPUT lunaInstaller.obj
             COMMAND ld -r -b binary -o ${CMAKE_CURRENT_BINARY_DIR}/lunaInstaller.obj lunaInstaller.exe
             DEPENDS lunaInstallerApp
             WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lunaInstallerApp
@@ -142,10 +163,17 @@ if(NOT APPLE)
             COMMENT "Create libnode.obj"
             )
 
+        add_custom_command(OUTPUT consoleInstaller.obj
+            COMMAND ld -r -b binary -o ${CMAKE_CURRENT_BINARY_DIR}/consoleInstaller.obj consoleInstaller.exe
+            DEPENDS lunaInstallerApp
+            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lunaInstallerApp/resources/
+            COMMENT "Create consoleInstaller.obj")
+
         set(EMBEDDED_FILES
             src/embeddedFilesLinux.cpp
             lunaInstaller.obj
             libnode.obj
+            consoleInstaller.obj
             )
     elseif(WIN32)
         message(WARNING "Windows is not supported yet; try build in MSYS2 environment. Won't compile")

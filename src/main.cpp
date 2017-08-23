@@ -15,6 +15,7 @@ QString extractLunaInstaller(QTemporaryDir &tmpDir)
 
 	const QString extractedInstallerExecPath = tmpDir.path() + "/" + InstallerExecPath;
 	const QString extractedLibNodeDllPath = tmpDir.path() + "/" + LibNodeDllPath;
+    const QString extractedConsoleInstallerExecPath = tmpDir.path() + "/" + ConsoleInstallerExecPath;
 
 	const QString installerAppDirPath = QString(":/") + InstallerAppDirName;
     const QDir installerAppDir(installerAppDirPath);
@@ -24,6 +25,8 @@ QString extractLunaInstaller(QTemporaryDir &tmpDir)
 						  extractedInstallerExecPath);
 	extractFromExecutable(EmbeddedFiles::LibNodeDll,
 						  extractedLibNodeDllPath);
+    extractFromExecutable(EmbeddedFiles::ConsoleInstallerExec,
+                          extractedConsoleInstallerExecPath);
 
 	return extractedInstallerExecPath;
 }

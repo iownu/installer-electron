@@ -9,8 +9,10 @@
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "author": "New Byte Order Sp z. o. o.",
-  "dependencies": {
-    "jquery": "^3.2.1",
+  "devDependencies": {
     "electron": "~1.6.2"
+  },
+  "dependencies": {
+    "jquery": "^3.2.1"
   }
 }

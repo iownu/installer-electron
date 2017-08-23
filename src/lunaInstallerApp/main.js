@@ -35,8 +35,7 @@ function createWindow () {
 }
 
 function spawnProcess() {
-    consoleInstallerProcess = spawn(path.join(__dirname, "consoleInstaller"))
-    console.log("SPAWNDE!")
+    consoleInstallerProcess = spawn(path.join(__dirname, "consoleInstaller"))   
     ioLines = readline.createInterface({
         input: consoleInstallerProcess.stdout,
         output: consoleInstallerProcess.stdin
