@@ -99,6 +99,9 @@ if(NOT APPLE)
             message("Compiler ${CMAKE_CXX_COMPILER_ID} not supported!")
     endif()
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--as-needed")
+	if (MINGW)
+		set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-subsystem,windows")
+	endif(MINGW)
 
     # QRC
 
