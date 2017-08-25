@@ -2,7 +2,7 @@ $bgColor: #10120f;
 $normalTextColor: #999999;
 $greyOutTextColor: #555555;
 
-$logoSize: 200px;
+$logoSize: 180px;
 
 body {
     color: $normalTextColor;
@@ -22,10 +22,10 @@ body {
 }
 
 
-.spinner {
+#spinner {
     margin: auto;
-    width: 200px;
-    height: 200px;
+    width: 180px;
+    height: 180px;
 }
 
 .rotating {
@@ -38,7 +38,7 @@ body {
     margin-bottom: 90px;
     width: $logoSize;
     height: $logoSize;
-    background-image: url('luna_logo_without_border.png');
+    background-image: url('luna_logo.svg');
     background-repeat: no-repeat;
     background-position: center center;    
 }
@@ -110,7 +110,15 @@ input[type=checkbox]:checked + label {
 color: $greyOutTextColor;
 }
 
+#progress {
+    height: 60px;
+    width: 410px;
+    margin: auto;
+    color: $greyOutTextColor;
+    text-align: center;
+    vertical-align: middle;
 
+}
 
 #additional-options {
     height: 200px;

@@ -10,10 +10,10 @@ body {
     -webkit-transform: rotate(0deg); }
   to {
     -webkit-transform: rotate(360deg); } }
-.spinner {
+#spinner {
   margin: auto;
-  width: 200px;
-  height: 200px; }
+  width: 180px;
+  height: 180px; }
 
 .rotating {
   -webkit-animation: rotating 2s linear infinite; }
@@ -22,9 +22,9 @@ body {
   margin: auto;
   margin-top: 105px;
   margin-bottom: 90px;
-  width: 200px;
-  height: 200px;
-  background-image: url("luna_logo_without_border.png");
+  width: 180px;
+  height: 180px;
+  background-image: url("luna_logo.svg");
   background-repeat: no-repeat;
   background-position: center center; }
 
@@ -79,6 +79,14 @@ input[type=checkbox]:checked + label {
 
 .learn-more-link a {
   color: #555555; }
+
+#progress {
+  height: 60px;
+  width: 410px;
+  margin: auto;
+  color: #555555;
+  text-align: center;
+  vertical-align: middle; }
 
 #additional-options {
   height: 200px;

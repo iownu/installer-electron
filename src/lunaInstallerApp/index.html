@@ -4,64 +4,139 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Luna Installer</title>
+
+
+    <script>
+      window.$ = window.jQuery = require('jquery')
+      const {ipcRenderer} = require('electron')
+    </script>
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
     <link rel="stylesheet" type="text/css" href="installer.css">
+
+
+
   </head>
   <body>
     
+    <div id="loading" style="display: none">Please wait, installer is loading...</div>
+    <div id="main_form" style="display: block">    
+        <div id="logo-area">
+            <div id="spinner" style="display: none">
+                <svg id="install-spinner" height="180" width="180" class="spinner__circle" shape-rendering="geometricPrecision" viewBox="0 0 180 180">
+                    <circle class="spinner__background" r="85" cx="90" cy="90" fill="transparent" style="stroke-dasharray: 533.0; stroke-dashoffset: 0; stroke-width: 9; stroke: rgb(47, 19, 16);"></circle>
+                    <circle id="progress-bar" class="spinner__foreground" r="85" cx="90" cy="90" fill="transparent" style="stroke-dasharray: 533.0; stroke-dashoffset: 200; stroke-width: 9; stroke: rgb(207, 28, 58);"></circle>
+                </svg>
+            </div>
+        </div>
 
-    <div id="logo-area">
-        <div class="spinner rotating">
-            <svg id="install-spinner" height="200" width="200" class="spinner__circle" shape-rendering="geometricPrecision" viewBox="0 0 200 200">
-                <circle class="spinner__background" r="90" cx="100" cy="100" fill="transparent" style="stroke-dasharray: 565.0; stroke-dashoffset: 0; stroke-width: 10; stroke: rgb(47, 19, 16);"></circle>
-                <circle class="spinner__foreground" r="90" cx="100" cy="100" fill="transparent" style="stroke-dasharray: 565.0; stroke-dashoffset: 200; stroke-width: 10; stroke: rgb(207, 28, 58);"></circle>
-            </svg>
+
+        <div id="progress">
+            Ready to install.
+        </div>    
+
+        <div id="send-statistics">
+            <input type="checkbox" id="agree-box" >
+            <label for="agree-box">
+            Send anonymous usage statistics. <span class="learn-more-link"><a href="http://www.luna-lang.org/">Learn more.</a></span>
+            </label>
+        </div>
+
+
+        <div id="version-select">
+            <select id="application" class="select-item button button-chooser-left">
+                <option value="luna-studio">Luna Studio</option>
+                <option value="luna">Luna</option>
+                <option value="flowbox">Flowbox</option>
+            </select>
+
+            <select id="version" class="select-item button button-chooser-right">
+                <option value="newest">newest (1.0)</option>
+                <option value="older">0.9</option>
+                <option value="the-oldest">0.0.0.0.1 pre-ptero-alpha</option>
+            </select>
+        </div>
+
+        <div id="additional-options">
+            Additional options will appear after the installation.
+        </div>
+
+
+        <div id="install-buttons">
+            <button id="install" class="button button-chooser-right main-button">Install</button>
+<!--            <button class="button button-chooser-left">Install globally</button> -->
         </div>
     </div>
 
-    <div id="send-statistics">
-        <input type="checkbox" id="agree-box" >
-        <label for="agree-box">
-        Send anonymous usage statistics. <span class="learn-more-link"><a href="http://www.luna-lang.org/">Learn more.</a></span>
-        </label>
-    </div>
+    <script>
+        var applications
 
+        function updateVersions() {
+            selection = $("#application").val()
+            if (applications) {
+                $versionSelect = $("#version")
+                $versionSelect.empty()
+                $.each(applications[selection].versions, function(index, version) {
+                    var $option = $("<option></option>").attr("value", index).text(version)
+                    $versionSelect.append($option)
+                })
+            }
+        }
 
-    <div id="version-select">
-        <select class="select-item button button-chooser-left">
-            <option value="luna-studio">Luna Studio</option>
-            <option value="luna">Luna</option>
-            <option value="flowbox">Flowbox</option>
-        </select>
+        ipcRenderer.on('packet-from-console', function(event, arg) {
+            if (arg.initialize) {
+                applications = arg.initialize.applications
 
-        <select class="select-item button button-chooser-right">
-            <option value="newest">newest (1.0)</option>
-            <option value="older">0.9</option>
-            <option value="the-oldest">0.0.0.0.1 pre-ptero-alpha</option>
-        </select>
-    </div>
+                var $appSelect = $("#application")
+                $appSelect.empty()
+                $.each(applications, function(i, app) {
+                    var $option = $("<option></option>").attr("value", i).text(app.name)
+                    $appSelect.append($option)
+                })
+                updateVersions()
+                $("#loading").hide()
+                $("#main_form").show()
+            }
+            if (arg.download_progress) {
+                $("#spinner").addClass("rotating")
+                $("#progress-bar").attr('style', "stroke-dasharray: 565.0; stroke-dashoffset:" + (533.0 - arg.download_progress/100 * 533.0) + "; stroke-width: 10; stroke: rgb(207, 28, 58);")
+                $("#progress").html("Downloading: <b>" + arg.download_progress + "%</b>")
+            }
+            if (arg.installation_progress) {
+                $("#spinner").addClass("rotating")                
+                $("#progress-bar").attr('style', "stroke-dasharray: 565.0; stroke-dashoffset:" + (533.0 - arg.installation_progress/100 * 533.0) + "; stroke-width: 10; stroke: rgb(207, 28, 58);")
+                $("#progress").html("Installing: <b>" + arg.installation_progress + "%</b>")
+            }
+            if (arg.installation_progress === 100) {
+                $("#spinner").removeClass("rotating")       
+                $("#logo-area").css('background-image', 'url(luna_logo.svg)')
+                $("#spinner").hide()                
+            }
+        })
 
-    <div id="additional-options">
-        Additional options will appear after the installation.
-    </div>
+        $("#application").change(updateVersions)
 
+        $("#install").click(function() {
+            $("#logo-area").css('background-image', 'url(luna_logo_without_border.png)')
+            $("#spinner").show()
 
-    <div id="install-buttons">
-        <button onclick="rotateSpinner()" class="button button-chooser-right main-button">Install locally</button>
-        <button class="button button-chooser-left">Install globally</button>
-    </div>
+            var install = {
+                "install": {
+                    "application": $("#application option:selected").text(),
+                    "version": $("#version option:selected").text()
+                }
+            }
+            ipcRenderer.send("packet-to-console", install)
+        })
 
-
-
-    <script type="text/javascript">
-    function rotateSpinner() {
-        var img = document.getElementById("install-spinner");
-        img.rotate(20*Math.PI/180);
-    }
+        ipcRenderer.send('ready')
     </script>
+
+
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
