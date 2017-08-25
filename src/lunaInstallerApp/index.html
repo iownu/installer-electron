@@ -12,17 +12,62 @@
   <body>
     <h1>Luna Installer is loaded!</h1>
     <p id="progress">Installation progress: 0%</p>
-    <button id="install">Install Luna NOW!</button>
+    <div id="loading" style="display: block">Please wait, installer is loading...</div>
+    <div id="main_form" style="display: none">
+        <select id="application"></select>
+        <select id="version"></select>
+        <button id="install">Install Luna NOW!</button>
+    </div>
   </body>
   <script>
-        $("#install").click(function() {
-            ipcRenderer.send("packet-to-console", "Install")
-        })
+        var applications
+
+        function updateVersions() {
+            selection = $("#application").val()
+            if (applications) {
+                $versionSelect = $("#version")
+                $versionSelect.empty()
+                $.each(applications[selection].versions, function(index, version) {
+                    var $option = $("<option></option>").attr("value", index).text(version)
+                    $versionSelect.append($option)
+                })
+            }
+        }
 
         ipcRenderer.on('packet-from-console', function(event, arg) {
-            if (arg.progress) {
-                $("#progress").html("Installation progress: <b>" + arg.progress + "%</b>")
+            if (arg.initialize) {
+                applications = arg.initialize.applications
+
+                var $appSelect = $("#application")
+                $appSelect.empty()
+                $.each(applications, function(i, app) {
+                    var $option = $("<option></option>").attr("value", i).text(app.name)
+                    $appSelect.append($option)
+                })
+                updateVersions()
+                $("#loading").hide()
+                $("#main_form").show()
+            }
+            if (arg.download_progress) {
+                $("#progress").html("Downloading: <b>" + arg.download_progress + "%</b>")
+            }
+            if (arg.installation_progress) {
+                $("#progress").html("Installation progress: <b>" + arg.installation_progress + "%</b>")
             }
         })
+
+        $("#application").change(updateVersions)
+
+        $("#install").click(function() {
+            var install = {
+                "install": {
+                    "application": $("#application option:selected").text(),
+                    "version": $("#version option:selected").text()
+                }
+            }
+            ipcRenderer.send("packet-to-console", install)
+        })
+
+        ipcRenderer.send('ready')
   </script>
 </html>

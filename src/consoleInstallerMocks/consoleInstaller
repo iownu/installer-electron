@@ -1,16 +1,44 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python2.7
+# -*- coding: UTF-8 -*-
 
 import os
 import fileinput
 import sys
 import time
 
-print("file://" + os.path.join(os.path.dirname(os.path.realpath(sys.argv[0])), "index.html"))
+#print("file://" + os.path.join(os.path.dirname(os.path.realpath(sys.argv[0])), "index.html"))
+
+initialize_packet = '''
+{
+    "initialize": {
+        "applications": [
+            {
+                "name": "Paweł",
+                "versions": ["Pietraszko"]
+            },
+            {
+                "name": "Wojciech",
+                "versions": ["Daniłło"]
+            },
+            {
+                "name": "Konrad",
+                "versions": ["Madej", "Gądek"]
+            }
+        ]
+    }
+}
+'''
+
+print(''.join(initialize_packet.splitlines())) # remove all newlines
 sys.stdout.flush()
 
 for line in fileinput.input():
-    if line == "\"Install\"\n":
+    if 'install' in line:
         for i in range(100):
-            print("{{ \"progress\": {0} }}".format(i+1))
+            print("{{ \"download_progress\": {0} }}".format(i+1))
             sys.stdout.flush()
             time.sleep(.100)
+        for i in range(100):
+            print("{{ \"installation_progress\": {0} }}".format(i+1))
+            sys.stdout.flush()
+            time.sleep(.050)

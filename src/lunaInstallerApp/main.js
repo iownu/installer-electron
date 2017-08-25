@@ -11,13 +11,12 @@ let mainWindow
 
 let consoleInstallerProcess
 let ioLines
-let isLoaded = false
 
 function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({width: 800, height: 600})
   mainWindow.loadURL(url.format({
-    pathname: path.join(__dirname, 'loading.html'),
+    pathname: path.join(__dirname, 'index.html'),
     protocol: 'file:',
     slashes: true
   }))
@@ -43,24 +42,20 @@ function spawnProcess() {
 
     ioLines.on('line', function (input) {
 		if (mainWindow) {
-			if (!isLoaded) {
-				mainWindow.loadURL(input)
-				isLoaded = true
-			} else {
-				mainWindow.webContents.send("packet-from-console", JSON.parse(input))
-			}
+            mainWindow.webContents.send("packet-from-console", JSON.parse(input))
 		}
     })
 
-    ipcMain.on("packet-to-console", function(event, arg)
-    {
+    ipcMain.on("packet-to-console", function(event, arg) {
         consoleInstallerProcess.stdin.write(JSON.stringify(arg) + "\n")
     })
 }
 
-app.on('ready', function()
-{
+app.on('ready', function() {
     createWindow()
+})
+
+ipcMain.on('ready', function(event) {
     spawnProcess()
 })
 
