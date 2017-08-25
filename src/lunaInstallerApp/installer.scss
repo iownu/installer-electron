@@ -1,0 +1,140 @@
+$bgColor: #10120f;
+$normalTextColor: #999999;
+$greyOutTextColor: #555555;
+
+$logoSize: 200px;
+
+body {
+    color: $normalTextColor;
+    background-color: $bgColor;
+    font-family: 'Roboto', sans-serif;
+    font-weight: normal;
+    letter-spacing: 1.2px;
+}
+
+@-webkit-keyframes rotating {
+    from{
+        -webkit-transform: rotate(0deg);
+    }
+    to{
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+
+.spinner {
+    margin: auto;
+    width: 200px;
+    height: 200px;
+}
+
+.rotating {
+    -webkit-animation: rotating 2s linear infinite;
+}
+
+#logo-area {
+    margin: auto;
+    margin-top: 105px;
+    margin-bottom: 90px;
+    width: $logoSize;
+    height: $logoSize;
+    background-image: url('luna_logo_without_border.png');
+    background-repeat: no-repeat;
+    background-position: center center;    
+}
+
+
+
+#version-select {
+    width: 410px;
+    height: 50px;
+    margin: auto;
+    margin-top: 30px;
+}
+
+
+.button {
+    background-color: #222021;
+    font-size: 15px;
+    text-align: center;
+    vertical-align: middle;
+    width: 200px;
+    height: 48px;
+    line-height: 48px; 
+    border: none;
+    color: $normalTextColor;
+    outline: 0;
+}
+
+.button option { 
+    border:none;
+}
+
+
+.button-chooser-left {
+    border-radius: 15px 0px 0px 15px;
+    float: left;
+}
+
+
+.button-chooser-right {
+    border-radius: 0px 15px 15px 0px;
+float: left;
+margin-left: 4px;
+}
+
+#send-statistics {
+    width: 100%;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 15px;
+}
+
+
+input[type=checkbox] {
+    display: none;
+}
+input[type=checkbox]:not(:checked) + label {
+    background: url("hearts_grey.svg") no-repeat;
+    background-size: 16px;
+    padding-left: 30px;
+}
+input[type=checkbox]:checked + label {
+    background: url("hearts.svg") no-repeat;
+    background-size: 16px;
+    padding-left: 30px;
+}
+
+
+.learn-more-link a {
+color: $greyOutTextColor;
+}
+
+
+
+#additional-options {
+    height: 200px;
+    width: 410px;
+    margin: auto;
+    color: $greyOutTextColor;
+    text-align: center;
+    vertical-align: middle;
+    padding-top: 80px;
+}
+
+#install-buttons {
+    width: 410px;
+    margin: auto;  
+}
+
+#install-buttons button {
+    float: right;
+    width: 120px;
+    height: 30px;
+    line-height: 30px; 
+}
+
+.main-button {
+    background-color: #591522;
+}
+
