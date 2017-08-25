@@ -28,6 +28,8 @@ body {
     height: 180px;
 }
 
+
+
 .rotating {
     -webkit-animation: rotating 2s linear infinite;
 }
@@ -101,6 +103,7 @@ input[type=checkbox]:not(:checked) + label {
 }
 input[type=checkbox]:checked + label {
     background: url("hearts.svg") no-repeat;
+    background-position: left center;
     background-size: 16px;
     padding-left: 30px;
 }
@@ -142,7 +145,8 @@ color: $greyOutTextColor;
     line-height: 30px; 
 }
 
-.main-button {
+.install-button {
     background-color: #591522;
+    border-radius: 5px 5px 5px 5px;
 }
 
