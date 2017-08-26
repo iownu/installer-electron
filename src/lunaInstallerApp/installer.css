@@ -18,6 +18,9 @@ body {
 .rotating {
   -webkit-animation: rotating 2s linear infinite; }
 
+.select-item ul {
+  padding: 1em 2em; }
+
 #logo-area {
   margin: auto;
   margin-top: 105px;
@@ -111,5 +114,86 @@ input[type=checkbox]:checked + label {
 .install-button {
   background-color: #591522;
   border-radius: 5px 5px 5px 5px; }
+
+.select-hidden {
+  display: none;
+  visibility: hidden;
+  padding-right: 10px; }
+
+.select {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  font-size: 16px;
+  color: #fff;
+  width: 200px;
+  height: 40px; }
+
+.select-styled {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #222222;
+  padding: 8px 15px;
+  -webkit-transition: all 0.2s ease-in;
+  -moz-transition: all 0.2s ease-in;
+  -o-transition: all 0.2s ease-in;
+  transition: all 0.2s ease-in;
+  width: 200px;
+  height: 40px;
+  background: url(arrow_down.png) no-repeat right #222222;
+  background-size: 10px;
+  -webkit-appearance: none;
+  background-position-x: 170px; }
+  .select-styled:after {
+    display: none;
+    /*    content:"";
+        width: 0;
+        height: 0;
+        border: 7px solid transparent;
+        border-color: $select-color transparent transparent transparent;
+        position: absolute;
+        top: 16px;
+        right: 10px;*/ }
+  .select-styled:hover {
+    background-color: #b83729; }
+  .select-styled:active, .select-styled.active {
+    background-color: #ab3326;
+    background: url(arrow_up.png) no-repeat right black;
+    background-size: 10px;
+    background-position-x: 170px; }
+    .select-styled:active:after, .select-styled.active:after {
+      display: none;
+      /*      top: 9px;
+            border-color: transparent transparent $select-color transparent;
+      */ }
+
+.select-options {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
+  z-index: 999;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background-color: #ab3326; }
+  .select-options li {
+    margin: 0;
+    padding: 12px 0;
+    text-indent: 15px;
+    border-top: 1px solid #962d22;
+    -webkit-transition: all 0.15s ease-in;
+    -moz-transition: all 0.15s ease-in;
+    -o-transition: all 0.15s ease-in;
+    transition: all 0.15s ease-in; }
+    .select-options li:hover {
+      color: #c0392b;
+      background: #fff; }
+    .select-options li[rel="hide"] {
+      display: none; }
 
 /*# sourceMappingURL=installer.css.map */
