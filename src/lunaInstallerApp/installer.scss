@@ -1,10 +1,22 @@
 $bgColor: #10120f;
 $normalTextColor: #999999;
 $greyOutTextColor: #555555;
+$normalTextColor-lighten: lighten(#999999, 20%);
+
 $buttonBgColor: #222222;
-$buttonBgColor-darken: darken($buttonBgColor, 30%);
+$buttonBgColor-lighten: lighten($buttonBgColor, 10%);
+$buttonBgColor-darken: darken($buttonBgColor, 10%);
+
+$buttonHeight: 40px;
+$buttonWidth: 200px;
+$buttonFontSize: 15px;
+$buttonSpacing: 10px;
+$buttonBorderRadius: 15px;
+$installButtonBorderRadius: 5px;
 
 $logoSize: 180px;
+
+$screenWidth: 410px;
 
 body {
     color: $normalTextColor;
@@ -14,6 +26,12 @@ body {
     letter-spacing: 1.2px;
 }
 
+/* LOGO WITH ROTATING PROGRESS begin */
+#spinner {
+    margin: auto;
+    width: 180px;
+    height: 180px;
+}
 @-webkit-keyframes rotating {
     from{
         -webkit-transform: rotate(0deg);
@@ -22,24 +40,8 @@ body {
         -webkit-transform: rotate(360deg);
     }
 }
-
-
-#spinner {
-    margin: auto;
-    width: 180px;
-    height: 180px;
-}
-
-
-
 .rotating {
     -webkit-animation: rotating 2s linear infinite;
-}
-
-
-.select-item ul {
-    padding: 1em 2em;
-
 }
 
 #logo-area {
@@ -48,123 +50,60 @@ body {
     margin-bottom: 90px;
     width: $logoSize;
     height: $logoSize;
-    background-image: url('luna_logo.svg');
+    background-image: url('img/luna_logo.svg');
     background-repeat: no-repeat;
     background-position: center center;    
 }
+/* LOGO WITH ROTATING PROGRESS end */
 
-
-
-#version-select {
-    width: 410px;
-    height: 50px;
-    margin: auto;
-    margin-top: 30px;
-}
-
-
-.button {
-    background-color: #222021;
-    font-size: 15px;
-    text-align: center;
-    vertical-align: middle;
-    width: 200px;
-    height: 48px;
-    line-height: 48px; 
-    border: none;
-    color: $normalTextColor;
-    outline: 0;
-}
-
-.button option { 
-    border:none;
-}
-
-
-.button-chooser-left {
-    border-radius: 15px 0px 0px 15px;
-    float: left;
-}
-
-
-.button-chooser-right {
-    border-radius: 0px 15px 15px 0px;
-float: left;
-margin-left: 4px;
-}
-
-#send-statistics {
-    width: 100%;
-    text-align: center;
-    vertical-align: middle;
-    font-size: 15px;
-}
-
-
-input[type=checkbox] {
-    display: none;
-}
-input[type=checkbox]:not(:checked) + label {
-    background: url("hearts_grey.svg") no-repeat;
-    background-size: 16px;
-    padding-left: 30px;
-}
-input[type=checkbox]:checked + label {
-    background: url("hearts.svg") no-repeat;
-    background-position: left center;
-    background-size: 16px;
-    padding-left: 30px;
-}
-
-
-.learn-more-link a {
-color: $greyOutTextColor;
-}
-
-#progress {
+/* PROGRESS INFO begin */
+#progress-info {
     height: 60px;
     width: 410px;
     margin: auto;
     color: $greyOutTextColor;
     text-align: center;
     vertical-align: middle;
-
 }
+/* PROGRESS INFO end */
 
-#additional-options {
-    height: 200px;
-    width: 410px;
-    margin: auto;
-    color: $greyOutTextColor;
+/* STATISTICS begin */
+#send-statistics {
+    width: 100%;
     text-align: center;
     vertical-align: middle;
-    padding-top: 80px;
+    font-size: 15px;
+}
+#agree-box {
+    display: none;
+}
+#agree-box:not(:checked) + label {
+    background: url("img/hearts_grey.svg") no-repeat;
+    background-position: left center;
+    background-size: 16px;
+    padding-left: 24px;
+}
+#agree-box:checked + label {
+    background: url("img/hearts.svg") no-repeat;
+    background-position: left center;
+    background-size: 16px;
+    padding-left: 24px;
 }
 
-#install-buttons {
-    width: 410px;
-    margin: auto;  
+.learn-more-link a {
+    color: $greyOutTextColor;
 }
 
-#install-buttons button {
-    float: right;
-    width: 120px;
-    height: 30px;
-    line-height: 30px; 
+/* STATISTICS end */
+
+
+/* VERSION SELECTORS begin */
+#version-select {
+    width: $screenWidth;
+    height: $buttonHeight;
+    margin: auto;
+    margin-top: 30px;
 }
-
-.install-button {
-    background-color: #591522;
-    border-radius: 5px 5px 5px 5px;
-}
-
-
-
-$background: #e74c3c;
-$select-color: #fff;
-$select-background: #c0392b;
-$select-width: 200px;
-$select-height: 40px; 
 
 .select-hidden {
   display: none;
@@ -176,9 +115,9 @@ $select-height: 40px;
   display: inline-block;
   position: relative;
   font-size: 16px;
-  color: $select-color;
-  width: $select-width;
-  height: $select-height;
+  color: $normalTextColor;
+  width: $buttonWidth;
+  height: $buttonHeight;
 }
 .select-styled {
   position: absolute; 
@@ -193,42 +132,28 @@ $select-height: 40px;
   -o-transition: all 0.2s ease-in;
   transition: all 0.2s ease-in;  
 
-    width: $select-width;
-    height: $select-height;
-    background: url(arrow_down.png) no-repeat right $buttonBgColor;
-    background-size: 10px;
-    -webkit-appearance: none;
-    background-position-x: 170px;
-
+  width: $buttonWidth;
+  height: $buttonHeight;
+  background: url(img/arrow_down.png) no-repeat right $buttonBgColor;
+  background-size: 10px;
+  -webkit-appearance: none;
+  background-position-x: 170px;
 
   &:after {
     display: none;
-    
-
-/*    content:"";
-    width: 0;
-    height: 0;
-    border: 7px solid transparent;
-    border-color: $select-color transparent transparent transparent;
-    position: absolute;
-    top: 16px;
-    right: 10px;*/
   }
   &:hover {
-    background-color: darken($select-background, 2);
+    background-color: $buttonBgColor-lighten;
   }
   &:active, &.active {
-    background-color: darken($select-background, 5);
 
-    background: url(arrow_up.png) no-repeat right $buttonBgColor-darken;
+    background: url(img/arrow_up.png) no-repeat right $buttonBgColor-darken;
     background-size: 10px;
     background-position-x: 170px;
 
     &:after {
         display: none;        
-/*      top: 9px;
-      border-color: transparent transparent $select-color transparent;
-*/    }
+    }
   }
 }
 
@@ -242,20 +167,20 @@ $select-height: 40px;
   margin: 0;
   padding: 0;
   list-style: none;
-  background-color: darken($select-background, 5);
+  background-color: $buttonBgColor;
   li {
     margin: 0;
     padding: 12px 0;
     text-indent: 15px;
-    border-top: 1px solid darken($select-background, 10);
+    border-top: 1px solid darken($buttonBgColor, 10);
     -webkit-transition: all 0.15s ease-in;
     -moz-transition: all 0.15s ease-in;
     -o-transition: all 0.15s ease-in;
     transition: all 0.15s ease-in;
 
     &:hover {
-      color: $select-background;
-      background: $select-color;
+      color: $normalTextColor-lighten;
+      background: $buttonBgColor-lighten;
     }
     &[rel="hide"] {
       display: none;
@@ -263,5 +188,47 @@ $select-height: 40px;
   }
 }
 
+.select-item-left {
+    border-radius: $buttonBorderRadius 0px 0px $buttonBorderRadius;
+}
+
+.select-item-right {
+        border-radius: 0px $buttonBorderRadius $buttonBorderRadius 0px;
+}
+/* VERSION SELECTORS end */
 
 
+/* ADDITIONAL OPTIONS begin */
+#additional-options {
+    height: 200px;
+    width: 410px;
+    margin: auto;
+    color: $greyOutTextColor;
+    text-align: center;
+    vertical-align: middle;
+    padding-top: 80px;
+}
+/* ADDITIONAL OPTIONS end */
+
+
+/* INSTALL BUTTON SECTION begin */
+#install-buttons {
+    width: 410px;
+    margin: auto;  
+}
+
+#install {
+    font-size: $buttonFontSize;
+    text-align: center;
+    vertical-align: middle;
+    width: 120px;
+    height: 30px;
+    line-height: 30px; 
+    border: none;
+    color: $normalTextColor;
+    outline: 0;    
+    background-color: #591522;
+    border-radius: $installButtonBorderRadius;
+    float: right;
+}
+/* INSTALL BUTTON SECTION end */

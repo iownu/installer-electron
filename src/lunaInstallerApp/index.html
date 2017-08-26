@@ -17,14 +17,11 @@
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
     <link rel="stylesheet" type="text/css" href="installer.css">
-
-
-
   </head>
   <body>
     
     <div id="loading" style="display: none">Please wait, installer is loading...</div>
-    <div id="main_form" style="display: block">    <!-- this should be set to none, above to block; DEBUG mode ON if this is not display:none -->
+    <div id="main_form" style="display: block;">    <!-- this should be set to none, above to block; DEBUG mode ON if this is not display:none -->
 
         <div id="logo-area">
             <div id="spinner" style="display: none">
@@ -36,30 +33,35 @@
         </div>
 
 
-        <div id="progress">
+        <div id="progress-info">
             Ready to install.
         </div>    
 
         <div id="send-statistics">
             <input type="checkbox" id="agree-box" >
             <label for="agree-box">
-            Send anonymous usage statistics. <span class="learn-more-link"><a href="http://www.luna-lang.org/">Learn more.</a></span>
+                Send anonymous usage statistics. <span class="learn-more-link"><a href="http://www.luna-lang.org/">Learn more.</a></span>
             </label>
         </div>
 
 
         <div id="version-select">
-            <select id="application" class="select-item button button-chooser-left">
-                <option value="luna-studio">Luna Studio</option>
-                <option value="luna">Luna</option>
-                <option value="flowbox">Flowbox</option>
-            </select>
-
-            <select id="version" class="select-item button button-chooser-right">
-                <option value="newest">newest (1.0)</option>
-                <option value="older">0.9</option>
-                <option value="the-oldest">0.0.0.0.1 pre-ptero-alpha</option>
-            </select>
+            <div class="select">
+                <select id="application">
+                    <option value="luna-studio">Luna Studio</option>
+                    <option value="luna">Luna</option>
+                    <option value="flowbox">Flowbox</option>
+                </select>
+                <div class="select-styled select-item-left"></div>
+            </div>
+            <div class="select">
+                <select id="version">
+                    <option value="newest">newest (1.0)</option>
+                    <option value="older">0.9</option>
+                    <option value="the-oldest">0.0.0.0.1 pre-ptero-alpha</option>
+                </select>
+                <div class="select-styled select-item-right"></div>
+            </div>
         </div>
 
         <div id="additional-options">
@@ -68,13 +70,68 @@
 
 
         <div id="install-buttons">
-            <button id="install" class="button install-button">Install</button>
+            <button id="install">Install</button>
 <!--            <button class="button button-chooser-left">Install globally</button> -->
         </div>
     </div>
 
     <script>
         var applications
+
+        function updateList(selectId) {
+            var $this = $(selectId), numberOfOptions = $(selectId).children('option').length;
+          
+
+            // if (numberOfOptions <= 1) {
+            //     console.log("numberOfOptions: ", numberOfOptions)
+            //     console.log("$($this): ", $($this))
+            //     $(".select > .select-styled").css('background', '')
+            // }
+
+            $this.addClass('select-hidden'); 
+            //$this.wrap('<div class="select"></div>');
+            //$this.after('<div class="select-styled select-item-left"></div>');
+
+            var $styledSelect = $this.next('div.select-styled');
+            $styledSelect.text($this.children('option').eq(0).text());
+          
+            var $list = $('<ul />', {
+                'class': 'select-options'
+            }).insertAfter($styledSelect);
+          
+            for (var i = 0; i < numberOfOptions; i++) {
+                $('<li />', {
+                    text: $this.children('option').eq(i).text(),
+                    rel: $this.children('option').eq(i).val()
+                }).appendTo($list);
+            }
+          
+            var $listItems = $list.children('li');
+          
+            $styledSelect.click(function(e) {
+                e.stopPropagation();
+                $('div.select-styled.active').not(this).each(function(){
+                    $(this).removeClass('active').next('ul.select-options').hide();
+                });
+                $(this).toggleClass('active').next('ul.select-options').toggle();
+            });
+          
+            $listItems.click(function(e) {
+                e.stopPropagation();
+                $styledSelect.text($(this).text()).removeClass('active');
+                $this.val($(this).attr('rel'));
+                $list.hide();
+                $this.selectedIndex=$this.val();
+                if ($this.attr("id")=="application") {
+                    updateVersions()
+                }
+            });
+          
+            $(document).click(function() {
+                $styledSelect.removeClass('active');
+                $list.hide();
+            });
+        }
 
         function updateVersions() {
             selection = $("#application").val()
@@ -85,6 +142,7 @@
                     var $option = $("<option></option>").attr("value", index).text(version)
                     $versionSelect.append($option)
                 })
+                updateList("#version")
             }
         }
 
@@ -93,29 +151,32 @@
                 applications = arg.initialize.applications
 
                 var $appSelect = $("#application")
+
                 $appSelect.empty()
                 $.each(applications, function(i, app) {
                     var $option = $("<option></option>").attr("value", i).text(app.name)
                     $appSelect.append($option)
                 })
+                updateList("#application")
                 updateVersions()
                 $("#loading").hide()
                 $("#main_form").show()
             }
             var dashValue = parseFloat($("#progress-bar").css('stroke-dasharray'))
+
             if (arg.download_progress) {              
                 $("#spinner").addClass("rotating")
                 $("#progress-bar").css('stroke-dashoffset', (dashValue - arg.download_progress/100 * dashValue))
-                $("#progress").html("Downloading: <b>" + arg.download_progress + "%</b>")
+                $("#progress-info").html("Downloading: <b>" + arg.download_progress + "%</b>")
             }
             if (arg.installation_progress) {
                 $("#spinner").addClass("rotating")                
                 $("#progress-bar").css('stroke-dashoffset', (dashValue - arg.installation_progress/100 * dashValue))
-                $("#progress").html("Installing: <b>" + arg.installation_progress + "%</b>")
+                $("#progress-info").html("Installing: <b>" + arg.installation_progress + "%</b>")
             }
             if (arg.installation_progress === 100) {
                 $("#spinner").removeClass("rotating")       
-                $("#logo-area").css('background-image', 'url(luna_logo.svg)')
+                $("#logo-area").css('background-image', 'url(img/luna_logo.svg)')
                 $("#spinner").hide()                
             }
         })
@@ -123,7 +184,7 @@
         $("#application").change(updateVersions)
 
         $("#install").click(function() {
-            $("#logo-area").css('background-image', 'url(luna_logo_without_border.png)')
+            $("#logo-area").css('background-image', 'url(img/luna_logo_without_border.png)')
             $("#spinner").show()
 
             var install = {
@@ -139,12 +200,11 @@
     </script>
 
 
-
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
-    <script src="js/custom-select.js"></script>
+
   </body>
 </html>
