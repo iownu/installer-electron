@@ -46,7 +46,7 @@
 
 
         <div id="version-select">
-            <div class="select">
+            <div id="left-select" class="select">
                 <select id="application">
                     <option value="luna-studio">Luna Studio</option>
                     <option value="luna">Luna</option>
@@ -54,7 +54,7 @@
                 </select>
                 <div class="select-styled select-item-left"></div>
             </div>
-            <div class="select">
+            <div id="right-select" class="select">
                 <select id="version">
                     <option value="newest">newest (1.0)</option>
                     <option value="older">0.9</option>
@@ -80,21 +80,17 @@
 
         function updateList(selectId) {
             var $this = $(selectId), numberOfOptions = $(selectId).children('option').length;
-          
-
-            // if (numberOfOptions <= 1) {
-            //     console.log("numberOfOptions: ", numberOfOptions)
-            //     console.log("$($this): ", $($this))
-            //     $(".select > .select-styled").css('background', '')
-            // }
-
+        
             $this.addClass('select-hidden'); 
             //$this.wrap('<div class="select"></div>');
             //$this.after('<div class="select-styled select-item-left"></div>');
 
             var $styledSelect = $this.next('div.select-styled');
+            // $styledSelect.empty()
             $styledSelect.text($this.children('option').eq(0).text());
           
+            console.log("list update with: ", selectId)
+
             var $list = $('<ul />', {
                 'class': 'select-options'
             }).insertAfter($styledSelect);
@@ -117,12 +113,14 @@
             });
           
             $listItems.click(function(e) {
+                console.log("CLICK!")
                 e.stopPropagation();
                 $styledSelect.text($(this).text()).removeClass('active');
                 $this.val($(this).attr('rel'));
                 $list.hide();
                 $this.selectedIndex=$this.val();
                 if ($this.attr("id")=="application") {
+                    console.log("Update application")
                     updateVersions()
                 }
             });
@@ -142,6 +140,7 @@
                     var $option = $("<option></option>").attr("value", index).text(version)
                     $versionSelect.append($option)
                 })
+                $("#right-select > .select-options").remove()
                 updateList("#version")
             }
         }
