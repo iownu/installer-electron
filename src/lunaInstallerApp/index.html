@@ -20,8 +20,8 @@
   </head>
   <body>
     
-    <div id="loading" style="display: none">Please wait, installer is loading...</div>
-    <div id="main_form" style="display: block;">    <!-- this should be set to none, above to block; DEBUG mode ON if this is not display:none -->
+    <div id="loading" style="display: block">Please wait, installer is loading...</div>
+    <div id="main_form" style="display: none;">    <!-- this should be set to none, above to block; DEBUG mode ON if this is not display:block -->
 
         <div id="logo-area">
             <div id="spinner" style="display: none">
@@ -89,8 +89,6 @@
             // $styledSelect.empty()
             $styledSelect.text($this.children('option').eq(0).text());
           
-            console.log("list update with: ", selectId)
-
             var $list = $('<ul />', {
                 'class': 'select-options'
             }).insertAfter($styledSelect);
@@ -106,21 +104,19 @@
           
             $styledSelect.click(function(e) {
                 e.stopPropagation();
-                $('div.select-styled.active').not(this).each(function(){
-                    $(this).removeClass('active').next('ul.select-options').hide();
-                });
+                // $('div.select-styled.active').not(this).each(function(){
+                $(this).removeClass('active').next('ul.select-options').hide();
+                // });
                 $(this).toggleClass('active').next('ul.select-options').toggle();
             });
           
             $listItems.click(function(e) {
-                console.log("CLICK!")
                 e.stopPropagation();
                 $styledSelect.text($(this).text()).removeClass('active');
                 $this.val($(this).attr('rel'));
                 $list.hide();
                 $this.selectedIndex=$this.val();
                 if ($this.attr("id")=="application") {
-                    console.log("Update application")
                     updateVersions()
                 }
             });
