@@ -68,17 +68,24 @@ ipcRenderer.on('packet-from-console', function(event, arg) {
     if (arg.download_progress) {
         $("#spinner").addClass("rotating")
         $("#progress-bar").css('stroke-dashoffset', (dashValue - arg.download_progress/100 * dashValue))
-        $("#progress-info").html("Downloading: <b>" + arg.download_progress + "%</b>")
+        $("#error-message").hide()
+        $("#progress-info").html("Downloading: <b>" + arg.download_progress + "%</b>").show()
     }
     if (arg.installation_progress) {
         $("#spinner").addClass("rotating")
         $("#progress-bar").css('stroke-dashoffset', (dashValue - arg.installation_progress/100 * dashValue))
-        $("#progress-info").html("Installing: <b>" + arg.installation_progress + "%</b>")
+        $("#error-message").hide()
+        $("#progress-info").html("Installing: <b>" + arg.installation_progress + "%</b>").show()
     }
     if (arg.installation_progress === 100) {
         $("#spinner").removeClass("rotating")
         $("#logo-area").css('background-image', 'url(img/luna_logo.svg)')
         $("#spinner").hide()
+    }
+    if (arg.error) {
+        $("#spinner").removeClass("rotating")
+        $("#progress-info").hide()
+        $("#error-message").html("<b>Error</b>: " + arg.error).show()
     }
 })
 
@@ -91,7 +98,6 @@ $('div.select-styled').click(function(e) {
         console.log("hiding", $(this).attr('id'))
         $(this).removeClass('active').next('ul.select-options').hide();
     });
-    console.log("toggling", $(this).attr('id'))
     $(this).toggleClass('active').next('ul.select-options').toggle();
 })
 

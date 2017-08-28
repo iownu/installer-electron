@@ -47,6 +47,7 @@ function spawnProcess() {
     })
 
     ipcMain.on("packet-to-console", function(event, arg) {
+        console.log("Sending packet:", JSON.stringify(arg))
         consoleInstallerProcess.stdin.write(JSON.stringify(arg) + "\n")
     })
 }
