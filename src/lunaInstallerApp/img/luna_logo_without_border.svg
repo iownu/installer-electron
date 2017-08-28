@@ -20,10 +20,6 @@
         <rect cy="32" width="64" height="32"/>
       </mask>
 
-      <g id="border">
-        <circle cx="32" cy="32" r="32" mask="url(#bgmask)"/>
-      </g>
-
       <g id="front">
         <use xlink:href="#innerCircle" mask="url(#mainShapeMask)"/>
         <use xlink:href="#rightAtom"/>

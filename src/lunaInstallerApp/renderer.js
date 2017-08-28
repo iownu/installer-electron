@@ -102,7 +102,7 @@ $(document).click(function() {
 })
 
 $("#install").click(function() {
-    $("#logo-area").css('background-image', 'url(img/luna_logo_without_border.png)')
+    $("#logo-area").css('background-image', 'url(img/luna_logo_without_border.svg)')
     $("#spinner").show()
 
     var install = {
