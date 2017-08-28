@@ -1,5 +1,8 @@
 var applications
 
+var download_color = 'rgb(103, 14, 29)'
+var installation_color = 'rgb(207, 28, 59)'
+
 function updateList(selectId) {
     var $this = $(selectId), numberOfOptions = $(selectId).children('option').length;
 
@@ -67,12 +70,14 @@ ipcRenderer.on('packet-from-console', function(event, arg) {
 
     if (arg.download_progress) {
         $("#spinner").addClass("rotating")
+        $("#progress-bar").css('stroke', download_color)
         $("#progress-bar").css('stroke-dashoffset', (dashValue - arg.download_progress/100 * dashValue))
         $("#error-message").hide()
         $("#progress-info").html("Downloading: <b>" + arg.download_progress + "%</b>").show()
     }
     if (arg.installation_progress) {
         $("#spinner").addClass("rotating")
+        $("#progress-bar").css('stroke', installation_color)
         $("#progress-bar").css('stroke-dashoffset', (dashValue - arg.installation_progress/100 * dashValue))
         $("#error-message").hide()
         $("#progress-info").html("Installing: <b>" + arg.installation_progress + "%</b>").show()
