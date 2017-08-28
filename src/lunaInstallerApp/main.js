@@ -14,7 +14,7 @@ let ioLines
 
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 600, height: 930})
+  mainWindow = new BrowserWindow({width: 600, height: 930, center:true})
   mainWindow.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),
     protocol: 'file:',
@@ -22,7 +22,7 @@ function createWindow () {
   }))
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+//  mainWindow.webContents.openDevTools()
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
@@ -47,6 +47,7 @@ function spawnProcess() {
     })
 
     ipcMain.on("packet-to-console", function(event, arg) {
+        console.log("Sending packet:", JSON.stringify(arg))
         consoleInstallerProcess.stdin.write(JSON.stringify(arg) + "\n")
     })
 }

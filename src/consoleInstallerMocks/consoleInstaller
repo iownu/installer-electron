@@ -37,8 +37,13 @@ for line in fileinput.input():
         for i in range(100):
             print("{{ \"download_progress\": {0} }}".format(i+1))
             sys.stdout.flush()
-            time.sleep(.100)
+            time.sleep(.030)
         for i in range(100):
-            print("{{ \"installation_progress\": {0} }}".format(i+1))
-            sys.stdout.flush()
-            time.sleep(.050)
+            if i >= 58 and 'Gądek' in line:
+                print("{ \"error\": \"Wild Shaman appears!\" }")
+                sys.stdout.flush()
+                break
+            else:
+                print("{{ \"installation_progress\": {0} }}".format(i+1))
+                sys.stdout.flush()
+                time.sleep(.015)

@@ -28,7 +28,7 @@ set (PYTHON_EXE "" CACHE STRING "Path to python executable") # used to qrc gener
 # temporary dir - we cannot copy and rename with one command
 file(COPY ${CONSOLE_INSTALLER_EXE} DESTINATION consoleInstaller.d)
 file(GLOB_RECURSE APP_SOURCES ${CMAKE_SOURCE_DIR}/src/lunaInstallerApp/*
-                              ${CMAKE_CURRENT_BINARY_DIR}/consoleInstalled.d/*)
+                              ${CMAKE_CURRENT_BINARY_DIR}/consoleInstaller.d/*)
 
 add_custom_target(lunaInstallerDeps # example of electron app dependency
     COMMAND npm install
@@ -41,7 +41,7 @@ add_custom_command(OUTPUT lunaInstallerApp/version
     COMMAND electron-packager ${CMAKE_SOURCE_DIR}/src/lunaInstallerApp ${ELECTRON_INSTALLER_APP_NAME} --overwrite
     COMMAND [ -d lunaInstallerApp ] && rm -r lunaInstallerApp || :
     COMMAND mv ${ELECTRON_INSTALLER_APP_NAME}-* lunaInstallerApp
-    COMMAND mv consoleInstaller.d/* ${PACKAGED_APP_RESOURCES_PATH}/${CONSOLE_INSTALLER_FILENAME}
+    COMMAND cp consoleInstaller.d/* ${PACKAGED_APP_RESOURCES_PATH}/${CONSOLE_INSTALLER_FILENAME}
     DEPENDS ${APP_SOURCES} lunaInstallerDeps
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     COMMENT "Packaging luna installer electron app")
