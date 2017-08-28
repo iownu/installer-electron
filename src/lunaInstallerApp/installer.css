@@ -67,7 +67,7 @@ body {
 
 /* STATISTICS end */
 /* VERSION SELECTORS begin */
-#version-select {
+#application-version-select {
   width: 410px;
   height: 40px;
   margin: auto;
