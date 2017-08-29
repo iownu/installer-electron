@@ -12,9 +12,17 @@ let mainWindow
 let consoleInstallerProcess
 let ioLines
 
+let browserOptions =
+{
+    width: 400,
+    height: 620,
+    center: true,
+    frame: false
+}
+
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 600, height: 930, center:true})
+  mainWindow = new BrowserWindow(browserOptions)
   mainWindow.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),
     protocol: 'file:',
@@ -47,7 +55,6 @@ function spawnProcess() {
     })
 
     ipcMain.on("packet-to-console", function(event, arg) {
-        console.log("Sending packet:", JSON.stringify(arg))
         consoleInstallerProcess.stdin.write(JSON.stringify(arg) + "\n")
     })
 }

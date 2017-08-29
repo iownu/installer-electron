@@ -1,28 +1,34 @@
+$screenWidth: 340px;
+
 $bgColor: #10120f;
 $normalTextColor: #999999;
 $greyOutTextColor: #555555;
 $normalTextColor-lighten: lighten(#999999, 20%);
+$normalFontSize: 12px;
 
 $buttonBgColor: #222222;
 $buttonBgColor-lighten: lighten($buttonBgColor, 10%);
 $buttonBgColor-darken: darken($buttonBgColor, 10%);
 
-$buttonHeight: 40px;
+$buttonHeight: 33px;
 $buttonWidth: 200px;
 $buttonFontSize: 15px;
 $buttonSpacing: 10px;
-$buttonBorderRadius: 15px;
+$buttonBorderRadius: 7px;
 $installButtonBorderRadius: 5px;
 
-$logoSize: 180px;
+$paddingBetweenSelectors: 2px;
+$selectorsWidth: $screenWidth/2 - $paddingBetweenSelectors/2;
+$selectorsPadding: 9px;
 
-$screenWidth: 410px;
+$logoSize: 180px;
 
 body {
     color: $normalTextColor;
     background-color: $bgColor;
     font-family: 'Roboto', sans-serif;
     font-weight: normal;
+    font-size: $normalFontSize;
     letter-spacing: 1.2px;
 }
 
@@ -46,8 +52,8 @@ body {
 
 #logo-area {
     margin: auto;
-    margin-top: 105px;
-    margin-bottom: 90px;
+    margin-top: 70px;
+    margin-bottom: 60px;
     width: $logoSize;
     height: $logoSize;
     background-image: url('img/luna_logo.svg');
@@ -57,14 +63,14 @@ body {
 /* LOGO WITH ROTATING PROGRESS end */
 
 /* PROGRESS INFO begin */
-#progress-info {
+/*#progress-info {
     height: 60px;
     width: 410px;
     margin: auto;
     color: $greyOutTextColor;
     text-align: center;
     vertical-align: middle;
-}
+}*/
 /* PROGRESS INFO end */
 
 /* STATISTICS begin */
@@ -72,7 +78,8 @@ body {
     width: 100%;
     text-align: center;
     vertical-align: middle;
-    font-size: 15px;
+    font-size: $normalFontSize;
+    margin-bottom: 20px
 }
 #agree-box {
     display: none;
@@ -102,23 +109,31 @@ body {
     width: $screenWidth;
     height: $buttonHeight;
     margin: auto;
-    margin-top: 30px;
+    margin-bottom: 175px;
 }
 
 .select-hidden {
   display: none;
   visibility: hidden;
-  padding-right: 10px;
 }
 .select {
   cursor: pointer;
   display: inline-block;
   position: relative;
-  font-size: 16px;
+  font-size: $normalFontSize;
   color: $normalTextColor;
-  width: $buttonWidth;
+  width: $selectorsWidth;
   height: $buttonHeight;
 }
+
+#left-select {
+    float: left
+}
+
+#right-select {
+    float: right
+}
+
 .select-styled {
   position: absolute; 
   top: 0;
@@ -126,18 +141,20 @@ body {
   bottom: 0;
   left: 0;
   background-color: $buttonBgColor;
-  padding: 8px 15px;
+  padding: $selectorsPadding;
+  text-align: center;
+  text-indent: -$selectorsPadding;
   -webkit-transition: all 0.2s ease-in;
   -moz-transition: all 0.2s ease-in;
   -o-transition: all 0.2s ease-in;
   transition: all 0.2s ease-in;  
 
-  width: $buttonWidth;
+  width: $selectorsWidth;
   height: $buttonHeight;
   background: url(img/arrow_down.png) no-repeat right $buttonBgColor;
-  background-size: 10px;
+  background-size: 7px;
   -webkit-appearance: none;
-  background-position-x: 170px;
+  background-position-x: $selectorsWidth - $selectorsPadding - 7px;
 
   &:after {
     display: none;
@@ -148,8 +165,8 @@ body {
   &:active, &.active {
 
     background: url(img/arrow_up.png) no-repeat right $buttonBgColor-darken;
-    background-size: 10px;
-    background-position-x: 170px;
+    background-size: 7px;
+    background-position-x: $selectorsWidth - $selectorsPadding - 7px;
 
     &:after {
         display: none;        
@@ -168,11 +185,12 @@ body {
   padding: 0;
   list-style: none;
   background-color: $buttonBgColor;
+  text-align: center;
   li {
     margin: 0;
-    padding: 12px 0;
-    text-indent: 15px;
+    padding: $selectorsPadding 0;
     border-top: 1px solid darken($buttonBgColor, 10);
+    text-indent: -$selectorsPadding;
     -webkit-transition: all 0.15s ease-in;
     -moz-transition: all 0.15s ease-in;
     -o-transition: all 0.15s ease-in;
@@ -193,27 +211,14 @@ body {
 }
 
 .select-item-right {
-        border-radius: 0px $buttonBorderRadius $buttonBorderRadius 0px;
+    border-radius: 0px $buttonBorderRadius $buttonBorderRadius 0px;
 }
 /* VERSION SELECTORS end */
 
 
-/* ADDITIONAL OPTIONS begin */
-#additional-options {
-    height: 200px;
-    width: 410px;
-    margin: auto;
-    color: $greyOutTextColor;
-    text-align: center;
-    vertical-align: middle;
-    padding-top: 80px;
-}
-/* ADDITIONAL OPTIONS end */
-
-
 /* INSTALL BUTTON SECTION begin */
 #install-buttons {
-    width: 410px;
+    width: $screenWidth;
     margin: auto;  
 }
 
@@ -221,9 +226,9 @@ body {
     font-size: $buttonFontSize;
     text-align: center;
     vertical-align: middle;
-    width: 120px;
-    height: 30px;
-    line-height: 30px; 
+    width: $buttonWidth;
+    height: $buttonHeight;
+    line-height: $buttonHeight;
     border: none;
     color: $normalTextColor;
     outline: 0;    

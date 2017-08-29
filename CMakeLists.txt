@@ -22,13 +22,11 @@ endif()
 set (CONSOLE_INSTALLER_EXE "${CMAKE_SOURCE_DIR}/src/consoleInstallerMocks/${CONSOLE_INSTALLER_FILENAME}"
     CACHE STRING "Path to console installer executable")
 set (PYTHON_EXE "" CACHE STRING "Path to python executable") # used to qrc generation
+set (SASS_EXE "sassc" CACHE STRING "Path to sass preprocessor")
 
 ################ PART 1: create luna electron app
 
-# temporary dir - we cannot copy and rename with one command
-file(COPY ${CONSOLE_INSTALLER_EXE} DESTINATION consoleInstaller.d)
-file(GLOB_RECURSE APP_SOURCES ${CMAKE_SOURCE_DIR}/src/lunaInstallerApp/*
-                              ${CMAKE_CURRENT_BINARY_DIR}/consoleInstaller.d/*)
+file(GLOB_RECURSE APP_SOURCES ${CMAKE_SOURCE_DIR}/src/lunaInstallerApp/*)
 
 add_custom_target(lunaInstallerDeps # example of electron app dependency
     COMMAND npm install
@@ -41,13 +39,25 @@ add_custom_command(OUTPUT lunaInstallerApp/version
     COMMAND electron-packager ${CMAKE_SOURCE_DIR}/src/lunaInstallerApp ${ELECTRON_INSTALLER_APP_NAME} --overwrite
     COMMAND [ -d lunaInstallerApp ] && rm -r lunaInstallerApp || :
     COMMAND mv ${ELECTRON_INSTALLER_APP_NAME}-* lunaInstallerApp
-    COMMAND cp consoleInstaller.d/* ${PACKAGED_APP_RESOURCES_PATH}/${CONSOLE_INSTALLER_FILENAME}
+#    COMMAND cp consoleInstaller.d/* ${PACKAGED_APP_RESOURCES_PATH}/${CONSOLE_INSTALLER_FILENAME}
     DEPENDS ${APP_SOURCES} lunaInstallerDeps
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     COMMENT "Packaging luna installer electron app")
 
+add_custom_command(OUTPUT {PACKAGED_APP_RESOURCES_PATH}/${CONSOLE_INSTALLER_FILENAME}
+    COMMAND ${CMAKE_COMMAND} -E copy "${CONSOLE_INSTALLER_EXE}" "${PACKAGED_APP_RESOURCES_PATH}/${CONSOLE_INSTALLER_FILENAME}"
+    DEPENDS lunaInstallerApp/version
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    COMMENT "Copying console installer to package")
+
+add_custom_command(OUTPUT {PACKAGED_APP_RESOURCES_PATH}/installer.css
+    COMMAND ${SASS_EXE} installer.scss installer.css
+    DEPENDS lunaInstallerApp/version
+    WORKING_DIRECTORY ${PACKAGED_APP_RESOURCES_PATH}
+    COMMENT "Creating installer.css")
+
 add_custom_target(lunaInstallerApp ALL
-    DEPENDS lunaInstallerApp/version lunaInstallerDeps
+    DEPENDS lunaInstallerApp/version lunaInstallerDeps {PACKAGED_APP_RESOURCES_PATH}/${CONSOLE_INSTALLER_FILENAME} {PACKAGED_APP_RESOURCES_PATH}/installer.css
     SOURCES ${APP_SOURCES})
 
 ################ PART 2: On linux and windows: compile special electron app extractor
