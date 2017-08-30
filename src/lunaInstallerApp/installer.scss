@@ -1,12 +1,14 @@
 $screenWidth: 340px;
 
-$topBarHeight: 65px;
+$topBarHeight: 50px;
 
 $bgColor: #10120f;
 $normalTextColor: #999999;
 $greyOutTextColor: #555555;
 $normalTextColor-lighten: lighten(#999999, 20%);
 $normalFontSize: 12px;
+
+$errorPanelBgColor: #591522;
 
 $buttonBgColor: #591522;
 $buttonBgColor-lighten: lighten($buttonBgColor, 4%);
@@ -36,6 +38,8 @@ $logoSize: 180px;
 }
 
 body {
+    margin: 0px;
+    padding: 0px;
     color: $normalTextColor;
     background-color: $bgColor;
     font-family: 'Roboto', sans-serif;
@@ -56,14 +60,14 @@ body {
 #top-bar {
     width: 100%;
     height: $topBarHeight;
-    margin-bottom: 5px;
+    margin-bottom: 15px;
     -webkit-app-region: drag;
 }
 
 #error-message {
-    margin: auto;
-    width: $screenWidth - 60px;
-    color: red;
+    margin: 0px;
+    width: 100%;
+    background-color: #591522;
     height: 0px;
     line-height: 0px;
     text-align: center;
@@ -111,7 +115,7 @@ body {
 
 #logo-area {
     margin: auto;
-    margin-bottom: 60px;
+    margin-bottom: 65px;
     width: $logoSize;
     height: $logoSize;
     background-image: url('img/luna_logo.svg');
