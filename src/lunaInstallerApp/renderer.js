@@ -1,5 +1,6 @@
 var applications
 
+var bg_color = 'rgb(47, 19, 16)'
 var download_color = 'rgb(103, 14, 29)'
 var installation_color = 'rgb(207, 28, 59)'
 
@@ -70,6 +71,7 @@ ipcRenderer.on('packet-from-console', function(event, arg) {
 
     if (arg.download_progress) {
         $("#spinner").addClass("rotating")
+        $("#progress-bg").css('stroke', bg_color)
         $("#progress-bar").css('stroke', download_color)
         $("#progress-bar").css('stroke-dashoffset', (dashValue - arg.download_progress/100 * dashValue))
         $("#error-message").hide()
@@ -77,6 +79,7 @@ ipcRenderer.on('packet-from-console', function(event, arg) {
     }
     if (arg.installation_progress) {
         $("#spinner").addClass("rotating")
+        $("#progress-bg").css('stroke', download_color)
         $("#progress-bar").css('stroke', installation_color)
         $("#progress-bar").css('stroke-dashoffset', (dashValue - arg.installation_progress/100 * dashValue))
         $("#error-message").hide()
