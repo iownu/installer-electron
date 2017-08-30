@@ -9,7 +9,7 @@ $normalTextColor-lighten: lighten(#999999, 20%);
 $normalFontSize: 12px;
 
 $buttonBgColor: #591522;
-$buttonBgColor-lighten: lighten($buttonBgColor, 10%);
+$buttonBgColor-lighten: lighten($buttonBgColor, 4%);
 $buttonHeight: 33px;
 $buttonWidth: 120px;
 $buttonFontSize: $normalFontSize;
@@ -20,8 +20,8 @@ $paddingBetweenSelectors: 2px;
 $selectorsWidth: $screenWidth/2 - $paddingBetweenSelectors/2;
 $selectorsPadding: 9px;
 $selectorsHeight: $buttonHeight;
-$selectorBgColor: #222222;
-$selectorBgColor-lighten: lighten($selectorBgColor, 10%);
+$selectorBgColor: hsl(0,0,15); //#222222;
+$selectorBgColor-lighten: lighten($selectorBgColor, 4%);
 $selectorBgColor-darken: darken($selectorBgColor, 10%);
 $arrowWidth: 7.5px;
 $arrowHeight: 6px;
@@ -29,10 +29,10 @@ $arrowHeight: 6px;
 $logoSize: 180px;
 
 @mixin transitions {
-    -webkit-transition: all 0.3s ease-in;
-    -moz-transition: all 0.3s ease-in;
-    -o-transition: all 0.3s ease-in;
-    transition: all 0.3s ease-in;
+    -webkit-transition: all 0.1s ease-in;
+    -moz-transition: all 0.1s ease-in;
+    -o-transition: all 0.1s ease-in;
+    transition: all 0.1s ease-in;
 }
 
 body {
@@ -215,20 +215,12 @@ body {
   height: $buttonHeight;
   -webkit-appearance: none;
 
-  &:after {
-    display: none;
-  }
   &.clickable {
       cursor: pointer;
 
       &:hover {
             background-color: $selectorBgColor-lighten;
       }
-  }
-  &:active, &.active {
-    &:after {
-        display: none;        
-    }
   }
 }
 
@@ -263,9 +255,11 @@ div.arrow {
   background-color: $selectorBgColor;
   text-align: center;
   line-height: $selectorsHeight;
+  border-radius: 0px 0px $buttonBorderRadius $buttonBorderRadius;
+  border-top: 1px solid darken($selectorBgColor, 10);
+
   li {
     cursor: pointer;
-    border-top: 1px solid darken($selectorBgColor, 10);
     text-indent: -$selectorsPadding;
     @include transitions;
 
@@ -281,10 +275,18 @@ div.arrow {
 
 .select-item-left {
     border-radius: $buttonBorderRadius 0px 0px $buttonBorderRadius;
+
+    &.active {
+        border-radius: $buttonBorderRadius 0px 0px 0px;
+    }
 }
 
 .select-item-right {
     border-radius: 0px $buttonBorderRadius $buttonBorderRadius 0px;
+
+    &.active {
+        border-radius: 0px $buttonBorderRadius 0px 0px
+    }
 }
 /* VERSION SELECTORS end */
 
