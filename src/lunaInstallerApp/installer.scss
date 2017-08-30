@@ -114,17 +114,6 @@ body {
 }
 /* LOGO WITH ROTATING PROGRESS end */
 
-/* PROGRESS INFO begin */
-/*#progress-info {
-    height: 60px;
-    width: 410px;
-    margin: auto;
-    color: $greyOutTextColor;
-    text-align: center;
-    vertical-align: middle;
-}*/
-/* PROGRESS INFO end */
-
 /* STATISTICS begin */
 #send-statistics {
     width: 100%;
@@ -141,8 +130,24 @@ body {
     background-position: left center;
     background-size: 16px;
     padding-left: 24px;
+
+    -webkit-transition: all 0.3s ease-in;
+    -moz-transition: all 0.3s ease-in;
+    -o-transition: all 0.3s ease-in;
+    transition: all 0.3s ease-in;
+
+    &:hover {
+        background: url("img/hearts_light_grey.svg") no-repeat;
+        background-position: left center;
+        background-size: 16px;
+    }
 }
 #agree-box:checked + label {
+    -webkit-transition: all 0.3s ease-in;
+    -moz-transition: all 0.3s ease-in;
+    -o-transition: all 0.3s ease-in;
+    transition: all 0.3s ease-in;
+
     background: url("img/hearts.svg") no-repeat;
     background-position: left center;
     background-size: 16px;
