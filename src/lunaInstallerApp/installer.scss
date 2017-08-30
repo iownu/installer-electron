@@ -35,8 +35,8 @@ body {
 /* LOGO WITH ROTATING PROGRESS begin */
 #spinner {
     margin: auto;
-    width: 180px;
-    height: 180px;
+    width: $logoSize;
+    height: $logoSize;
 }
 @-webkit-keyframes rotating {
     from{
