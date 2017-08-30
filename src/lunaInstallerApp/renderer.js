@@ -4,6 +4,8 @@ var bg_color = 'rgb(47, 19, 16)'
 var download_color = 'rgb(103, 14, 29)'
 var installation_color = 'rgb(207, 28, 59)'
 
+var close_on_install_button_click = false
+
 function updateList(selectId) {
     var $this = $(selectId), numberOfOptions = $(selectId).children('option').length;
 
@@ -84,21 +86,22 @@ ipcRenderer.on('packet-from-console', function(event, arg) {
     if (arg.download_progress) {
         updateInstallButton(false, "Downloading: <b>"+ arg.download_progress + "%</b>")
         $("#spinner").addClass("rotating")
+        $("#error-message").removeClass("displayed")
         $("#progress-bg").css('stroke', bg_color)
         $("#progress-bar").css('stroke', download_color)
         $("#progress-bar").css('stroke-dashoffset', (dashValue - arg.download_progress/100 * dashValue))
-        $("#error-message").hide()
     }
     if (arg.installation_progress) {
         updateInstallButton(false, "Installing: <b>"+ arg.installation_progress + "%</b>")
+        $("#error-message").removeClass("displayed")
         $("#spinner").addClass("rotating")
         $("#progress-bg").css('stroke', download_color)
         $("#progress-bar").css('stroke', installation_color)
         $("#progress-bar").css('stroke-dashoffset', (dashValue - arg.installation_progress/100 * dashValue))
-        $("#error-message").hide()
     }
     if (arg.installation_progress >= 100) {
         updateInstallButton(true, "Done!")
+        close_on_install_button_click = true
         $("#spinner").removeClass("rotating")
         $("#logo-area").css('background-image', 'url(img/luna_logo.svg)')
         $("#spinner").hide()
@@ -106,7 +109,7 @@ ipcRenderer.on('packet-from-console', function(event, arg) {
     if (arg.error) {
         updateInstallButton(true, "Try again")
         $("#spinner").removeClass("rotating")
-        $("#error-message").html("<b>Error</b>: " + arg.error).show()
+        $("#error-message").html("<b>Error</b>: " + arg.error).addClass("displayed")
     }
 })
 
@@ -129,7 +132,7 @@ $(document).click(function() {
 })
 
 $("#install").click(function() {
-    if ($(this).html() === "Done!") {
+    if (close_on_install_button_click) {
         var window = remote.getCurrentWindow();
         window.close();
     } else {
@@ -144,6 +147,11 @@ $("#install").click(function() {
         }
         ipcRenderer.send("packet-to-console", install)
     }
+})
+
+$("#close").click(function() {
+    var window = remote.getCurrentWindow();
+    window.close();
 })
 
 ipcRenderer.send('ready')

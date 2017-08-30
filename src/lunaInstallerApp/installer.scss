@@ -1,5 +1,7 @@
 $screenWidth: 340px;
 
+$topBarHeight: 65px;
+
 $bgColor: #10120f;
 $normalTextColor: #999999;
 $greyOutTextColor: #555555;
@@ -21,6 +23,7 @@ $installButtonBorderRadius: 5px;
 $paddingBetweenSelectors: 2px;
 $selectorsWidth: $screenWidth/2 - $paddingBetweenSelectors/2;
 $selectorsPadding: 9px;
+$selectorsHeight: $buttonHeight;
 
 $logoSize: 180px;
 
@@ -39,6 +42,48 @@ body {
     -ms-user-select: none;
     user-select: none;
 }
+
+/* TOP BAR */
+
+#top-bar {
+    width: 100%;
+    height: $topBarHeight;
+    margin-bottom: 5px;
+    -webkit-app-region: drag;
+}
+
+#error-message {
+    margin: auto;
+    width: $screenWidth - 60px;
+    color: red;
+    height: 0px;
+    line-height: 0px;
+    text-align: center;
+    overflow: hidden;
+
+    -webkit-transition: all 0.3s ease-in;
+    -moz-transition: all 0.3s ease-in;
+    -o-transition: all 0.3s ease-in;
+
+    &.displayed {
+        height: $topBarHeight;
+        line-height: $topBarHeight;
+    }
+}
+
+#close {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    float: right;
+    vertical-align: middle;
+    -webkit-app-region: no-drag;
+}
+
+/* TOP BAR end */
 
 /* LOGO WITH ROTATING PROGRESS begin */
 #spinner {
@@ -60,7 +105,6 @@ body {
 
 #logo-area {
     margin: auto;
-    margin-top: 70px;
     margin-bottom: 60px;
     width: $logoSize;
     height: $logoSize;
@@ -131,7 +175,7 @@ body {
   font-size: $normalFontSize;
   color: $normalTextColor;
   width: $selectorsWidth;
-  height: $buttonHeight;
+  height: $selectorsHeight;
 }
 
 #left-select {
@@ -150,6 +194,7 @@ body {
   left: 0;
   background-color: $selectorBgColor;
   padding: $selectorsPadding;
+  line-height: $selectorsHeight - 2*$selectorsPadding;
   text-align: center;
   text-indent: -$selectorsPadding;
   -webkit-transition: all 0.3s ease-in;
