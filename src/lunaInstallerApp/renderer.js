@@ -10,6 +10,7 @@ function updateList(selectId) {
     var $this = $(selectId), numberOfOptions = $(selectId).children('option').length;
 
     var $styledSelect = $this.next('div.select-styled');
+    var $arrow = $this.siblings('div.arrow')
     $styledSelect.children(".select-options").remove()
 
     $styledSelect.text($this.children('option').eq(0).text());
@@ -31,6 +32,7 @@ function updateList(selectId) {
     $listItems.click(function(e) {
         e.stopPropagation();
         $styledSelect.text($(this).text()).removeClass('active');
+        $arrow.removeClass('up');
         $this.val($(this).attr('rel'));
         $list.hide();
         $this.selectedIndex=$this.val();
@@ -107,7 +109,8 @@ ipcRenderer.on('packet-from-console', function(event, arg) {
         $("#spinner").hide()
     }
     if (arg.error) {
-        updateInstallButton(true, "Try again")
+        updateInstallButton(true, "Close")
+        close_on_install_button_click = true
         $("#spinner").removeClass("rotating")
         $("#error-message").html("<b>Error</b>: " + arg.error).addClass("displayed")
     }
@@ -119,15 +122,17 @@ $("#application").change(updateVersions)
 $('div.select-styled').click(function(e) {
     e.stopPropagation();
     $('div.select-styled.active').not(this).each(function(){
-        console.log("hiding", $(this).attr('id'))
         $(this).removeClass('active').next('ul.select-options').hide();
+        $(this).next('div.arrow').toggleClass('up');
     });
     $(this).toggleClass('active').next('ul.select-options').toggle();
+    $(this).siblings('div.arrow').toggleClass('up');
 })
 
 $(document).click(function() {
     $('div.select-styled.active').each(function() {
         $(this).removeClass('active').next('ul.select-options').hide()
+        $(this).siblings('div.arrow').toggleClass('up');
     })
 })
 

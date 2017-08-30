@@ -8,10 +8,6 @@ $greyOutTextColor: #555555;
 $normalTextColor-lighten: lighten(#999999, 20%);
 $normalFontSize: 12px;
 
-$selectorBgColor: #222222;
-$selectorBgColor-lighten: lighten($selectorBgColor, 10%);
-$selectorBgColor-darken: darken($selectorBgColor, 10%);
-
 $buttonBgColor: #591522;
 $buttonBgColor-lighten: lighten($buttonBgColor, 10%);
 $buttonHeight: 33px;
@@ -24,6 +20,11 @@ $paddingBetweenSelectors: 2px;
 $selectorsWidth: $screenWidth/2 - $paddingBetweenSelectors/2;
 $selectorsPadding: 9px;
 $selectorsHeight: $buttonHeight;
+$selectorBgColor: #222222;
+$selectorBgColor-lighten: lighten($selectorBgColor, 10%);
+$selectorBgColor-darken: darken($selectorBgColor, 10%);
+$arrowWidth: 7.5px;
+$arrowHeight: 6px;
 
 $logoSize: 180px;
 
@@ -209,10 +210,7 @@ body {
 
   width: $selectorsWidth;
   height: $buttonHeight;
-  background: url(img/arrow_down.png) no-repeat right $selectorBgColor;
-  background-size: 7px;
   -webkit-appearance: none;
-  background-position-x: $selectorsWidth - $selectorsPadding - 7px;
 
   &:after {
     display: none;
@@ -221,15 +219,28 @@ body {
     background-color: $selectorBgColor-lighten;
   }
   &:active, &.active {
-
-    background: url(img/arrow_up.png) no-repeat right $selectorBgColor-darken;
-    background-size: 7px;
-    background-position-x: $selectorsWidth - $selectorsPadding - 7px;
-
     &:after {
         display: none;        
     }
   }
+}
+
+div.arrow {
+    border-top: $arrowHeight solid $normalTextColor;
+    border-left: $arrowWidth/2 solid transparent;
+    border-right: $arrowWidth/2 solid transparent;
+    border-bottom: none;
+    width: 0px;
+    height: 0px;
+    position: absolute;
+    right: $selectorsPadding;
+    top: $selectorsHeight/2 - $arrowHeight/2;
+    pointer-events:none;
+
+    &.up {
+        border-top: none;
+        border-bottom: $arrowHeight solid $normalTextColor;
+    }
 }
 
 .select-options {
@@ -308,7 +319,7 @@ body {
     }
 
     &.button-extended {
-        width: 2*$buttonWidth;
+        width: 1.5*$buttonWidth;
         &:hover {
           background-color: $buttonBgColor;
         }
