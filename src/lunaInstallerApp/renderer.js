@@ -4,6 +4,7 @@ var bg_color = 'rgb(47, 19, 16)'
 var download_color = 'rgb(103, 14, 29)'
 var installation_color = 'rgb(207, 28, 59)'
 
+var installation_began = false
 var close_on_install_button_click = false
 
 function updateList(selectId) {
@@ -125,8 +126,10 @@ $('div.select-styled').click(function(e) {
         $(this).removeClass('active').next('ul.select-options').hide();
         $(this).next('div.arrow').toggleClass('up');
     });
-    $(this).toggleClass('active').next('ul.select-options').toggle();
-    $(this).siblings('div.arrow').toggleClass('up');
+    if (!installation_began) {
+        $(this).toggleClass('active').next('ul.select-options').toggle();
+        $(this).siblings('div.arrow').toggleClass('up');
+    }
 })
 
 $(document).click(function() {
@@ -140,9 +143,16 @@ $("#install").click(function() {
     if (close_on_install_button_click) {
         var window = remote.getCurrentWindow();
         window.close();
-    } else {
+    } else if (!installation_began) {
         $("#logo-area").css('background-image', 'url(img/luna_logo_without_border.svg)')
         $("#spinner").show()
+        $('div.select-styled.active').each(function(){
+            $(this).removeClass('active').next('ul.select-options').hide();
+            $(this).next('div.arrow').toggleClass('up');
+        });
+        $('div.select-styled.clickable').removeClass('clickable')
+        $('#agree-box').prop('disabled', true).next('label').removeClass('clickable');
+        installation_began = true;
 
         var install = {
             "install": {
@@ -151,6 +161,7 @@ $("#install").click(function() {
             }
         }
         ipcRenderer.send("packet-to-console", install)
+        installation_began = true;
     }
 })
 

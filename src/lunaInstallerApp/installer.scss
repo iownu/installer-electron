@@ -131,6 +131,7 @@ body {
 #agree-box {
     display: none;
 }
+
 #agree-box:not(:checked) + label {
     background: url("img/hearts_grey.svg") no-repeat;
     background-position: left center;
@@ -139,10 +140,13 @@ body {
 
     @include transitions;
 
-    &:hover {
-        background: url("img/hearts_light_grey.svg") no-repeat;
-        background-position: left center;
-        background-size: 16px;
+    &.clickable {
+        cursor: pointer;
+        &:hover {
+            background: url("img/hearts_light_grey.svg") no-repeat;
+            background-position: left center;
+            background-size: 16px;
+        }
     }
 }
 #agree-box:checked + label {
@@ -152,6 +156,10 @@ body {
     background-position: left center;
     background-size: 16px;
     padding-left: 24px;
+
+    &.clickable {
+        cursor: pointer;
+    }
 }
 
 .learn-more-link a {
@@ -174,7 +182,6 @@ body {
   visibility: hidden;
 }
 .select {
-  cursor: pointer;
   display: inline-block;
   position: relative;
   font-size: $normalFontSize;
@@ -211,8 +218,12 @@ body {
   &:after {
     display: none;
   }
-  &:hover {
-    background-color: $selectorBgColor-lighten;
+  &.clickable {
+      cursor: pointer;
+
+      &:hover {
+            background-color: $selectorBgColor-lighten;
+      }
   }
   &:active, &.active {
     &:after {

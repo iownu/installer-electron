@@ -42,16 +42,16 @@ function createWindow () {
 }
 
 function spawnProcess() {
-    consoleInstallerProcess = spawn(path.join(__dirname, "consoleInstaller"))   
+    consoleInstallerProcess = spawn(path.join(__dirname, "consoleInstaller"))
     ioLines = readline.createInterface({
         input: consoleInstallerProcess.stdout,
         output: consoleInstallerProcess.stdin
     })
 
     ioLines.on('line', function (input) {
-		if (mainWindow) {
+        if (mainWindow) {
             mainWindow.webContents.send("packet-from-console", JSON.parse(input))
-		}
+        }
     })
 
     ipcMain.on("packet-to-console", function(event, arg) {
