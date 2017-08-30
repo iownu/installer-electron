@@ -205,8 +205,8 @@ body {
   bottom: 0;
   left: 0;
   background-color: $selectorBgColor;
-  padding: $selectorsPadding;
-  line-height: $selectorsHeight - 2*$selectorsPadding;
+  height: $selectorsHeight;
+  line-height: $selectorsHeight;
   text-align: center;
   text-indent: -$selectorsPadding;
   @include transitions;
@@ -262,9 +262,9 @@ div.arrow {
   list-style: none;
   background-color: $selectorBgColor;
   text-align: center;
+  line-height: $selectorsHeight;
   li {
-    margin: 0;
-    padding: $selectorsPadding 0;
+    cursor: pointer;
     border-top: 1px solid darken($selectorBgColor, 10);
     text-indent: -$selectorsPadding;
     @include transitions;

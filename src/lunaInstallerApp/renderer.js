@@ -124,7 +124,7 @@ $('div.select-styled').click(function(e) {
     e.stopPropagation();
     $('div.select-styled.active').not(this).each(function(){
         $(this).removeClass('active').next('ul.select-options').hide();
-        $(this).next('div.arrow').toggleClass('up');
+        $(this).next('div.arrow').removeClass('up');
     });
     if (!installation_began) {
         $(this).toggleClass('active').next('ul.select-options').toggle();
