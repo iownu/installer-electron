@@ -51,6 +51,16 @@ function updateVersions() {
     }
 }
 
+function updateInstallButton(clickable, text)
+{
+    $install = $("#install")
+    if (clickable)
+        $install.addClass("clickable").removeClass("button-extended")
+    else
+        $install.removeClass("clickable").addClass("button-extended")
+    $install.html(text)
+}
+
 ipcRenderer.on('packet-from-console', function(event, arg) {
     if (arg.initialize) {
         applications = arg.initialize.applications
@@ -69,30 +79,33 @@ ipcRenderer.on('packet-from-console', function(event, arg) {
     }
     var dashValue = parseFloat($("#progress-bar").css('stroke-dasharray'))
 
+    $install = $("#install")
+
     if (arg.download_progress) {
+        updateInstallButton(false, "Downloading: <b>"+ arg.download_progress + "%</b>")
         $("#spinner").addClass("rotating")
         $("#progress-bg").css('stroke', bg_color)
         $("#progress-bar").css('stroke', download_color)
         $("#progress-bar").css('stroke-dashoffset', (dashValue - arg.download_progress/100 * dashValue))
         $("#error-message").hide()
-        $("#progress-info").html("Downloading: <b>" + arg.download_progress + "%</b>").show()
     }
     if (arg.installation_progress) {
+        updateInstallButton(false, "Installing: <b>"+ arg.installation_progress + "%</b>")
         $("#spinner").addClass("rotating")
         $("#progress-bg").css('stroke', download_color)
         $("#progress-bar").css('stroke', installation_color)
         $("#progress-bar").css('stroke-dashoffset', (dashValue - arg.installation_progress/100 * dashValue))
         $("#error-message").hide()
-        $("#progress-info").html("Installing: <b>" + arg.installation_progress + "%</b>").show()
     }
-    if (arg.installation_progress === 100) {
+    if (arg.installation_progress >= 100) {
+        updateInstallButton(true, "Done!")
         $("#spinner").removeClass("rotating")
         $("#logo-area").css('background-image', 'url(img/luna_logo.svg)')
         $("#spinner").hide()
     }
     if (arg.error) {
+        updateInstallButton(true, "Try again")
         $("#spinner").removeClass("rotating")
-        $("#progress-info").hide()
         $("#error-message").html("<b>Error</b>: " + arg.error).show()
     }
 })
@@ -116,16 +129,21 @@ $(document).click(function() {
 })
 
 $("#install").click(function() {
-    $("#logo-area").css('background-image', 'url(img/luna_logo_without_border.svg)')
-    $("#spinner").show()
+    if ($(this).html() === "Done!") {
+        var window = remote.getCurrentWindow();
+        window.close();
+    } else {
+        $("#logo-area").css('background-image', 'url(img/luna_logo_without_border.svg)')
+        $("#spinner").show()
 
-    var install = {
-        "install": {
-            "application": $("#application option:selected").text(),
-            "version": $("#version option:selected").text()
+        var install = {
+            "install": {
+                "application": $("#application option:selected").text(),
+                "version": $("#version option:selected").text()
+            }
         }
+        ipcRenderer.send("packet-to-console", install)
     }
-    ipcRenderer.send("packet-to-console", install)
 })
 
 ipcRenderer.send('ready')
