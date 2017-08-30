@@ -28,6 +28,13 @@ $arrowHeight: 6px;
 
 $logoSize: 180px;
 
+@mixin transitions {
+    -webkit-transition: all 0.3s ease-in;
+    -moz-transition: all 0.3s ease-in;
+    -o-transition: all 0.3s ease-in;
+    transition: all 0.3s ease-in;
+}
+
 body {
     color: $normalTextColor;
     background-color: $bgColor;
@@ -62,9 +69,7 @@ body {
     text-align: center;
     overflow: hidden;
 
-    -webkit-transition: all 0.3s ease-in;
-    -moz-transition: all 0.3s ease-in;
-    -o-transition: all 0.3s ease-in;
+    @include transitions;
 
     &.displayed {
         height: $topBarHeight;
@@ -132,10 +137,7 @@ body {
     background-size: 16px;
     padding-left: 24px;
 
-    -webkit-transition: all 0.3s ease-in;
-    -moz-transition: all 0.3s ease-in;
-    -o-transition: all 0.3s ease-in;
-    transition: all 0.3s ease-in;
+    @include transitions;
 
     &:hover {
         background: url("img/hearts_light_grey.svg") no-repeat;
@@ -144,10 +146,7 @@ body {
     }
 }
 #agree-box:checked + label {
-    -webkit-transition: all 0.3s ease-in;
-    -moz-transition: all 0.3s ease-in;
-    -o-transition: all 0.3s ease-in;
-    transition: all 0.3s ease-in;
+    @include transitions;
 
     background: url("img/hearts.svg") no-repeat;
     background-position: left center;
@@ -203,10 +202,7 @@ body {
   line-height: $selectorsHeight - 2*$selectorsPadding;
   text-align: center;
   text-indent: -$selectorsPadding;
-  -webkit-transition: all 0.3s ease-in;
-  -moz-transition: all 0.3s ease-in;
-  -o-transition: all 0.3s ease-in;
-  transition: all 0.3s ease-in;
+  @include transitions;
 
   width: $selectorsWidth;
   height: $buttonHeight;
@@ -260,10 +256,7 @@ div.arrow {
     padding: $selectorsPadding 0;
     border-top: 1px solid darken($selectorBgColor, 10);
     text-indent: -$selectorsPadding;
-    -webkit-transition: all 0.3s ease-in;
-    -moz-transition: all 0.3s ease-in;
-    -o-transition: all 0.3s ease-in;
-    transition: all 0.3s ease-in;
+    @include transitions;
 
     &:hover {
       color: $normalTextColor-lighten;
@@ -305,10 +298,8 @@ div.arrow {
     border-radius: $installButtonBorderRadius;
     float: right;
 
-    -webkit-transition: all 0.3s ease-in;
-    -moz-transition: all 0.3s ease-in;
-    -o-transition: all 0.3s ease-in;
-    transition: all 0.3s ease-in;
+    @include transitions;
+
 
     &.clickable {
         cursor: pointer;
