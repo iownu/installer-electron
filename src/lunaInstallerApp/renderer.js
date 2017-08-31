@@ -87,7 +87,7 @@ ipcRenderer.on('packet-from-console', function(event, arg) {
     $install = $("#install")
 
     if (arg.download_progress) {
-        updateInstallButton(false, "Downloading: <b>"+ arg.download_progress + "%</b>")
+        updateInstallButton(false, "Downloading: <b>"+ Math.round(arg.download_progress*100) + "%</b>")
         $("#spinner").addClass("rotating")
         $("#error-message").removeClass("displayed")
         $("#progress-bg").css('stroke', bg_color)
@@ -95,14 +95,14 @@ ipcRenderer.on('packet-from-console', function(event, arg) {
         $("#progress-bar").css('stroke-dashoffset', (dashValue - arg.download_progress * dashValue))
     }
     if (arg.installation_progress) {
-        updateInstallButton(false, "Installing: <b>"+ arg.installation_progress + "%</b>")
+        updateInstallButton(false, "Installing: <b>"+ Math.round(arg.installation_progress*100) + "%</b>")
         $("#error-message").removeClass("displayed")
         $("#spinner").addClass("rotating")
         $("#progress-bg").css('stroke', download_color)
         $("#progress-bar").css('stroke', installation_color)
         $("#progress-bar").css('stroke-dashoffset', (dashValue - arg.installation_progress * dashValue))
     }
-    if (arg.installation_progress >= 100) {
+    if (arg.installation_progress >= 1.0) {
         updateInstallButton(true, "Done!")
         close_on_install_button_click = true
         $("#spinner").removeClass("rotating")

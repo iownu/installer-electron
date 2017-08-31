@@ -14,15 +14,15 @@ initialize_packet = '''
         "applications": [
             {
                 "name": "Paweł",
-                "versions": ["Pietraszko"]
+                "version": ["Pietraszko"]
             },
             {
                 "name": "Wojciech",
-                "versions": ["Daniło"]
+                "version": ["Daniło"]
             },
             {
                 "name": "Konrad",
-                "versions": ["Madej", "Gądek"]
+                "version": ["Madej", "Gądek"]
             }
         ]
     }
@@ -32,10 +32,10 @@ initialize_packet = '''
 print(''.join(initialize_packet.splitlines())) # remove all newlines
 sys.stdout.flush()
 
-for line in fileinput.input():
+for line in fileinput.input("-"):
     if 'install' in line:
         for i in range(100):
-            print("{{ \"download_progress\": {0} }}".format(i+1))
+            print("{{ \"download_progress\": {0} }}".format((i+1.0)/100.0))
             sys.stdout.flush()
             time.sleep(.030)
         for i in range(100):
@@ -44,6 +44,6 @@ for line in fileinput.input():
                 sys.stdout.flush()
                 break
             else:
-                print("{{ \"installation_progress\": {0} }}".format(i+1))
+                print("{{ \"installation_progress\": {0} }}".format((i+1.0)/100.0))
                 sys.stdout.flush()
                 time.sleep(.015)
