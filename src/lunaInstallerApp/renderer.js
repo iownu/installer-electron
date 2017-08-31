@@ -88,7 +88,6 @@ ipcRenderer.on('packet-from-console', function(event, arg) {
 
     if (arg.download_progress) {
         updateInstallButton(false, "Downloading: <b>"+ Math.round(arg.download_progress*100) + "%</b>")
-        $("#spinner").addClass("rotating")
         $("#error-message").removeClass("displayed")
         $("#progress-bg").css('stroke', bg_color)
         $("#progress-bar").css('stroke', download_color)
@@ -97,7 +96,6 @@ ipcRenderer.on('packet-from-console', function(event, arg) {
     if (arg.installation_progress) {
         updateInstallButton(false, "Installing: <b>"+ Math.round(arg.installation_progress*100) + "%</b>")
         $("#error-message").removeClass("displayed")
-        $("#spinner").addClass("rotating")
         $("#progress-bg").css('stroke', download_color)
         $("#progress-bar").css('stroke', installation_color)
         $("#progress-bar").css('stroke-dashoffset', (dashValue - arg.installation_progress * dashValue))
@@ -152,6 +150,7 @@ $("#install").click(function() {
         $('#agree-box').prop('disabled', true).next('label').removeClass('clickable');
 
         $('#full-ring').css('opacity', 0.0)
+        $("#spinner").addClass("rotating")
 
         installation_began = true;
 
