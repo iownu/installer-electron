@@ -48,7 +48,7 @@ function updateVersions() {
     if (applications) {
         $versionSelect = $("#version")
         $versionSelect.empty()
-        $.each(applications[selection].versions, function(index, version) {
+        $.each(applications[selection].version, function(index, version) {
             var $option = $("<option></option>").attr("value", index).text(version)
             $versionSelect.append($option)
         })
@@ -92,7 +92,7 @@ ipcRenderer.on('packet-from-console', function(event, arg) {
         $("#error-message").removeClass("displayed")
         $("#progress-bg").css('stroke', bg_color)
         $("#progress-bar").css('stroke', download_color)
-        $("#progress-bar").css('stroke-dashoffset', (dashValue - arg.download_progress/100 * dashValue))
+        $("#progress-bar").css('stroke-dashoffset', (dashValue - arg.download_progress * dashValue))
     }
     if (arg.installation_progress) {
         updateInstallButton(false, "Installing: <b>"+ arg.installation_progress + "%</b>")
@@ -100,7 +100,7 @@ ipcRenderer.on('packet-from-console', function(event, arg) {
         $("#spinner").addClass("rotating")
         $("#progress-bg").css('stroke', download_color)
         $("#progress-bar").css('stroke', installation_color)
-        $("#progress-bar").css('stroke-dashoffset', (dashValue - arg.installation_progress/100 * dashValue))
+        $("#progress-bar").css('stroke-dashoffset', (dashValue - arg.installation_progress * dashValue))
     }
     if (arg.installation_progress >= 100) {
         updateInstallButton(true, "Done!")

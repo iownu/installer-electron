@@ -42,15 +42,20 @@ function createWindow () {
 }
 
 function spawnProcess() {
-    consoleInstallerProcess = spawn(path.join(__dirname, "consoleInstaller"))
+    consoleInstallerProcess = spawn(path.join(__dirname, "consoleInstaller"), ["install", "--gui"])
     ioLines = readline.createInterface({
         input: consoleInstallerProcess.stdout,
         output: consoleInstallerProcess.stdin
     })
 
     ioLines.on('line', function (input) {
+        console.log(input)
         if (mainWindow) {
-            mainWindow.webContents.send("packet-from-console", JSON.parse(input))
+            var parsed = JSON.parse(input)
+            if (typeof(parsed) === "string") {
+                parsed = JSON.parse(parsed)
+            }
+            mainWindow.webContents.send("packet-from-console", parsed)
         }
     })
 
