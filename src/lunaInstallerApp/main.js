@@ -11,6 +11,7 @@ let mainWindow
 
 let consoleInstallerProcess
 let ioLines
+let errorMsg = ""
 
 let browserOptions =
 {
@@ -41,6 +42,15 @@ function createWindow () {
   })
 }
 
+function sendError(message) {
+    if (mainWindow) {
+        mainWindow.webContents.send("packet-from-console", { "error": message })
+    } else { // we should not be running anyway
+        console.error(message)
+        app.quit()
+    }
+}
+
 function spawnProcess() {
     consoleInstallerProcess = spawn(path.join(__dirname, "consoleInstaller"), ["install", "--gui"])
     ioLines = readline.createInterface({
@@ -49,7 +59,6 @@ function spawnProcess() {
     })
 
     ioLines.on('line', function (input) {
-        console.log(input)
         if (mainWindow) {
             var parsed = JSON.parse(input)
             if (typeof(parsed) === "string") {
@@ -57,6 +66,17 @@ function spawnProcess() {
             }
             mainWindow.webContents.send("packet-from-console", parsed)
         }
+    })
+
+    consoleInstallerProcess.on('close', function(code) {
+        if (code != 0)
+            sendError(errorMsg ? errorMsg : "luna manager process finished with code " + code)
+
+        consoleInstallerProcess = null;
+    })
+
+    consoleInstallerProcess.stderr.on('data', function(chunk) {
+        errorMsg += chunk
     })
 
     ipcMain.on("packet-to-console", function(event, arg) {
@@ -73,6 +93,10 @@ ipcMain.on('ready', function(event) {
 })
 
 app.on('window-all-closed', function () {
-    consoleInstallerProcess.kill()
     app.quit()
+})
+
+app.on('quit', function() {
+    if (consoleInstallerProcess)
+        consoleInstallerProcess.kill()
 })
