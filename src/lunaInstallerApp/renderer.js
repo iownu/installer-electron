@@ -151,7 +151,9 @@ $("#install").click(function() {
             $(this).next('div.arrow').toggleClass('up');
         });
         $('div.select-styled.clickable').removeClass('clickable')
+        $('div.select-styled').siblings('div.arrow').css('opacity', '0.0')
         $('#agree-box').prop('disabled', true).next('label').removeClass('clickable');
+
         installation_began = true;
 
         var install = {

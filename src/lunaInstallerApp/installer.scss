@@ -22,7 +22,7 @@ $paddingBetweenSelectors: 2px;
 $selectorsWidth: $screenWidth/2 - $paddingBetweenSelectors/2;
 $selectorsPadding: 9px;
 $selectorsHeight: $buttonHeight;
-$selectorBgColor: hsl(0,0,15); //#222222;
+$selectorBgColor: hsl(0,0,15);;
 $selectorBgColor-lighten: lighten($selectorBgColor, 4%);
 $selectorBgColor-darken: darken($selectorBgColor, 10%);
 $arrowWidth: 7.5px;
@@ -239,6 +239,8 @@ div.arrow {
     right: $selectorsPadding;
     top: $selectorsHeight/2 - $arrowHeight/2;
     pointer-events:none;
+
+    @include transitions;
 
     &.up {
         border-top: none;

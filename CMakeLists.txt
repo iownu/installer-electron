@@ -39,7 +39,6 @@ add_custom_command(OUTPUT lunaInstallerApp/version
     COMMAND electron-packager ${CMAKE_SOURCE_DIR}/src/lunaInstallerApp ${ELECTRON_INSTALLER_APP_NAME} --overwrite
     COMMAND [ -d lunaInstallerApp ] && rm -r lunaInstallerApp || :
     COMMAND mv ${ELECTRON_INSTALLER_APP_NAME}-* lunaInstallerApp
-#    COMMAND cp consoleInstaller.d/* ${PACKAGED_APP_RESOURCES_PATH}/${CONSOLE_INSTALLER_FILENAME}
     DEPENDS ${APP_SOURCES} lunaInstallerDeps
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     COMMENT "Packaging luna installer electron app")
