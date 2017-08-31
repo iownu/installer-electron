@@ -106,8 +106,7 @@ ipcRenderer.on('packet-from-console', function(event, arg) {
         updateInstallButton(true, "Done!")
         close_on_install_button_click = true
         $("#spinner").removeClass("rotating")
-        $("#logo-area").css('background-image', 'url(img/luna_logo.svg)')
-        $("#spinner").hide()
+        $('#full-ring').css('opacity', 1.0)
     }
     if (arg.error) {
         updateInstallButton(true, "Close")
@@ -144,8 +143,6 @@ $("#install").click(function() {
         var window = remote.getCurrentWindow();
         window.close();
     } else if (!installation_began) {
-        $("#logo-area").css('background-image', 'url(img/luna_logo_without_border.svg)')
-        $("#spinner").show()
         $('div.select-styled.active').each(function(){
             $(this).removeClass('active').next('ul.select-options').hide();
             $(this).next('div.arrow').toggleClass('up');
@@ -153,6 +150,8 @@ $("#install").click(function() {
         $('div.select-styled.clickable').removeClass('clickable')
         $('div.select-styled').siblings('div.arrow').css('opacity', '0.0')
         $('#agree-box').prop('disabled', true).next('label').removeClass('clickable');
+
+        $('#full-ring').css('opacity', 0.0)
 
         installation_began = true;
 
