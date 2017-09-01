@@ -23,7 +23,7 @@ void recursiveCopy(const QDir &copiedDir, const QDir &destination);
 template<class... Paths>
 void setExecPermissionsInFiles(const Paths &... paths)
 {
-	auto setExecPermission = [&](const auto &path)
+	auto setExecPermission = [&](const QString &path)
 	{
 		QFile file(path);
 		if (!file.setPermissions(QFileDevice::ReadUser | QFileDevice::ExeUser))

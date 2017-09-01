@@ -4,6 +4,7 @@ find_package(Qt5Core REQUIRED)
 #find_package(Qt5Qml REQUIRED)
 #find_package(Qt5Quick REQUIRED)
 find_package(ICU QUIET COMPONENTS i18n uc data)
+find_package(Freetype QUIET)
 find_package(Threads REQUIRED)
 
 message("System name: ${CMAKE_SYSTEM_NAME}")
@@ -16,42 +17,42 @@ if(QT_STATIC_INSTALL_DIRECTORY)
 		set(QT_LIBRARIES
 			-Wl,-Bstatic
 				-L${QT_STATIC_INSTALL_DIRECTORY}/plugins/platforms
-					-lqwayland-egl
+#					-lqwayland-egl
 				-L${QT_STATIC_INSTALL_DIRECTORY}/lib
-					-lqwayland-generic
-					-lqwayland-xcomposite-egl
-					-lQt5WaylandClient
+#					-lqwayland-generic
+#					-lqwayland-xcomposite-egl
+#					-lQt5WaylandClient
 					-lqxcb
 				-L${QT_STATIC_INSTALL_DIRECTORY}/plugins/xcbglintegrations
-					-lqxcb-egl-integration
+#					-lqxcb-egl-integration
 					-lQt5XcbQpa
 					-lxcb-static
 				-L${QT_STATIC_INSTALL_DIRECTORY}/plugins/imageformats
 					-lqgif
 					-lqicns
 					-lqico
-					-lqjp2
-					-ljasper
-					-lqmng
+#					-lqjp2
+#					-ljasper
+#					-lqmng
 					-lqtga
 					-lqtiff
 					-lqwbmp
 					-lqwebp
 				-L${QT_STATIC_INSTALL_DIRECTORY}/plugins/egldeviceintegrations
-					-lqeglfs-emu-integration
-					-lqeglfs-kms-egldevice-integration
-					-lqeglfs-kms-integration -lQt5EglFsKmsSupport
-					-lQt5KmsSupport
-					-lqeglfs-x11-integration
-					-lQt5EglFSDeviceIntegration
+#					-lqeglfs-emu-integration
+#					-lqeglfs-kms-egldevice-integration
+#					-lqeglfs-kms-integration -lQt5EglFsKmsSupport
+#					-lQt5KmsSupport
+#					-lqeglfs-x11-integration
+#					-lQt5EglFSDeviceIntegration
 					-lQt5EventDispatcherSupport
 					-lQt5ServiceSupport
 					-lQt5ThemeSupport
 					-lQt5FontDatabaseSupport
 					-lQt5FbSupport
-					-lQt5EglSupport
+#					-lQt5EglSupport
 					-lQt5InputSupport
-					-lQt5PlatformCompositorSupport
+#					-lQt5PlatformCompositorSupport
 					-lQt5DeviceDiscoverySupport
 				-L${QT_STATIC_INSTALL_DIRECTORY}/plugins/qmltooling
 					-lqmldbg_debugger
@@ -67,20 +68,20 @@ if(QT_STATIC_INSTALL_DIRECTORY)
 				-L${QT_STATIC_INSTALL_DIRECTORY}/plugins/bearer
 					-lqgenericbearer
 				-L${QT_STATIC_INSTALL_DIRECTORY}/qml/QtQuick.2
-					-lqtquick2plugin
+#					-lqtquick2plugin
 				-L${QT_STATIC_INSTALL_DIRECTORY}/qml/QtQuick/Window.2
 					-lwindowplugin
 				-L${QT_STATIC_INSTALL_DIRECTORY}/qml/QtQuick/Controls
 					-lqtquickcontrolsplugin
 					-lQt5Widgets
 				-L/home/aobuchowicz/dev/build-qt-static-party/qml/QtQuick/Layouts
-					-lqquicklayoutsplugin
+#					-lqquicklayoutsplugin
 					-lQt5Quick
 					-lQt5Gui
 					-lqtlibpng
 					-lqtharfbuzz
 					-lQt5Qml
-					-lrt
+#					-lrt
 					-lQt5Network
 					-lQt5Core
 					-lm
@@ -88,35 +89,36 @@ if(QT_STATIC_INSTALL_DIRECTORY)
 				${ICU_LIBRARIES}
 
 			-Wl,-Bdynamic
-					-lwayland-egl
-					-lXcomposite
-					-lwayland-client
-					-lwayland-cursor
-					-lXi
-					-lSM
-					-lICE
-					-lmng
-					-ltiff
-					-lwebp
-					-lwebpdemux
-					-lgbm
+					${FREETYPE_LIBRARIES}
+#					-lwayland-egl
+#					-lXcomposite
+#					-lwayland-client
+#					-lwayland-cursor
+#					-lXi
+#					-lSM
+#					-lICE
+#					-lmng
+#					-ltiff
+#					-lwebp
+#					-lwebpdemux
+#					-lgbm
 					-ldrm
-					-lfontconfig
+#					-lfontconfig
 					-lfreetype
 					-lXext
-					-lmtdev
-					-linput
-					-lxkbcommon
-					-ludev
+#					-lmtdev
+#					-linput
+#					-lxkbcommon
+#					-ludev
 					-lxcb
 					-lX11
 					-lX11-xcb
-					-lts
-					-lEGL
+#					-lts
+#					-lEGL
 
-					-lgthread-2.0
-					-lglib-2.0
-					-lGLESv2
+#					-lgthread-2.0
+#					-lglib-2.0
+#					-lGLESv2
 					-ldl
 			)
 	elseif(MINGW)
