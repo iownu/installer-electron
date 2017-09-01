@@ -46,7 +46,7 @@ for line in fileinput.input("-"):
                 exit(1)
                 break
             elif i >= 3 and 'Daniło' in line:
-                exit(-1)
+                sys.exit(-1)
             else:
                 print("{{ \"installation_progress\": {0} }}".format((i+1.0)/100.0))
                 sys.stdout.flush()
