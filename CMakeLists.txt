@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.12 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.1.3 FATAL_ERROR)
 project(electronLunaInstaller)
 
 # Find includes in corresponding build directories
@@ -65,10 +65,9 @@ if(NOT APPLE)
 
     # Instruct CMake to run moc automatically when needed
     set(CMAKE_AUTOMOC ON)
-    set(CMAKE_AUTOMOC_MOC_OPTIONS "-b;stdafx.h")
     set(CMAKE_AUTORCC ON)
 
-#    set(CMAKE_CXX_STANDARD 11)
+    set(CMAKE_CXX_STANDARD 11)
 
     # find dependencies
     include(findDependencies.cmake)
@@ -110,7 +109,7 @@ if(NOT APPLE)
             message("Compiler ${CMAKE_CXX_COMPILER_ID} not supported!")
     endif()
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--as-needed")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=c++11")
+#    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=c++11")
 	if (MINGW)
 		set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-subsystem,windows")
 	endif(MINGW)
