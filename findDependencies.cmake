@@ -55,32 +55,32 @@ if(QT_STATIC_INSTALL_DIRECTORY)
 #					-lQt5PlatformCompositorSupport
 					-lQt5DeviceDiscoverySupport
 				-L${QT_STATIC_INSTALL_DIRECTORY}/plugins/qmltooling
-					-lqmldbg_debugger
-					-lqmldbg_local
-					-lqmldbg_messages
-					-lqmldbg_native
-					-lqmldbg_nativedebugger
-					-lqmldbg_profiler
-					-lqmldbg_quickprofiler
-					-lqmldbg_server
+#					-lqmldbg_debugger
+#					-lqmldbg_local
+#					-lqmldbg_messages
+#					-lqmldbg_native
+#					-lqmldbg_nativedebugger
+#					-lqmldbg_profiler
+#					-lqmldbg_quickprofiler
+#					-lqmldbg_server
 					-lQt5PacketProtocol
-					-lqmldbg_tcp
+#					-lqmldbg_tcp
 				-L${QT_STATIC_INSTALL_DIRECTORY}/plugins/bearer
 					-lqgenericbearer
-				-L${QT_STATIC_INSTALL_DIRECTORY}/qml/QtQuick.2
+#				-L${QT_STATIC_INSTALL_DIRECTORY}/qml/QtQuick.2
 #					-lqtquick2plugin
-				-L${QT_STATIC_INSTALL_DIRECTORY}/qml/QtQuick/Window.2
-					-lwindowplugin
-				-L${QT_STATIC_INSTALL_DIRECTORY}/qml/QtQuick/Controls
-					-lqtquickcontrolsplugin
+#				-L${QT_STATIC_INSTALL_DIRECTORY}/qml/QtQuick/Window.2
+#					-lwindowplugin
+#				-L${QT_STATIC_INSTALL_DIRECTORY}/qml/QtQuick/Controls
+#					-lqtquickcontrolsplugin
 					-lQt5Widgets
 				-L/home/aobuchowicz/dev/build-qt-static-party/qml/QtQuick/Layouts
 #					-lqquicklayoutsplugin
-					-lQt5Quick
+#					-lQt5Quick
 					-lQt5Gui
 					-lqtlibpng
 					-lqtharfbuzz
-					-lQt5Qml
+#					-lQt5Qml
 #					-lrt
 					-lQt5Network
 					-lQt5Core
@@ -89,21 +89,21 @@ if(QT_STATIC_INSTALL_DIRECTORY)
 				${ICU_LIBRARIES}
 
 			-Wl,-Bdynamic
-					${FREETYPE_LIBRARIES}
+#					${FREETYPE_LIBRARIES}
 #					-lwayland-egl
 #					-lXcomposite
 #					-lwayland-client
 #					-lwayland-cursor
-#					-lXi
-#					-lSM
-#					-lICE
+                                        -lXi
+                                        -lSM
+                                        -lICE
 #					-lmng
 #					-ltiff
 #					-lwebp
 #					-lwebpdemux
 #					-lgbm
 					-ldrm
-#					-lfontconfig
+                                        -lfontconfig
 					-lfreetype
 					-lXext
 #					-lmtdev
