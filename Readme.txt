@@ -7,7 +7,7 @@ potrzeba mieć:
  * npm
  * cmake >= 2.8.13
  * g++ >= 4.8.3
- * sassc (tudzież jakiś kompilator scss do css)
+ * scss lub sassc
  * statycznie zbudowane qt (http://192.168.1.67/w/tutorials/kompilacja_qt_na_linuksie/statyczna_kompilacja/)
  * statycznie zbudowane icu (./configure --disable-shared --enable-static --with-data-package=static)
  * freetype >= 2.8 może być statyczne, ale w sumie biblioteka powinna być na wszystkich linuksach
@@ -32,9 +32,9 @@ sudo npm install -g electron-packager
 
 klonujemy repo. robimy katalog do budowy, gdzieś obok najlepiej. Wywołujemy w nim komendę:
 
-cmake ../ścieżka/do/repo -DCONSOLE_INSTALLER_EXE="/ścieżka/do/konsolowego/instalatora"
+cmake ../ścieżka/do/repo -DCONSOLE_INSTALLER_EXE="/ścieżka/do/konsolowego/instalatora" -DCMAKE_BUILD_TYPE=Release
 
-Jeżeli biblioteki mamy pobudowane w dziwnych ścieżkach, to przekazujemy je do cmake opcją -DCMAKE_PREFIX_PATH="ścieżka1/ścieżka2". Podobnie, jeżeli pythona albo sassc wywołuje się w sposób nietypowy (np. inaczej niż "python2.7" na linuksie), to dodajemy opcje odpowiednio -DPYTHON_EXE="ścieżka do pythona" -DSASSC_EXE="ścieżka do sassca"
+Jeżeli biblioteki mamy pobudowane w dziwnych ścieżkach, to przekazujemy je do cmake opcją -DCMAKE_PREFIX_PATH="ścieżka1/ścieżka2". Podobnie, jeżeli pythona albo sassc wywołuje się w sposób nietypowy (np. inaczej niż "python2.7" na linuksie), to dodajemy opcje odpowiednio -DPYTHON_EXE="wywołanie pythona" -DSASS_EXE="wywołanie scss"
 
 Jak wszystko się uda, to odpalamy make.
 
