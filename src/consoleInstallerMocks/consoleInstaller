@@ -40,13 +40,14 @@ for line in fileinput.input("-"):
             time.sleep(.030)
         for i in range(100):
             if i >= 58 and 'Gądek' in line:
-#                print("{ \"error\": \"Wild Shaman appears!\" }")
                 sys.stderr.write("Wild Shaman appears!\n")
                 sys.stderr.flush()
-                exit(1)
+                sys.exit(1)
                 break
             elif i >= 3 and 'Daniło' in line:
                 sys.exit(-1)
+            elif i >= 6 and 'Madej' in line:
+                sys.exit(0)
             else:
                 print("{{ \"installation_progress\": {0} }}".format((i+1.0)/100.0))
                 sys.stdout.flush()

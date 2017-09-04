@@ -5,6 +5,7 @@ var download_color = 'rgb(103, 14, 29)'
 var installation_color = 'rgb(207, 28, 59)'
 
 var installation_began = false
+var installation_complete = false
 var close_on_install_button_click = false
 
 function updateList(selectId) {
@@ -66,6 +67,14 @@ function updateInstallButton(clickable, text)
     $install.html(text)
 }
 
+function displayError(errorMsg)
+{
+    updateInstallButton(true, "Close")
+    close_on_install_button_click = true
+    $("#spinner").removeClass("rotating")
+    $("#error-message").html("<b>Error</b>: " + errorMsg).addClass("displayed")
+}
+
 ipcRenderer.on('packet-from-console', function(event, arg) {
     if (arg.initialize) {
         applications = arg.initialize.applications
@@ -103,14 +112,22 @@ ipcRenderer.on('packet-from-console', function(event, arg) {
     if (arg.installation_progress >= 1.0) {
         updateInstallButton(true, "Done!")
         close_on_install_button_click = true
+        installation_complete = true
         $("#spinner").removeClass("rotating")
         $('#full-ring').css('opacity', 1.0)
     }
     if (arg.error) {
-        updateInstallButton(true, "Close")
-        close_on_install_button_click = true
-        $("#spinner").removeClass("rotating")
-        $("#error-message").html("<b>Error</b>: " + arg.error).addClass("displayed")
+        displayError(arg.error)
+    }
+})
+
+ipcRenderer.on('console-closed', function(event, closeInfo) {
+    if (closeInfo.stderr) {
+        displayError(closeInfo.stderr)
+    } else if (closeInfo.code != 0) {
+        displayError("Installation process exits with code "+closeInfo.code)
+    } else if (!installation_complete) {
+        displayError("Installation process ended abruptly")
     }
 })
 

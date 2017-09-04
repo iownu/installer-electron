@@ -12,6 +12,7 @@ let mainWindow
 let consoleInstallerProcess
 let ioLines
 let errorMsg = ""
+let installed = false
 
 let browserOptions =
 {
@@ -42,15 +43,6 @@ function createWindow () {
   })
 }
 
-function sendError(message) {
-    if (mainWindow) {
-        mainWindow.webContents.send("packet-from-console", { "error": message })
-    } else { // we should not be running anyway
-        console.error(message)
-        app.quit()
-    }
-}
-
 function spawnProcess() {
     consoleInstallerProcess = spawn(path.join(__dirname, "consoleInstaller"), ["install", "--gui"])
     ioLines = readline.createInterface({
@@ -69,8 +61,14 @@ function spawnProcess() {
     })
 
     consoleInstallerProcess.on('close', function(code) {
-        if (code != 0)
-            sendError(errorMsg ? errorMsg : "luna manager process finished with code " + code)
+        if (mainWindow) {
+            var informGuiPacket = {
+                "code": code,
+                "stderr": errorMsg
+            }
+
+            mainWindow.webContents.send("console-closed", informGuiPacket)
+        }
 
         consoleInstallerProcess = null;
     })
