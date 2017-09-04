@@ -22,21 +22,41 @@ endif()
 set (CONSOLE_INSTALLER_EXE "${CMAKE_SOURCE_DIR}/src/consoleInstallerMocks/${CONSOLE_INSTALLER_FILENAME}"
     CACHE STRING "Path to console installer executable")
 set (PYTHON_EXE "" CACHE STRING "Path to python executable") # used to qrc generation
+set (NPM_EXE "" CACHE STRING "Path to npm executable")
+set (ELECTRON_PACKAGER_EXE "" CACHE STRING "Path to electron-packager executable")
 set (SASS_EXE "sassc" CACHE STRING "Path to sass preprocessor")
 
 ################ PART 1: create luna electron app
 
+# check for npm
+if (NOT NPM_EXE)
+    if (UNIX)
+        set (NPM_EXE "npm")
+    elseif (MINGW)
+        set (NPM_EXE "/c/Program Files/nodejs/npm")
+    endif()
+endif(NOT PYTHON_EXE)
+
+# check for electron-packager
+if (NOT ELECTRON_PACKAGER_EXE)
+    if (UNIX)
+        set (ELECTRON_PACKAGER_EXE "electron-packager")
+    elseif (MINGW)
+        set (ELECTRON_PACKAGER_EXE "/c/Users/$ENV{USER}/AppData/Roaming/npm/electron-packager")
+    endif()
+endif(NOT ELECTRON_PACKAGER_EXE)
+
 file(GLOB_RECURSE APP_SOURCES ${CMAKE_SOURCE_DIR}/src/lunaInstallerApp/*)
 
 add_custom_target(lunaInstallerDeps # example of electron app dependency
-    COMMAND npm install
+    COMMAND "${NPM_EXE}" install
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/src/lunaInstallerApp
     COMMENT "Installing luna installer electron app dependencies"
     SOURCES ${CMAKE_SOURCE_DIR}/src/lunaInstallerApp/package.json
     )
 
 add_custom_command(OUTPUT lunaInstallerApp/version
-    COMMAND electron-packager ${CMAKE_SOURCE_DIR}/src/lunaInstallerApp ${ELECTRON_INSTALLER_APP_NAME} --overwrite
+    COMMAND "${ELECTRON_PACKAGER_EXE}" ${CMAKE_SOURCE_DIR}/src/lunaInstallerApp ${ELECTRON_INSTALLER_APP_NAME} --overwrite
     COMMAND [ -d lunaInstallerApp ] && rm -r lunaInstallerApp || :
     COMMAND mv ${ELECTRON_INSTALLER_APP_NAME}-* lunaInstallerApp
     DEPENDS ${APP_SOURCES} lunaInstallerDeps
