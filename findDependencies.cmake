@@ -89,7 +89,6 @@ if(QT_STATIC_INSTALL_DIRECTORY)
 				${ICU_LIBRARIES}
 
 			-Wl,-Bdynamic
-#					${FREETYPE_LIBRARIES}
 #					-lwayland-egl
 #					-lXcomposite
 #					-lwayland-client
@@ -104,7 +103,7 @@ if(QT_STATIC_INSTALL_DIRECTORY)
 #					-lgbm
 					-ldrm
                                         -lfontconfig
-					-lfreetype
+					${FREETYPE_LIBRARIES}
 					-lXext
 #					-lmtdev
 #					-linput
