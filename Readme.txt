@@ -30,7 +30,7 @@ c) przygotowania Windows
 * instalujemy electron-packagera (C:\Program Files\nodejs\npm.exe install -g electron-packager)
 * trzeba podać node do path (niestety; w przeciwnym razie electron-packager nie działa). Do ~/.bashrc dopisujemy export PATH="/c/Program Files/nodejs/:$PATH"
 
-Pamiętamy, żeby w II. podać do cmake odpowiednie ścieżki do statycznego qt, czyli -DCMAKE_PREFIX_PATH=
+Pamiętamy, żeby w II. podać do cmake odpowiednie ścieżki do statycznego qt, czyli -DCMAKE_PREFIX_PATH=/mingw64/qt-static
 
 
 II. Kompilacja wszystkiego
@@ -43,7 +43,7 @@ klonujemy repo. robimy katalog do budowy, gdzieś obok najlepiej. Wywołujemy w 
 
 cmake ../ścieżka/do/repo -DCONSOLE_INSTALLER_EXE="/ścieżka/do/konsolowego/instalatora" -DCMAKE_BUILD_TYPE=Release
 
-Jeżeli biblioteki mamy pobudowane w dziwnych ścieżkach, to przekazujemy je do cmake opcją -DCMAKE_PREFIX_PATH="ścieżka1/ścieżka2". Podobnie, jeżeli pythona albo sassc wywołuje się w sposób nietypowy (np. inaczej niż "python2.7" na linuksie), to dodajemy opcje odpowiednio -DPYTHON_EXE="wywołanie pythona" -DSASS_EXE="wywołanie scss"
+Jeżeli biblioteki mamy pobudowane w dziwnych ścieżkach, to przekazujemy je do cmake opcją -DCMAKE_PREFIX_PATH="ścieżka1;ścieżka2". Podobnie, jeżeli pythona, npm albo sassc wywołuje się w sposób nietypowy (np. inaczej niż "python2.7" na linuksie), to dodajemy opcje odpowiednio -DPYTHON_EXE="wywołanie pythona", -DNPM_EXE="wywołanie npm" -DSASS_EXE="wywołanie scss"
 
 Jak wszystko się uda, to odpalamy make.
 
