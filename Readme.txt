@@ -25,6 +25,7 @@ c) przygotowania Windows
 
 * Trzeba zainstalować msys2, otworzyć i wykonać podstawowe aktualizacje (pacman -Syu, potem restart i jeszcze raz pacman -Syu)
 * W konsoli msys2 zainstalować: git, cmake, make, mingw-w64-x86_64-gcc, mingw-w64-x86_64-qt5-static, mingw-w64_x86_64-sassc
+* mingw-w64-x86_64-qt5-static ma skopane zależności. Trzeba ręcznie doinstalować mingw-w64-x86_64-openssl oraz mingw-w64-x86_64-jasper
 * POZA Msys2 zainstalować: python2.7, nodejs oraz npm, najlepiej w domyślnych katalogach
 * instalujemy psutil (w cmd.exe: C:\Python27\Scripts\pip.exe install psutil)
 * instalujemy electron-packagera (C:\Program Files\nodejs\npm.exe install -g electron-packager)
