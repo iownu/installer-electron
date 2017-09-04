@@ -28,6 +28,7 @@ c) przygotowania Windows
 * POZA Msys2 zainstalować: python2.7, nodejs oraz npm, najlepiej w domyślnych katalogach
 * instalujemy psutil (w cmd.exe: C:\Python27\Scripts\pip.exe install psutil)
 * instalujemy electron-packagera (C:\Program Files\nodejs\npm.exe install -g electron-packager)
+* trzeba podać node do path (niestety; w przeciwnym razie electron-packager nie działa). Do ~/.bashrc dopisujemy export PATH="/c/Program Files/nodejs/:$PATH"
 
 Pamiętamy, żeby w II. podać do cmake odpowiednie ścieżki do statycznego qt, czyli -DCMAKE_PREFIX_PATH=
 
