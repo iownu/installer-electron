@@ -35,7 +35,7 @@ if (NOT NPM_EXE)
     elseif (MINGW)
         set (NPM_EXE "/c/Program Files/nodejs/npm")
     endif()
-endif(NOT PYTHON_EXE)
+endif(NOT NPM_EXE)
 
 # check for electron-packager
 if (NOT ELECTRON_PACKAGER_EXE)
