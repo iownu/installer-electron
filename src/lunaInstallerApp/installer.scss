@@ -3,6 +3,7 @@ $screenWidth: 340px;
 $topBarHeight: 50px;
 
 $bgColor: #10120f;
+$errorColor: #591522;
 $normalTextColor: #999999;
 $greyOutTextColor: #555555;
 $normalTextColor-lighten: lighten(#999999, 20%);
@@ -64,16 +65,19 @@ body {
     -webkit-app-region: drag;
 }
 
-#error-message {
+#message {
     margin: 0px;
     width: 100%;
-    background-color: #591522;
     height: 0px;
     line-height: 0px;
     text-align: center;
     overflow: hidden;
 
     @include transitions;
+
+    &.error {
+        background-color: $errorColor;
+    }
 
     &.displayed {
         height: $topBarHeight;

@@ -72,7 +72,7 @@ function displayError(errorMsg)
     updateInstallButton(true, "Close")
     close_on_install_button_click = true
     $("#spinner").removeClass("rotating")
-    $("#error-message").html("<b>Error</b>: " + errorMsg).addClass("displayed")
+    $("#message").html("<b>Error</b>: " + errorMsg).addClass("displayed").addClass("error")
 }
 
 ipcRenderer.on('packet-from-console', function(event, arg) {
@@ -118,6 +118,9 @@ ipcRenderer.on('packet-from-console', function(event, arg) {
     }
     if (arg.error) {
         displayError(arg.error)
+    }
+    if (arg.message) {
+        $("#message").html(arg.message).addClass("displayed")
     }
 })
 

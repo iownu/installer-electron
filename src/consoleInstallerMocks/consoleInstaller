@@ -44,6 +44,9 @@ for line in fileinput.input("-"):
                 sys.stderr.flush()
                 sys.exit(1)
                 break
+            elif i == 0 and 'Pietraszko' in line:
+                print("{ \"message\": \"Na pewno się uda!\" }")
+                sys.stdout.flush()
             elif i >= 3 and 'Daniło' in line:
                 sys.exit(-1)
             elif i >= 6 and 'Madej' in line:
