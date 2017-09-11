@@ -190,4 +190,9 @@ $("#close").click(function() {
     window.close();
 })
 
+$('a[href^="http"]').on('click', function(event) {
+    event.preventDefault();
+    shell.openExternal(this.href);
+});
+
 ipcRenderer.send('ready')
