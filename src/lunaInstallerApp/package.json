@@ -13,6 +13,7 @@
     "electron": "^1.7.5"
   },
   "dependencies": {
-    "jquery": "^3.2.1"
+    "jquery": "^3.2.1",
+    "luna-logo-loader": "git+ssh://git@bitbucket.org:flowbox-io/luna-logo-loader.git#v1.0"
   }
 }

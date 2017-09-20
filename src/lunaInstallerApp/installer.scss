@@ -100,46 +100,13 @@ body {
 /* TOP BAR end */
 
 /* LOGO WITH ROTATING PROGRESS begin */
-#spinner {
-    margin: auto;
-    width: $logoSize;
-    height: $logoSize;
-
-    // stroke-dash-arrays should be equal to 2*Pi*r
-    circle#full-ring-bg {
-        stroke-dasharray: 538.97948963149890246986;
-        stroke-width: 15.0;
-        stroke-dashoffset: 0;
-        stroke: $bgColor;
-        @include transitions;
-    }
-
-    circle.logo-circle {
-        stroke-dasharray: 538.97948963149890246986;
-        stroke-width: 8.4375;
-        stroke-dashoffset: 0;
-    }
-}
-@-webkit-keyframes rotating {
-    from{
-        -webkit-transform: rotate(0deg);
-    }
-    to{
-        -webkit-transform: rotate(360deg);
-    }
-}
-.rotating {
-    -webkit-animation: rotating 2s linear infinite;
-}
 
 #logo-area {
     margin: auto;
     margin-bottom: 65px;
     width: $logoSize;
     height: $logoSize;
-    background-image: url('img/luna_logo_without_border.svg');
-    background-repeat: no-repeat;
-    background-position: center center;    
+    background-color: $bgColor
 }
 /* LOGO WITH ROTATING PROGRESS end */
 

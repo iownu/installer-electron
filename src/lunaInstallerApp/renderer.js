@@ -1,9 +1,5 @@
 var applications
 
-var bg_color = 'rgb(47, 19, 16)'
-var download_color = 'rgb(103, 14, 29)'
-var installation_color = 'rgb(207, 28, 59)'
-
 var installation_began = false
 var installation_complete = false
 var close_on_install_button_click = false
@@ -98,23 +94,18 @@ ipcRenderer.on('packet-from-console', function(event, arg) {
     if (arg.download_progress) {
         updateInstallButton(false, "Downloading: <b>"+ Math.round(arg.download_progress*100) + "%</b>")
         $("#error-message").removeClass("displayed")
-        $("#progress-bg").css('stroke', bg_color)
-        $("#progress-bar").css('stroke', download_color)
-        $("#progress-bar").css('stroke-dashoffset', (dashValue - arg.download_progress * dashValue))
+        lll.set_downloading($("#logo-area"), arg.download_progress)
     }
     if (arg.installation_progress) {
         updateInstallButton(false, "Installing: <b>"+ Math.round(arg.installation_progress*100) + "%</b>")
         $("#error-message").removeClass("displayed")
-        $("#progress-bg").css('stroke', download_color)
-        $("#progress-bar").css('stroke', installation_color)
-        $("#progress-bar").css('stroke-dashoffset', (dashValue - arg.installation_progress * dashValue))
+        lll.set_loading($("#logo-area"), arg.installation_progress)
     }
     if (arg.installation_progress >= 1.0) {
         updateInstallButton(true, "Done!")
         close_on_install_button_click = true
         installation_complete = true
-        $("#spinner").removeClass("rotating")
-        $('#full-ring').css('opacity', 1.0)
+        lll.set_complete($("#logo-area"))
     }
     if (arg.error) {
         displayError(arg.error)
@@ -168,9 +159,6 @@ $("#install").click(function() {
         $('div.select-styled.clickable').removeClass('clickable')
         $('div.select-styled').siblings('div.arrow').css('opacity', '0.0')
         $('#agree-box').prop('disabled', true).next('label').removeClass('clickable');
-
-        $('#full-ring').css('opacity', 0.0)
-        $("#spinner").addClass("rotating")
 
         installation_began = true;
 
