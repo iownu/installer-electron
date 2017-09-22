@@ -49,7 +49,7 @@ if (NOT ELECTRON_PACKAGER_EXE)
     endif()
 endif(NOT ELECTRON_PACKAGER_EXE)
 
-file(GLOB_RECURSE APP_SOURCES ${CMAKE_SOURCE_DIR}/src/lunaInstallerApp/*)
+file(GLOB APP_SOURCES ${CMAKE_SOURCE_DIR}/src/lunaInstallerApp/* ${CMAKE_SOURCE_DIR}/src/lunaInstallerApp/img/* ${CMAKE_SOURCE_DIR}/src/lunaInstallerApp/css/* ${CMAKE_SOURCE_DIR}/src/lunaInstallerApp/fonts/*)
 
 add_custom_target(lunaInstallerDeps # example of electron app dependency
     COMMAND "${NPM_EXE}" install
@@ -223,6 +223,13 @@ if(NOT APPLE)
     else()
         message(FATAL_ERROR "System is not supported; the only supported os are linux, windows and osx")
     endif()
+	
+	if(MINGW)
+		set(CMAKE_RC_COMPILER_INIT windres)
+		ENABLE_LANGUAGE(RC)
+		SET(CMAKE_RC_COMPILE_OBJECT
+			"<CMAKE_RC_COMPILER> <FLAGS> -O coff <DEFINES> -i <SOURCE> -o <OBJECT>")
+	endif(MINGW)
 
     add_executable(lunaInstaller WIN32
         src/embeddedFiles.h
@@ -233,6 +240,7 @@ if(NOT APPLE)
         ${LINKED_PLUGINS_CPP}
         ${EMBEDDED_FILES}
         lunaInstallerApp.qrc
+        appicon.rc
         )
 
     set_target_properties(lunaInstaller PROPERTIES AUTOGEN_TARGET_DEPENDS lunaInstallerApp.qrc)
