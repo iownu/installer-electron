@@ -18,6 +18,9 @@ else()
 	set(PACKAGED_APP_RESOURCES_PATH "${CMAKE_CURRENT_BINARY_DIR}/lunaInstallerApp/resources/app")
 endif()
 
+set(APPLICATION_ICON "${CMAKE_SOURCE_DIR}/src/lunaInstallerApp/img/luna_logo")
+
+
 # cache variables
 set (CONSOLE_INSTALLER_EXE "${CMAKE_SOURCE_DIR}/src/consoleInstallerMocks/${CONSOLE_INSTALLER_FILENAME}"
     CACHE STRING "Path to console installer executable")
@@ -56,7 +59,7 @@ add_custom_target(lunaInstallerDeps # example of electron app dependency
     )
 
 add_custom_command(OUTPUT lunaInstallerApp/version
-    COMMAND "${ELECTRON_PACKAGER_EXE}" ${CMAKE_SOURCE_DIR}/src/lunaInstallerApp ${ELECTRON_INSTALLER_APP_NAME} --overwrite
+    COMMAND "${ELECTRON_PACKAGER_EXE}" ${CMAKE_SOURCE_DIR}/src/lunaInstallerApp ${ELECTRON_INSTALLER_APP_NAME} --overwrite --icon="${APPLICATION_ICON}"
     COMMAND [ -d lunaInstallerApp ] && rm -r lunaInstallerApp || :
     COMMAND mv ${ELECTRON_INSTALLER_APP_NAME}-* lunaInstallerApp
     DEPENDS ${APP_SOURCES} lunaInstallerDeps

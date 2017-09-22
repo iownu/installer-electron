@@ -19,7 +19,8 @@ let browserOptions =
     width: 400,
     height: 620,
     center: true,
-    frame: false
+    frame: false,
+    icon: path.join(__dirname, 'img/luna_logo.png')
 }
 
 function createWindow () {
