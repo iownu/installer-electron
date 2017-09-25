@@ -37,7 +37,7 @@ for line in fileinput.input("-"):
         for i in range(100):
             print("{{ \"download_progress\": {0} }}".format((i+1.0)/100.0))
             sys.stdout.flush()
-            time.sleep(.030)
+            time.sleep(.030 if i > 0 else 2)
         for i in range(100):
             if i >= 58 and 'Gądek' in line:
                 sys.stderr.write("Wild Shaman appears!\n")
@@ -51,7 +51,7 @@ for line in fileinput.input("-"):
                 sys.exit(-1)
             elif i >= 6 and 'Madej' in line:
                 sys.exit(0)
-            else:
-                print("{{ \"installation_progress\": {0} }}".format((i+1.0)/100.0))
-                sys.stdout.flush()
-                time.sleep(.015)
+
+            print("{{ \"installation_progress\": {0} }}".format((i+1.0)/100.0))
+            sys.stdout.flush()
+            time.sleep(.015 if i > 0 else 2)
