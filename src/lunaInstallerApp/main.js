@@ -53,11 +53,19 @@ function spawnProcess() {
 
     ioLines.on('line', function (input) {
         if (mainWindow) {
-            var parsed = JSON.parse(input)
-            if (typeof(parsed) === "string") {
-                parsed = JSON.parse(parsed)
+            var parsed = ""
+            try {
+                parsed = JSON.parse(input)
+                if (typeof(parsed) === "string") {
+                    parsed = JSON.parse(parsed)
+                }
+            } catch(err) {
+                dialog.showErrorBox("Internal error", "Cannot parse \"" + input + "\" to json")
+                parsed = ""
             }
-            mainWindow.webContents.send("packet-from-console", parsed)
+            if (parsed !== "") {
+                mainWindow.webContents.send("packet-from-console", parsed)
+            }
         }
     })
 

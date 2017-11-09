@@ -47,8 +47,9 @@ for line in fileinput.input("-"):
             elif i == 0 and 'Pietraszko' in line:
                 print("{ \"message\": \"Na pewno się uda!\" }")
                 sys.stdout.flush()
-            elif i >= 3 and 'Daniło' in line:
-                sys.exit(-1)
+            elif i == 3 and 'Daniło' in line:
+                print("Some unjson")
+                sys.stdout.flush()
             elif i >= 6 and 'Madej' in line:
                 sys.exit(0)
 
