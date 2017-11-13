@@ -11,7 +11,7 @@ import time
 initialize_packet = '''
 {
     "initialize": {
-        "versionTypes": ["release", "nightly", "developer"],
+        "versionTypes": ["release", "nightly", ".developer"],
         "applications": [
             {
                 "name": "Paweł",

@@ -1,16 +1,19 @@
 var applications
 var versionTypes
+var extendedVersionTypes
 
 var installation_began = false
 var installation_complete = false
 var close_on_install_button_click = false
+var developer_builds_are_shown = false
 
 function updateList(selectId) {
     var $this = $(selectId), numberOfOptions = $(selectId).children('option').length;
 
     var $styledSelect = $this.next('div.select-styled');
     var $arrow = $this.siblings('div.arrow')
-    $styledSelect.children(".select-options").remove()
+    $styledSelect.next(".select-options").remove()
+    $arrow.removeClass("up")
 
     $styledSelect.text($this.children('option').eq(0).text());
 
@@ -62,16 +65,28 @@ function updateVersions() {
 function addTypesOfVersionsHeadings() {
     var $list = $("#version").next('div.select-styled').next('ul.select-options').children('li')
     var last_type = -1
-    console.log($list)
     $list.each(function(index, item) {
-        console.log(index, item)
         let type = $(item).attr('rel').split("_")[0]
-        console.log(type)
         if (type != last_type) {
             $('<h2 />', { text: versionTypes[type] }).insertBefore(item)
             last_type = type
         }
     })
+}
+
+function showDeveloperBuilds() {
+    if (!developer_builds_are_shown) {
+        developer_builds_are_shown = true
+        versionTypes = extendedVersionTypes
+        updateVersions()
+        var $message = $("#message")
+        $message.html("Developer builds are shown").addClass("displayed")
+        setTimeout(function() {
+            if ($message.html() === "Developer builds are shown") {
+                $message.removeClass("displayed")
+            }
+        }, 2000)
+    }
 }
 
 function updateInstallButton(clickable, text)
@@ -95,7 +110,8 @@ function displayError(errorMsg)
 ipcRenderer.on('packet-from-console', function(event, arg) {
     if (arg.initialize) {
         applications = arg.initialize.applications
-        versionTypes = arg.initialize.versionTypes
+        versionTypes = arg.initialize.versionTypes.filter(function(version) { return !version.startsWith(".") })
+        extendedVersionTypes = arg.initialize.versionTypes.map(function(version) { return version.startsWith(".") ? version.substr(1) : version })
 
         var $appSelect = $("#application")
 
@@ -167,6 +183,13 @@ $(document).click(function() {
         $(this).removeClass('active').next('ul.select-options').hide()
         $(this).siblings('div.arrow').toggleClass('up');
     })
+})
+
+$(document).keypress(function(event)
+{
+    if (event.which === 4) { // Ctrl+D
+        showDeveloperBuilds()
+    }
 })
 
 $("#install").click(function() {
