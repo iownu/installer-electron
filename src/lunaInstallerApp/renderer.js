@@ -50,13 +50,28 @@ function updateVersions() {
         {
             $.each(applications[selection].versions[version_type], function(index, version) {
                 let value = type_index+"_"+index
-                console.log(type_index, index, value)
                 var $option = $("<option></option>").attr("value", value).text(version)
                 $versionSelect.append($option)
             })
         })
         updateList("#version")
+        addTypesOfVersionsHeadings()
     }
+}
+
+function addTypesOfVersionsHeadings() {
+    var $list = $("#version").next('div.select-styled').next('ul.select-options').children('li')
+    var last_type = -1
+    console.log($list)
+    $list.each(function(index, item) {
+        console.log(index, item)
+        let type = $(item).attr('rel').split("_")[0]
+        console.log(type)
+        if (type != last_type) {
+            $('<h2 />', { text: versionTypes[type] }).insertBefore(item)
+            last_type = type
+        }
+    })
 }
 
 function updateInstallButton(clickable, text)

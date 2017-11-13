@@ -235,34 +235,41 @@ div.arrow {
 }
 
 .select-options {
-  display: none; 
-  position: absolute;
-  top: 100%;
-  right: 0;
-  left: 0;
-  z-index: 999;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  background-color: $selectorBgColor;
-  text-align: center;
-  line-height: $selectorsHeight;
-  border-radius: 0px 0px $buttonBorderRadius $buttonBorderRadius;
-  border-top: 1px solid darken($selectorBgColor, 10);
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    z-index: 999;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background-color: $selectorBgColor;
+    text-align: center;
+    line-height: $selectorsHeight;
+    border-radius: 0px 0px $buttonBorderRadius $buttonBorderRadius;
+    border-top: 1px solid darken($selectorBgColor, 10);
 
-  li {
-    cursor: pointer;
-    text-indent: -$selectorsPadding;
-    @include transitions;
+    h2 {
+        cursor: default;
+        text-indent: -$selectorsPadding;
+        font-size: $normalFontSize;
+        margin: 0px;
+    }
 
-    &:hover {
-      color: $normalTextColor-lighten;
-      background: $selectorBgColor-lighten;
+    li {
+        cursor: pointer;
+        text-indent: -$selectorsPadding;
+        @include transitions;
+
+        &:hover {
+            color: $normalTextColor-lighten;
+            background: $selectorBgColor-lighten;
+        }
+        &[rel="hide"] {
+            display: none;
+        }
     }
-    &[rel="hide"] {
-      display: none;
-    }
-  }
 }
 
 .select-item-left {
