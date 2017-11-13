@@ -1,4 +1,5 @@
 var applications
+var versionTypes
 
 var installation_began = false
 var installation_complete = false
@@ -42,12 +43,17 @@ function updateList(selectId) {
 
 function updateVersions() {
     selection = $("#application").val()
-    if (applications) {
+    if (applications && versionTypes) {
         $versionSelect = $("#version")
         $versionSelect.empty()
-        $.each(applications[selection].version, function(index, version) {
-            var $option = $("<option></option>").attr("value", index).text(version)
-            $versionSelect.append($option)
+        $.each(versionTypes, function(type_index, version_type)
+        {
+            $.each(applications[selection].versions[version_type], function(index, version) {
+                let value = type_index+"_"+index
+                console.log(type_index, index, value)
+                var $option = $("<option></option>").attr("value", value).text(version)
+                $versionSelect.append($option)
+            })
         })
         updateList("#version")
     }
@@ -74,6 +80,7 @@ function displayError(errorMsg)
 ipcRenderer.on('packet-from-console', function(event, arg) {
     if (arg.initialize) {
         applications = arg.initialize.applications
+        versionTypes = arg.initialize.versionTypes
 
         var $appSelect = $("#application")
 
