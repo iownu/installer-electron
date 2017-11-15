@@ -38,6 +38,24 @@ $logoSize: 180px;
     transition: all 0.1s ease-in;
 }
 
+::-webkit-scrollbar-track
+{
+        border-radius: 5px;
+        background-color: $selectorBgColor;
+}
+
+::-webkit-scrollbar
+{
+        width: 7px;
+        background-color: $selectorBgColor;
+}
+
+::-webkit-scrollbar-thumb
+{
+        border-radius: 5px;
+        background-color: lighten($selectorBgColor, 8%);;
+}
+
 body {
     margin: 0px;
     padding: 0px;
@@ -249,6 +267,8 @@ div.arrow {
     line-height: $selectorsHeight;
     border-radius: 0px 0px $buttonBorderRadius $buttonBorderRadius;
     border-top: 1px solid darken($selectorBgColor, 10);
+    overflow-y: auto;
+    max-height: 200px;
 
     h2 {
         cursor: default;
