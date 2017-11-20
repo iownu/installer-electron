@@ -243,12 +243,17 @@ div.arrow {
     right: $selectorsPadding;
     top: $selectorsHeight/2 - $arrowHeight/2;
     pointer-events:none;
+    opacity: 1.0;
 
     @include transitions;
 
     &.up {
         border-top: none;
         border-bottom: $arrowHeight solid $normalTextColor;
+    }
+
+    &.hidden {
+        opacity: 0.0;
     }
 }
 
@@ -275,6 +280,14 @@ div.arrow {
         text-indent: -$selectorsPadding;
         font-size: $normalFontSize;
         margin: 0px;
+    }
+
+
+    hr {
+        border: 0px;
+        margin: 0px;
+        height: 1px;
+        background-color: $bgColor;
     }
 
     li {

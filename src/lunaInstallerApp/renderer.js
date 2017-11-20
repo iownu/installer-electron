@@ -13,35 +13,43 @@ function updateList(selectId) {
     var $styledSelect = $this.next('div.select-styled');
     var $arrow = $this.siblings('div.arrow')
     $styledSelect.next(".select-options").remove()
-    $arrow.removeClass("up")
-
     $styledSelect.text($this.children('option').eq(0).text());
 
-    var $list = $('<ul />', {
-        'class': 'select-options'
-    }).insertAfter($styledSelect);
+    $arrow.removeClass("up")
+    if (numberOfOptions <= 1) {
+        $arrow.addClass("hidden")
+        $styledSelect.removeClass("clickable")
+        // dont add select-options if there is only one option
+    } else { //if (numberOfOptions > 1)s
+        $arrow.removeClass("hidden")
+        $styledSelect.addClass("clickable")
 
-    for (var i = 0; i < numberOfOptions; i++) {
-        $('<li />', {
-            text: $this.children('option').eq(i).text(),
-            rel: $this.children('option').eq(i).val()
-        }).appendTo($list);
-    }
+        var $list = $('<ul />', {
+            'class': 'select-options'
+        }).insertAfter($styledSelect);
 
-    var $listItems = $list.children('li');
-
-    // items list is recreated each time
-    $listItems.click(function(e) {
-        e.stopPropagation();
-        $styledSelect.text($(this).text()).removeClass('active');
-        $arrow.removeClass('up');
-        $this.val($(this).attr('rel'));
-        $list.hide();
-        $this.selectedIndex=$this.val();
-        if ($this.attr("id")==="application") {
-            updateVersions()
+        for (var i = 0; i < numberOfOptions; i++) {
+            $('<li />', {
+                text: $this.children('option').eq(i).text(),
+                rel: $this.children('option').eq(i).val()
+            }).appendTo($list);
         }
-    });
+
+        var $listItems = $list.children('li');
+
+        // items list is recreated each time
+        $listItems.click(function(e) {
+            e.stopPropagation();
+            $styledSelect.text($(this).text()).removeClass('active');
+            $arrow.removeClass('up');
+            $this.val($(this).attr('rel'));
+            $list.hide();
+            $this.selectedIndex=$this.val();
+            if ($this.attr("id")==="application") {
+                updateVersions()
+            }
+        });
+    }
 }
 
 function updateVersions() {
@@ -67,7 +75,11 @@ function addTypesOfVersionsHeadings() {
     var last_type = -1
     $list.each(function(index, item) {
         let type = $(item).attr('rel').split("_")[0]
+
         if (type != last_type) {
+            if (last_type !== -1) {
+                $('<hr />').insertBefore(item)
+            }
             $('<h2 />', { text: versionTypes[type] }).insertBefore(item)
             last_type = type
         }
