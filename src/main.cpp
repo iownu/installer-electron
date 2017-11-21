@@ -5,6 +5,7 @@
 #include <QApplication>
 
 #include <cassert>
+#include <iostream>
 
 #include "embeddedFiles.h"
 #include "files.h"
@@ -59,6 +60,8 @@ int main(int argc, char *argv[])
 	}
 	catch(std::runtime_error &e)
 	{
+        std::cerr << "Error during loading electron application: " << std::endl;
+        std::cerr << e.what() << std::endl;
 		QMessageBox::critical(nullptr, "Luna installer", QString("Error when loading installer: ") + e.what());
 	}
 
