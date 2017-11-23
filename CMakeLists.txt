@@ -190,6 +190,7 @@ if(NOT APPLE)
             lunaInstaller.o
             libnode.o
             consoleInstaller.o
+            linuxLibs.qrc
             )
     elseif(MINGW)
         add_custom_command(OUTPUT lunaInstaller.obj

@@ -6,6 +6,7 @@
 #include "errors.h"
 
 const auto InstallerAppDirName = "lunaInstallerApp";
+const auto LibrariesDirName = "libs";
 
 // these path are relative to qrc root or temporary directory
 #if __linux__

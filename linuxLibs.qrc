@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>libs/libappindicator.so.1</file>
+        <file>libs/libgconf-2.so.4</file>
+        <file>libs/libindicator.so.7</file>
+        <file>libs/libnotify.so.4</file>
+        <file>libs/libXss.so.1</file>
+        <file>libs/libXtst.so.6</file>
+    </qresource>
+</RCC>

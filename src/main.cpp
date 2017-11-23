@@ -32,6 +32,38 @@ QString extractLunaInstaller(QTemporaryDir &tmpDir)
 	return extractedInstallerExecPath;
 }
 
+bool extractLibraries(QTemporaryDir &tmpDir)
+{
+	const QDir destinationDir(tmpDir.path());
+
+	const QString librariesPath = QString(":/") + LibrariesDirName;
+	const QDir librariesDir(librariesPath);
+	if (librariesDir.exists())
+	{
+		recursiveCopy(librariesDir, destinationDir);
+		return true;
+	}
+	else
+		return false;
+}
+
+
+void setupLibraries(QTemporaryDir &tmpDir, QProcess &process)
+{
+	const bool thereAreLibraries = extractLibraries(tmpDir);
+	const QString librariesPath = tmpDir.path() + "/" + LibrariesDirName;
+#ifdef __linux__
+	if (thereAreLibraries) {
+		auto env = QProcessEnvironment::systemEnvironment();
+//		env.insert("LD_DEBUG", "libs");
+		env.insert("LD_LIBRARY_PATH", librariesPath + ":" + env.value("LD_LIBRARY_PATH"));
+		process.setProcessEnvironment(env);
+	}
+#else
+	assert(!thereAreLibraries);
+#endif
+}
+
 
 int main(int argc, char *argv[])
 {
@@ -49,6 +81,7 @@ int main(int argc, char *argv[])
 								  tmpDir.path() + "/" + LibNodeDllPath);
 
 		QProcess process;
+		setupLibraries(tmpDir, process);
 		process.start(execPath);
 		process.waitForFinished(-1); // -1 means no timeout
 		int exitCode = process.exitCode();
@@ -56,6 +89,7 @@ int main(int argc, char *argv[])
 		{
 			throw InstallerProcessError(process.readAllStandardError().toStdString());
 		}
+		std::cout << process.readAllStandardError().toStdString() << std::endl;
 		return 0;
 	}
 	catch(std::runtime_error &e)
