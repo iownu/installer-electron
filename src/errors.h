@@ -31,6 +31,7 @@
 		}																				\
 	}
 
+RUNTIME_ERROR(FontLoadError, "Could not load font");
 RUNTIME_ERROR(CreateTemporaryDirectoryError, "Could not create temporary directory");
 RUNTIME_ERROR_PARAM(ExtractingFileError, "Error while extracting luna installer files to temporary directory");
 RUNTIME_ERROR_PARAM(ExtractingDirectoryError, "Error while extracting luna installer directory to temporary directory");

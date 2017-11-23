@@ -3,12 +3,28 @@
 #include <QFile>
 #include <QMessageBox>
 #include <QApplication>
+#include <QFontDatabase>
 
 #include <cassert>
 #include <iostream>
 
 #include "embeddedFiles.h"
 #include "files.h"
+
+void loadFont(QApplication &application)
+{
+	const auto FontName = "DejaVuSans";
+	const auto fontPath = QString(":/") + FontName + ".ttf";
+
+	int fontId = QFontDatabase::addApplicationFont(fontPath);
+	if (fontId == -1)
+		throw FontLoadError();
+	const auto families = QFontDatabase::applicationFontFamilies(fontId);
+	if (families.empty())
+		throw FontLoadError();
+	application.setFont(QFont(families.front()));
+}
+
 
 QString extractLunaInstaller(QTemporaryDir &tmpDir)
 {
@@ -68,8 +84,18 @@ void setupLibraries(QTemporaryDir &tmpDir, QProcess &process)
 int main(int argc, char *argv[])
 {
 	QApplication app(argc, argv);
+	bool fontLoaded = false;
 	try
 	{
+		try
+		{
+			loadFont(app);
+			fontLoaded = true;
+		}
+		catch(FontLoadError &e)
+		{
+			std::cerr << "Error: " << e.what() << std::endl;
+		}
 		QTemporaryDir tmpDir;
 		tmpDir.setAutoRemove(true);
 		if (!tmpDir.isValid())
@@ -96,7 +122,8 @@ int main(int argc, char *argv[])
 	{
         std::cerr << "Error during loading electron application: " << std::endl;
         std::cerr << e.what() << std::endl;
-		QMessageBox::critical(nullptr, "Luna installer", QString("Error when loading installer: ") + e.what());
+		if (fontLoaded)
+			QMessageBox::critical(nullptr, "Luna installer", QString("Error when loading installer: ") + e.what());
 	}
 
 	return -1;

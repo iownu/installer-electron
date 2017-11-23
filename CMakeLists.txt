@@ -241,6 +241,7 @@ if(NOT APPLE)
         ${LINKED_PLUGINS_CPP}
         ${EMBEDDED_FILES}
         lunaInstallerApp.qrc
+        misc.qrc
         appicon.rc
         )
 
