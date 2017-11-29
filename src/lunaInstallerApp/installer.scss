@@ -207,12 +207,38 @@ button {
 #send-statistics {
     width: $contentWidth;
     margin: auto;
-    text-align: center;
+    text-align: justify;
     vertical-align: middle;
     font-size: $normalFontSize;
 
     a {
         color: $greyOutTextColor;
+    }
+
+    p#introduction {
+        margin: 0px 0px 36px 0px;
+    }
+
+    p#email-label {
+        margin-bottom: 0px 0px 24px 0px;
+    }
+
+    #email-input {
+        margin: auto;
+        text-align: center;
+
+        input {
+            -webkit-appearance:none;
+            width: 180px;
+            font-family: 'Roboto', sans-serif;
+            font-weight: normal;
+            font-size: $normalFontSize;
+            color: $normalTextColor;
+            letter-spacing: 1.2px;
+            background-color: lighten($bgColor, 10%);
+            padding: 6px;
+            border: 1px $greyOutTextColor solid;
+        }
     }
 }
 
