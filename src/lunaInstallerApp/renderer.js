@@ -135,7 +135,7 @@ ipcRenderer.on('packet-from-console', function(event, arg) {
         updateList("#application")
         updateVersions()
         $("#loading").hide()
-        $("#main_form").show()
+        $("#email_form").addClass("visible")
     }
     var dashValue = parseFloat($("#progress-bar").css('stroke-dasharray'))
 
@@ -201,6 +201,30 @@ $(document).keypress(function(event)
 {
     if (event.which === 4) { // Ctrl+D
         showDeveloperBuilds()
+    }
+})
+
+// See http://rosskendall.com/blog/web/javascript-function-to-check-an-email-address-conforms-to-rfc822
+function isEmail(email){
+    return /^([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22))*\x40([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d))*$/.test( email );
+}
+
+function emailAddressIsValid() {
+    return isEmail($("#email").val())
+}
+
+$("#next").click(function() {
+    if (emailAddressIsValid()) {
+        $("#email_form").removeClass("visible")
+        $("#main_form").addClass("visible")
+    }
+})
+
+$("#email").on('input', function() {
+    if (emailAddressIsValid()) {
+        $("#next").removeClass("disabled").addClass("clickable")
+    } else {
+        $("#next").addClass("disabled").removeClass("clickable")
     }
 })
 

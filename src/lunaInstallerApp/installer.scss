@@ -1,4 +1,5 @@
-$screenWidth: 340px;
+$contentWidth: 340px;
+$viewportHeight: 620px;
 
 $topBarHeight: 50px;
 
@@ -12,6 +13,7 @@ $normalFontSize: 12px;
 $errorPanelBgColor: #591522;
 
 $buttonBgColor: #591522;
+$disabledButtonBgColor: #444444;
 $buttonBgColor-lighten: lighten($buttonBgColor, 4%);
 $buttonHeight: 33px;
 $buttonWidth: 120px;
@@ -20,7 +22,7 @@ $buttonBorderRadius: 7px;
 $installButtonBorderRadius: 5px;
 
 $paddingBetweenSelectors: 2px;
-$selectorsWidth: $screenWidth/2 - $paddingBetweenSelectors/2;
+$selectorsWidth: $contentWidth/2 - $paddingBetweenSelectors/2;
 $selectorsPadding: 9px;
 $selectorsHeight: $buttonHeight;
 $selectorBgColor: hsl(0,0,15);;
@@ -30,6 +32,10 @@ $arrowWidth: 7.5px;
 $arrowHeight: 6px;
 
 $logoSize: 180px;
+
+$screenPositionY: $topBarHeight + $logoSize + 65px; // relative to the "body"
+$screenHeight: $viewportHeight - $screenPositionY;
+$buttonsPositionY: $screenPositionY - $buttonHeight - 20px; // relative to begin of screen element
 
 @mixin transitions {
     -webkit-transition: all 0.1s ease-in;
@@ -72,6 +78,41 @@ body {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+
+button {
+    font-size: $buttonFontSize;
+    text-align: center;
+    vertical-align: middle;
+    width: $buttonWidth;
+    height: $buttonHeight;
+    line-height: $buttonHeight;
+    border: none;
+    color: $normalTextColor;
+    outline: 0;
+    background-color: $buttonBgColor;
+    border-radius: $installButtonBorderRadius;
+    float: right;
+
+    @include transitions;
+
+    &.disabled {
+        background-color: $disabledButtonBgColor;
+    }
+    &.clickable:not(.disabled) {
+        cursor: pointer;
+
+        &:hover {
+          background-color: $buttonBgColor-lighten;
+        }
+    }
+
+    &.button-extended {
+        width: 1.5*$buttonWidth;
+        &:hover {
+          background-color: $buttonBgColor;
+        }
+    }
 }
 
 /* TOP BAR */
@@ -128,67 +169,72 @@ body {
 }
 /* LOGO WITH ROTATING PROGRESS end */
 
+/* SCREENS begin */
+
+.screen {
+    position: absolute;
+    top: $screenPositionY;
+    width: 0px;
+    height: $screenHeight;
+    overflow: hidden;
+
+    @include transitions;
+
+    &.visible {
+        width: 100%;
+        left: 0px !important;
+    }
+
+    &#email_form {
+        left: 0px;
+    }
+
+    &#main_form {
+        left: $contentWidth;
+    }
+}
+
+.buttons-panel {
+    position: absolute;
+    left: 0px;
+    top: $buttonsPositionY;
+    width: 100%;
+}
+
+/* SCREENS end */
+
 /* STATISTICS begin */
 #send-statistics {
-    width: 100%;
+    width: $contentWidth;
+    margin: auto;
     text-align: center;
     vertical-align: middle;
     font-size: $normalFontSize;
-    margin-bottom: 20px
-}
-#agree-box {
-    display: none;
-}
 
-#agree-box:not(:checked) + label {
-    background: url("img/hearts_grey.svg") no-repeat;
-    background-position: left center;
-    background-size: 16px;
-    padding-left: 24px;
-
-    @include transitions;
-
-    &.clickable {
-        cursor: pointer;
-        &:hover {
-            background: url("img/hearts_light_grey.svg") no-repeat;
-            background-position: left center;
-            background-size: 16px;
-        }
-    }
-}
-#agree-box:checked + label {
-    @include transitions;
-
-    background: url("img/hearts.svg") no-repeat;
-    background-position: left center;
-    background-size: 16px;
-    padding-left: 24px;
-
-    &.clickable {
-        cursor: pointer;
+    a {
+        color: $greyOutTextColor;
     }
 }
 
-.learn-more-link a {
-    color: $greyOutTextColor;
+#next-button {
+    width: $contentWidth;
+    margin: auto;
 }
 
 /* STATISTICS end */
 
-
 /* VERSION SELECTORS begin */
 #application-version-select {
-    width: $screenWidth;
+    width: $contentWidth;
     height: $buttonHeight;
     margin: auto;
-    margin-bottom: 175px;
 }
 
 .select-hidden {
   display: none;
   visibility: hidden;
 }
+
 .select {
   display: inline-block;
   position: relative;
@@ -325,40 +371,7 @@ div.arrow {
 
 /* INSTALL BUTTON SECTION begin */
 #install-buttons {
-    width: $screenWidth;
+    width: $contentWidth;
     margin: auto;  
-}
-
-#install {
-    font-size: $buttonFontSize;
-    text-align: center;
-    vertical-align: middle;
-    width: $buttonWidth;
-    height: $buttonHeight;
-    line-height: $buttonHeight;
-    border: none;
-    color: $normalTextColor;
-    outline: 0;    
-    background-color: $buttonBgColor;
-    border-radius: $installButtonBorderRadius;
-    float: right;
-
-    @include transitions;
-
-
-    &.clickable {
-        cursor: pointer;
-
-        &:hover {
-          background-color: $buttonBgColor-lighten;
-        }
-    }
-
-    &.button-extended {
-        width: 1.5*$buttonWidth;
-        &:hover {
-          background-color: $buttonBgColor;
-        }
-    }
 }
 /* INSTALL BUTTON SECTION end */
