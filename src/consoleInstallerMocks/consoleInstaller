@@ -12,6 +12,7 @@ initialize_packet = '''
 {
     "initialize": {
         "versionTypes": ["release", "nightly", ".developer"],
+        "email": true,
         "applications": [
             {
                 "name": "Paweł",

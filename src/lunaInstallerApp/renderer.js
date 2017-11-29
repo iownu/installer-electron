@@ -6,6 +6,7 @@ var installation_began = false
 var installation_complete = false
 var close_on_install_button_click = false
 var developer_builds_are_shown = false
+var ask_for_email = true
 
 function updateList(selectId) {
     var $this = $(selectId), numberOfOptions = $(selectId).children('option').length;
@@ -124,6 +125,7 @@ ipcRenderer.on('packet-from-console', function(event, arg) {
         applications = arg.initialize.applications
         versionTypes = arg.initialize.versionTypes.filter(function(version) { return !version.startsWith(".") })
         extendedVersionTypes = arg.initialize.versionTypes.map(function(version) { return version.startsWith(".") ? version.substr(1) : version })
+        ask_for_email = arg.initialize.email
 
         var $appSelect = $("#application")
 
@@ -135,7 +137,11 @@ ipcRenderer.on('packet-from-console', function(event, arg) {
         updateList("#application")
         updateVersions()
         $("#loading").hide()
-        $("#email_form").addClass("visible")
+        if (ask_for_email) {
+            $("#email_form").addClass("visible")
+        } else {
+            $("#main_form").addClass("visible")
+        }
     }
     var dashValue = parseFloat($("#progress-bar").css('stroke-dasharray'))
 
@@ -246,9 +252,13 @@ $("#install").click(function() {
         var install = {
             "install": {
                 "application": $("#application option:selected").text(),
-                "version": $("#version option:selected").text()
+                "version": $("#version option:selected").text(),
             }
         }
+        if (ask_for_email) {
+            install["install"]["email"] = $("#email").val()
+        }
+
         ipcRenderer.send("packet-to-console", install)
         installation_began = true;
     }
