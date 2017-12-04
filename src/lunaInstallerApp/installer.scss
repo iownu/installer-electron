@@ -8,7 +8,7 @@ $errorColor: #591522;
 $normalTextColor: #999999;
 $greyOutTextColor: #555555;
 $normalTextColor-lighten: lighten(#999999, 20%);
-$normalFontSize: 12px;
+$normalFontSize: 12.24px;
 
 $errorPanelBgColor: #591522;
 
@@ -207,9 +207,10 @@ button {
 #send-statistics {
     width: $contentWidth;
     margin: auto;
-    text-align: justify;
+    text-align: left;
     vertical-align: middle;
     font-size: $normalFontSize;
+    line-height: 1.5;
 
     a {
         color: $greyOutTextColor;
