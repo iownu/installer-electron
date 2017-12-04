@@ -11,18 +11,31 @@ import time
 initialize_packet = '''
 {
     "initialize": {
+        "versionTypes": ["release", "nightly", ".developer"],
+        "email": true,
         "applications": [
             {
                 "name": "Paweł",
-                "version": ["Pietraszko"]
+                "versions": {
+                    "release": ["1.0"],
+                    "nightly": ["1.0.1", "1.0.2"]
+                }
             },
             {
                 "name": "Wojciech",
-                "version": ["Daniło"]
+                "versions": {
+                    "release": ["1.0"],
+                    "nightly": ["1.0.1", "1.0.2"],
+                    "developer": ["Daniło"]
+                }
             },
             {
                 "name": "Konrad",
-                "version": ["Madej", "Gądek"]
+                "versions": {
+                    "release": ["1.0"],
+                    "nightly": ["1.0.1", "1.0.2"],
+                    "developer": ["Gądek", "Madej"]
+                }
             }
         ]
     }

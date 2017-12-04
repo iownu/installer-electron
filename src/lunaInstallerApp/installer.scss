@@ -1,4 +1,5 @@
-$screenWidth: 340px;
+$contentWidth: 340px;
+$viewportHeight: 620px;
 
 $topBarHeight: 50px;
 
@@ -7,11 +8,12 @@ $errorColor: #591522;
 $normalTextColor: #999999;
 $greyOutTextColor: #555555;
 $normalTextColor-lighten: lighten(#999999, 20%);
-$normalFontSize: 12px;
+$normalFontSize: 12.24px;
 
 $errorPanelBgColor: #591522;
 
 $buttonBgColor: #591522;
+$disabledButtonBgColor: #555555;
 $buttonBgColor-lighten: lighten($buttonBgColor, 4%);
 $buttonHeight: 33px;
 $buttonWidth: 120px;
@@ -20,7 +22,7 @@ $buttonBorderRadius: 7px;
 $installButtonBorderRadius: 5px;
 
 $paddingBetweenSelectors: 2px;
-$selectorsWidth: $screenWidth/2 - $paddingBetweenSelectors/2;
+$selectorsWidth: $contentWidth/2 - $paddingBetweenSelectors/2;
 $selectorsPadding: 9px;
 $selectorsHeight: $buttonHeight;
 $selectorBgColor: hsl(0,0,15);;
@@ -31,11 +33,33 @@ $arrowHeight: 6px;
 
 $logoSize: 180px;
 
+$screenPositionY: $topBarHeight + $logoSize + 65px; // relative to the "body"
+$screenHeight: $viewportHeight - $screenPositionY;
+$buttonsPositionY: $screenPositionY - $buttonHeight - 20px; // relative to begin of screen element
+
 @mixin transitions {
     -webkit-transition: all 0.1s ease-in;
     -moz-transition: all 0.1s ease-in;
     -o-transition: all 0.1s ease-in;
     transition: all 0.1s ease-in;
+}
+
+::-webkit-scrollbar-track
+{
+        border-radius: 5px;
+        background-color: $selectorBgColor;
+}
+
+::-webkit-scrollbar
+{
+        width: 7px;
+        background-color: $selectorBgColor;
+}
+
+::-webkit-scrollbar-thumb
+{
+        border-radius: 5px;
+        background-color: lighten($selectorBgColor, 8%);;
 }
 
 body {
@@ -54,6 +78,41 @@ body {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+
+button {
+    font-size: $buttonFontSize;
+    text-align: center;
+    vertical-align: middle;
+    width: $buttonWidth;
+    height: $buttonHeight;
+    line-height: $buttonHeight;
+    border: none;
+    color: $normalTextColor;
+    outline: 0;
+    background-color: $buttonBgColor;
+    border-radius: $installButtonBorderRadius;
+    float: right;
+
+    @include transitions;
+
+    &.disabled {
+        background-color: $disabledButtonBgColor;
+    }
+    &.clickable:not(.disabled) {
+        cursor: pointer;
+
+        &:hover {
+          background-color: $buttonBgColor-lighten;
+        }
+    }
+
+    &.button-extended {
+        width: 1.5*$buttonWidth;
+        &:hover {
+          background-color: $buttonBgColor;
+        }
+    }
 }
 
 /* TOP BAR */
@@ -110,67 +169,99 @@ body {
 }
 /* LOGO WITH ROTATING PROGRESS end */
 
-/* STATISTICS begin */
-#send-statistics {
-    width: 100%;
-    text-align: center;
-    vertical-align: middle;
-    font-size: $normalFontSize;
-    margin-bottom: 20px
-}
-#agree-box {
-    display: none;
-}
+/* SCREENS begin */
 
-#agree-box:not(:checked) + label {
-    background: url("img/hearts_grey.svg") no-repeat;
-    background-position: left center;
-    background-size: 16px;
-    padding-left: 24px;
+.screen {
+    position: absolute;
+    top: $screenPositionY;
+    width: 0px;
+    height: $screenHeight;
+    overflow: hidden;
 
     @include transitions;
 
-    &.clickable {
-        cursor: pointer;
-        &:hover {
-            background: url("img/hearts_light_grey.svg") no-repeat;
-            background-position: left center;
-            background-size: 16px;
+    &.visible {
+        width: 100%;
+        left: 0px !important;
+    }
+
+    &#email_form {
+        left: 0px;
+    }
+
+    &#main_form {
+        left: $contentWidth;
+    }
+}
+
+.buttons-panel {
+    position: absolute;
+    left: 0px;
+    top: $buttonsPositionY;
+    width: 100%;
+}
+
+/* SCREENS end */
+
+/* STATISTICS begin */
+#send-statistics {
+    width: $contentWidth;
+    margin: auto;
+    text-align: left;
+    vertical-align: middle;
+    font-size: $normalFontSize;
+    line-height: 1.5;
+
+    a {
+        color: $greyOutTextColor;
+    }
+
+    p#introduction {
+        margin: 0px 0px 36px 0px;
+    }
+
+    p#email-label {
+        margin-bottom: 0px 0px 24px 0px;
+    }
+
+    #email-input {
+        margin: auto;
+        text-align: center;
+
+        input {
+            -webkit-appearance:none;
+            width: 180px;
+            font-family: 'Roboto', sans-serif;
+            font-weight: normal;
+            font-size: $normalFontSize;
+            color: $normalTextColor;
+            letter-spacing: 1.2px;
+            background-color: lighten($bgColor, 10%);
+            padding: 6px;
+            border: 1px $greyOutTextColor solid;
         }
     }
 }
-#agree-box:checked + label {
-    @include transitions;
 
-    background: url("img/hearts.svg") no-repeat;
-    background-position: left center;
-    background-size: 16px;
-    padding-left: 24px;
-
-    &.clickable {
-        cursor: pointer;
-    }
-}
-
-.learn-more-link a {
-    color: $greyOutTextColor;
+#next-button {
+    width: $contentWidth;
+    margin: auto;
 }
 
 /* STATISTICS end */
 
-
 /* VERSION SELECTORS begin */
 #application-version-select {
-    width: $screenWidth;
+    width: $contentWidth;
     height: $buttonHeight;
     margin: auto;
-    margin-bottom: 175px;
 }
 
 .select-hidden {
   display: none;
   visibility: hidden;
 }
+
 .select {
   display: inline-block;
   position: relative;
@@ -225,6 +316,7 @@ div.arrow {
     right: $selectorsPadding;
     top: $selectorsHeight/2 - $arrowHeight/2;
     pointer-events:none;
+    opacity: 1.0;
 
     @include transitions;
 
@@ -232,37 +324,58 @@ div.arrow {
         border-top: none;
         border-bottom: $arrowHeight solid $normalTextColor;
     }
+
+    &.hidden {
+        opacity: 0.0;
+    }
 }
 
 .select-options {
-  display: none; 
-  position: absolute;
-  top: 100%;
-  right: 0;
-  left: 0;
-  z-index: 999;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  background-color: $selectorBgColor;
-  text-align: center;
-  line-height: $selectorsHeight;
-  border-radius: 0px 0px $buttonBorderRadius $buttonBorderRadius;
-  border-top: 1px solid darken($selectorBgColor, 10);
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    z-index: 999;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background-color: $selectorBgColor;
+    text-align: center;
+    line-height: $selectorsHeight;
+    border-radius: 0px 0px $buttonBorderRadius $buttonBorderRadius;
+    border-top: 1px solid darken($selectorBgColor, 10);
+    overflow-y: auto;
+    max-height: 200px;
 
-  li {
-    cursor: pointer;
-    text-indent: -$selectorsPadding;
-    @include transitions;
+    h2 {
+        cursor: default;
+        text-indent: -$selectorsPadding;
+        font-size: $normalFontSize;
+        margin: 0px;
+    }
 
-    &:hover {
-      color: $normalTextColor-lighten;
-      background: $selectorBgColor-lighten;
+
+    hr {
+        border: 0px;
+        margin: 0px;
+        height: 1px;
+        background-color: $bgColor;
     }
-    &[rel="hide"] {
-      display: none;
+
+    li {
+        cursor: pointer;
+        text-indent: -$selectorsPadding;
+        @include transitions;
+
+        &:hover {
+            color: $normalTextColor-lighten;
+            background: $selectorBgColor-lighten;
+        }
+        &[rel="hide"] {
+            display: none;
+        }
     }
-  }
 }
 
 .select-item-left {
@@ -285,40 +398,7 @@ div.arrow {
 
 /* INSTALL BUTTON SECTION begin */
 #install-buttons {
-    width: $screenWidth;
+    width: $contentWidth;
     margin: auto;  
-}
-
-#install {
-    font-size: $buttonFontSize;
-    text-align: center;
-    vertical-align: middle;
-    width: $buttonWidth;
-    height: $buttonHeight;
-    line-height: $buttonHeight;
-    border: none;
-    color: $normalTextColor;
-    outline: 0;    
-    background-color: $buttonBgColor;
-    border-radius: $installButtonBorderRadius;
-    float: right;
-
-    @include transitions;
-
-
-    &.clickable {
-        cursor: pointer;
-
-        &:hover {
-          background-color: $buttonBgColor-lighten;
-        }
-    }
-
-    &.button-extended {
-        width: 1.5*$buttonWidth;
-        &:hover {
-          background-color: $buttonBgColor;
-        }
-    }
 }
 /* INSTALL BUTTON SECTION end */
