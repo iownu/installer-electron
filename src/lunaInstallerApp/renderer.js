@@ -125,7 +125,7 @@ ipcRenderer.on('packet-from-console', function(event, arg) {
         applications = arg.initialize.applications
         versionTypes = arg.initialize.versionTypes.filter(function(version) { return !version.startsWith(".") })
         extendedVersionTypes = arg.initialize.versionTypes.map(function(version) { return version.startsWith(".") ? version.substr(1) : version })
-        ask_for_email = arg.initialize.email
+        ask_for_email = arg.initialize.askEmail
 
         var $appSelect = $("#application")
 
