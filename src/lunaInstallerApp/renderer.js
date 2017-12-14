@@ -234,6 +234,13 @@ $("#email").on('input', function() {
     }
 })
 
+$("#email").keypress(function(event)
+{
+    if (event.which === 13 && emailAddressIsValid()) {
+        $("#next").click()
+    }
+})
+
 $("#install").click(function() {
     if (close_on_install_button_click) {
         var window = remote.getCurrentWindow();
