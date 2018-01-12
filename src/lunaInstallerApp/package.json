@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "jquery": "^3.2.1",
-    "luna-logo-loader": "git+ssh://git@github.com:luna/luna-logo-loader.git#v1.0.3"
+    "luna-logo-loader": 
+"git+ssh://git@github.com:luna/luna-logo-loader.git#v1.0.4"
   }
 }
