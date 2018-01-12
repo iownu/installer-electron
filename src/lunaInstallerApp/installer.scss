@@ -2,6 +2,7 @@ $contentWidth: 340px;
 $viewportHeight: 620px;
 
 $topBarHeight: 50px;
+$messageHeight: 65px;
 
 $bgColor: #10120f;
 $errorColor: #591522;
@@ -125,6 +126,9 @@ button {
 }
 
 #message {
+    position: absolute;
+    left: 0px;
+    top: 0px;
     margin: 0px;
     width: 100%;
     height: 0px;
@@ -139,8 +143,32 @@ button {
     }
 
     &.displayed {
-        height: $topBarHeight;
-        line-height: $topBarHeight;
+        height: $messageHeight;
+        line-height: $messageHeight;
+
+        span {
+            margin: 4px;
+            display: inline-block;
+            vertical-align: middle;
+            white-space: pre-wrap;
+            line-height: normal;
+
+            p {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                margin: 0px;
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
+            }
+
+            #copy_error {
+                text-decoration: underline;
+                font-weight: bold;
+                cursor: pointer;
+                -webkit-app-region: no-drag;
+            }
+        }
     }
 }
 

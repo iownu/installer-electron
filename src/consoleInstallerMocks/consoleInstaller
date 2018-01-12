@@ -53,11 +53,11 @@ for line in fileinput.input("-"):
             time.sleep(.030 if i > 0 else 2)
         for i in range(100):
             if i >= 58 and 'Gądek' in line:
-                sys.stderr.write("Wild Shaman appears!\n")
+                sys.stderr.write("Wild Shaman appears!\nMultiline\nLine3\nAAAAAAAAAAA WUEISDFAWEAS ASDASDW")
                 sys.stderr.flush()
                 sys.exit(1)
                 break
-            elif i == 0 and 'Pietraszko' in line:
+            elif i == 0 and 'Paweł' in line:
                 print("{ \"message\": \"Na pewno się uda!\" }")
                 sys.stdout.flush()
             elif i == 3 and 'Daniło' in line:
