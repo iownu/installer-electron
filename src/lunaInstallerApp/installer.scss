@@ -13,7 +13,7 @@ $normalFontSize: 12.24px;
 
 $errorPanelBgColor: #591522;
 
-$buttonBgColor: #59421b;
+$buttonBgColor: #ae8035;
 $disabledButtonBgColor: #555555;
 $buttonBgColor-lighten: lighten($buttonBgColor, 4%);
 $buttonHeight: 33px;
@@ -89,7 +89,7 @@ button {
     height: $buttonHeight;
     line-height: $buttonHeight;
     border: none;
-    color: $normalTextColor;
+    color: $bgColor;
     outline: 0;
     background-color: $buttonBgColor;
     border-radius: $installButtonBorderRadius;
