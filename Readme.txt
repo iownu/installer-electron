@@ -26,7 +26,7 @@ c) przygotowania Windows
 * Trzeba zainstalować msys2, otworzyć i wykonać podstawowe aktualizacje (pacman -Syu, potem restart i jeszcze raz pacman -Syu)
 * W konsoli msys2 zainstalować: git, cmake, make, mingw-w64-x86_64-gcc, mingw-w64-x86_64-qt5-static, mingw-w64_x86_64-sassc
 * mingw-w64-x86_64-qt5-static ma skopane zależności. Trzeba ręcznie doinstalować mingw-w64-x86_64-openssl oraz mingw-w64-x86_64-jasper
-* POZA Msys2 zainstalować: python2.7, nodejs oraz npm, najlepiej w domyślnych katalogach
+* POZA Msys2 zainstalować: python2.7, nodejs, npm, oraz mt.exe, najlepiej w domyślnych katalogach
 * instalujemy psutil (w cmd.exe: C:\Python27\Scripts\pip.exe install psutil)
 * instalujemy electron-packagera (C:\Program Files\nodejs\npm.exe install -g electron-packager)
 * trzeba podać node do path (niestety; w przeciwnym razie electron-packager nie działa). Do ~/.bashrc dopisujemy export PATH="/c/Program Files/nodejs/:$PATH"
@@ -44,7 +44,7 @@ klonujemy repo. robimy katalog do budowy, gdzieś obok najlepiej. Wywołujemy w 
 
 cmake ../ścieżka/do/repo -DCONSOLE_INSTALLER_EXE="/ścieżka/do/konsolowego/instalatora" -DCMAKE_BUILD_TYPE=Release
 
-Jeżeli biblioteki mamy pobudowane w dziwnych ścieżkach, to przekazujemy je do cmake opcją -DCMAKE_PREFIX_PATH="ścieżka1;ścieżka2". Podobnie, jeżeli pythona, npm albo sassc wywołuje się w sposób nietypowy (np. inaczej niż "python2.7" na linuksie), to dodajemy opcje odpowiednio -DPYTHON_EXE="wywołanie pythona", -DNPM_EXE="wywołanie npm" -DSASS_EXE="wywołanie scss"
+Jeżeli biblioteki mamy pobudowane w dziwnych ścieżkach, to przekazujemy je do cmake opcją -DCMAKE_PREFIX_PATH="ścieżka1;ścieżka2". Podobnie, jeżeli pythona, npm albo sassc wywołuje się w sposób nietypowy (np. inaczej niż "python2.7" na linuksie), to dodajemy opcje odpowiednio -DPYTHON_EXE="wywołanie pythona", -DNPM_EXE="wywołanie npm" -DSASS_EXE="wywołanie scss". Na Windowsie można podać wywołanie mt.exe -DMT_EXE="wywołanie mt.exe"
 
 Jak wszystko się uda, to odpalamy make.
 

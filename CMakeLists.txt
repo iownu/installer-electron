@@ -6,6 +6,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 if (WIN32 OR MINGW)
     set(CONSOLE_INSTALLER_FILENAME "consoleInstaller.exe")
+	set(MT_EXE "mt.exe" CACHE STRING "Path to mt.exe program")
 else()
     set(CONSOLE_INSTALLER_FILENAME "consoleInstaller")
 endif()
@@ -244,6 +245,15 @@ if(NOT APPLE)
         misc.qrc
         appicon.rc
         )
+		
+	if (MINGW)
+		add_custom_target(lunaInstallerManifest ALL
+			COMMAND  ${MT_EXE} -manifest \"${CMAKE_SOURCE_DIR}/manifest.xml\" \"-outputresource:lunaInstaller.exe$<SEMICOLON>1\"
+			DEPENDS lunaInstaller
+			WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+			SOURCES manifest.xml
+			)
+	endif(MINGW)
 
     set_target_properties(lunaInstaller PROPERTIES AUTOGEN_TARGET_DEPENDS lunaInstallerApp.qrc)
 
