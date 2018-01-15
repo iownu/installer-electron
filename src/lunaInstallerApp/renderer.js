@@ -62,7 +62,7 @@ function updateVersions() {
         {
             $.each(applications[selection].versions[version_type], function(index, version) {
                 let value = type_index+"_"+index
-                var $option = $("<option></option>").attr("value", value).text(version)
+                var $option = $("<option></option>").attr("value", value).text(version + " beta")
                 $versionSelect.append($option)
             })
         })
@@ -262,13 +262,14 @@ $("#install").click(function() {
         var install = {
             "install": {
                 "application": $("#application option:selected").text(),
-                "version": $("#version option:selected").text(),
+                "version": $("#version option:selected").text().replace(" beta", ""),
             }
         }
         if (ask_for_email) {
             install["install"]["email"] = $("#email").val()
         }
 
+//        console.log(install)
         ipcRenderer.send("packet-to-console", install)
         installation_began = true;
     }
