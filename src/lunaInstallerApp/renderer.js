@@ -219,7 +219,7 @@ function isEmail(email){
 }
 
 function emailAddressIsValid() {
-    return isEmail($("#email").val())
+    return $("#email").val() == "" || isEmail($("#email").val())
 }
 
 $("#next").click(function() {
