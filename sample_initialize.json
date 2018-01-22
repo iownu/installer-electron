@@ -1,0 +1,24 @@
+{
+    "initialize": {
+        "versionTypes": ["release", "nightly", ".developer"],
+        "askEmail": true,
+        "applications": [
+            {
+                "name": "Luna",
+                "versions": {
+                    "release": ["1.0"],
+                    "nightly": ["1.0.1", "1.0.2"]
+                }
+            },
+            {
+                "name": "Luna Studio",
+                "versions": {
+                    "release": ["1.0"],
+                    "nightly": ["1.0.1", "1.0.2"],
+                    "developer": ["1.0.1.1", "1.0.1.2"]
+                }
+            }
+        ]
+    }
+}
+
