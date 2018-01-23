@@ -33,7 +33,7 @@ This is the path we followed to build the installer, so that it can be portable.
 * `mingw-w64-x86_64-qt5-static` appears to have broken dependencies. You'll need to manually install `mingw-w64-x86_64-openssl` and `mingw-w64-x86_64-jasper`
 * OUTSIDE of `msys2` install: `python2.7`, `nodejs`, `npm`, and `mt.exe` (they are best installed in their default directories)
 * install `psutil` (in `cmd.exe`: `C:\Python27\Scripts\pip.exe install psutil`)
-* install `electron-packagera` (`C:\Program Files\nodejs\npm.exe install -g electron-packager`)
+* install `electron-packager` (`C:\Program Files\nodejs\npm.exe install -g electron-packager`)
 * add `node` to the `PATH` (unfortunately, the `electron-packager` doesn't work otherwise). Add `export PATH="/c/Program Files/nodejs/:$PATH"` to `~/.bashrc` inside `msys`.
 
 
