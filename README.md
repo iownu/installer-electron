@@ -29,7 +29,7 @@ The graphical wrapper around [Luna Manager's](https://github.com/luna/luna-manag
 #### Windows
 This is the path we followed to build the installer, so that it can be portable. You can rely on system libraries if you don't want to distribute the installer).
 * install `msys2`, open it and update (`pacman -Syu` then restart and run `pacman -Syu` again)
-* in the `msys2` install: `git`, `cmake`, `make`, `mingw-w64-x86_64-gcc`, `mingw-w64-x86_64-qt5-static`, `mingw-w64_x86_64-sassc`
+* in the `msys2` install: `git`, `cmake`, `make`, `mingw-w64-x86_64-gcc`, `mingw-w64-x86_64-qt5-static`, `mingw-w64-x86_64-sassc`
 * `mingw-w64-x86_64-qt5-static` appears to have broken dependencies. You'll need to manually install `mingw-w64-x86_64-openssl` and `mingw-w64-x86_64-jasper`
 * OUTSIDE of `msys2` install: `python2.7`, `nodejs`, `npm`, and `mt.exe` (they are best installed in their default directories)
 * install `psutil` (in `cmd.exe`: `C:\Python27\Scripts\pip.exe install psutil`)
