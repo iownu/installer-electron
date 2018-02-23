@@ -160,18 +160,22 @@ ipcRenderer.on('packet-from-console', function(event, arg) {
         $("#error-message").removeClass("displayed")
         lll.set_loading($("#logo-area"), arg.installation_progress)
     }
-    if (arg.installation_progress >= 1.0) {
-        updateInstallButton(true, "Done!")
-        close_on_install_button_click = true
-        installation_complete = true
-        lll.set_complete($("#logo-area"))
-    }
+    // if (arg.installation_progress >= 1.0) {
+    //     updateInstallButton(true, "Done!")
+    //     close_on_install_button_click = true
+    //     installation_complete = true
+    //     lll.set_complete($("#logo-area"))
+    // }
     if (arg.application_run) {
         updateInstallButton(true, "Run Luna Studio!")
         run_application = true
         // close_on_install_button_click = true
         installation_complete = true
         lll.set_complete($("#logo-area"))
+    }
+    if (arg.application_close) {
+        var window = remote.getCurrentWindow();
+        window.close();
     }
     if (arg.error) {
         displayError(arg.error)
