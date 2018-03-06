@@ -160,16 +160,16 @@ ipcRenderer.on('packet-from-console', function(event, arg) {
         $("#error-message").removeClass("displayed")
         lll.set_loading($("#logo-area"), arg.installation_progress)
     }
-    // if (arg.installation_progress >= 1.0) {
-    //     updateInstallButton(true, "Done!")
-    //     close_on_install_button_click = true
-    //     installation_complete = true
-    //     lll.set_complete($("#logo-area"))
-    // }
+    if (arg.installation_progress >= 1.0) {
+        updateInstallButton(true, "Done!")
+        close_on_install_button_click = true
+        installation_complete = true
+        lll.set_complete($("#logo-area"))
+    }
     if (arg.application_run) {
         updateInstallButton(true, "Run Luna Studio!")
         run_application = true
-        // close_on_install_button_click = true
+        close_on_install_button_click = false
         installation_complete = true
         lll.set_complete($("#logo-area"))
     }
@@ -285,7 +285,10 @@ $("#install").click(function() {
         ipcRenderer.send("packet-to-console", install)
         installation_began = true;
     } else if (run_application) {
-        ipcRenderer.send("packet-to-console", "run")
+        var run = {
+            "run" : "True"
+        }
+        ipcRenderer.send("packet-to-console", run )
     }
 })
 
