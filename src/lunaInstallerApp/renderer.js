@@ -167,7 +167,7 @@ ipcRenderer.on('packet-from-console', function(event, arg) {
         lll.set_complete($("#logo-area"))
     }
     if (arg.application_run) {
-        updateInstallButton(true, "Run Luna Studio!")
+        updateInstallButton(true, "Run Luna Studio!") # should not be hardcoded but readed from json
         run_application = true
         close_on_install_button_click = false
         installation_complete = true
