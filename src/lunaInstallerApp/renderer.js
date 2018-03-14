@@ -166,6 +166,17 @@ ipcRenderer.on('packet-from-console', function(event, arg) {
         installation_complete = true
         lll.set_complete($("#logo-area"))
     }
+    if (arg.application_run) {
+        updateInstallButton(true, `Run ${arg.application_run}!`);
+        run_application = true
+        close_on_install_button_click = false
+        installation_complete = true
+        lll.set_complete($("#logo-area"))
+    }
+    if (arg.application_close) {
+        var window = remote.getCurrentWindow();
+        window.close();
+    }
     if (arg.error) {
         displayError(arg.error)
     }
@@ -244,6 +255,7 @@ $("#email").keypress(function(event)
     }
 })
 
+
 $("#install").click(function() {
     if (close_on_install_button_click) {
         var window = remote.getCurrentWindow();
@@ -272,6 +284,11 @@ $("#install").click(function() {
 //        console.log(install)
         ipcRenderer.send("packet-to-console", install)
         installation_began = true;
+    } else if (run_application) {
+        var run = {
+            "run" : "True"
+        }
+        ipcRenderer.send("packet-to-console", run )
     }
 })
 
